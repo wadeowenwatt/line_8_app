@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/configs/app_configs.dart';
 import 'package:flutter_base/ui/pages/splash/splash_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,14 +81,14 @@ class _MyAppState extends State<MyApp> {
               },
               child: GetMaterialApp(
                 title: AppConfigs.appName,
-                theme: AppThemes(
-                  isDarkMode: false,
-                  primaryColor: state.primaryColor,
-                ).theme,
-                darkTheme: AppThemes(
-                  isDarkMode: true,
-                  primaryColor: state.primaryColor,
-                ).theme,
+                theme: const AppTheme(
+                  brightness: Brightness.light,
+                  primaryColor: AppColors.primaryLightColor,
+                ).themeData(),
+                // darkTheme: AppThemes(
+                //   isDarkMode: true,
+                //   primaryColor: state.primaryColor,
+                // ).theme,
                 themeMode: state.themeMode,
                 initialRoute: RouteConfig.splash,
                 getPages: RouteConfig.getPages,
