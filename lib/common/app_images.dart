@@ -9,4 +9,5 @@ class AppImages {
   ///Sign-In
   static const icEyeClose = 'assets/images/ic_eye_close.png';
   static const icEyeOpen = 'assets/images/ic_eye_open.png';
+  static const imageDecorate = 'assets/images/img_decorate.png';
 }

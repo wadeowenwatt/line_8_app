@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/generated/l10n.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
@@ -69,49 +70,112 @@ class _SignInChildPageState extends State<SignInChildPage> {
 
   Widget buildBodyWidget() {
     final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(height: 100),
-        SizedBox(
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(colors: [
+          AppColors.primaryDarkColorLeft,
+          AppColors.primaryLightColorRight
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 100),
+          SizedBox(
+              height: showingKeyboard ? 0 : 100,
+              width: 400,
+              child: const Image(
+                fit: BoxFit.contain,
+                image: AssetImage(AppImages.imageDecorate),
+              )),
+          SizedBox(
             height: showingKeyboard ? 0 : 200,
             width: 200,
-            child: Image.asset(AppImages.icLogoTransparent)),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: AppEmailInput(
-            textEditingController: usernameTextController,
-            onChanged: (text) {
-              _cubit.changeUsername(username: text);
-            },
+            child: Image.asset(AppImages.icLogoTransparentNoBackGround),
           ),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20),
-          child: AppPasswordInput(
-            obscureTextController: obscurePasswordController,
-            textEditingController: passwordTextController,
-            onChanged: (text) {
-              _cubit.changePassword(password: text);
-            },
+          const SizedBox(
+            height: 30,
           ),
-        ),
-        const SizedBox(height: 32),
-        _buildSignButton(),
-      ],
+          _buildExpanded()
+        ],
+      ),
     );
   }
 
-  Widget _buildSignButton() {
+  Expanded _buildExpanded() {
+    return Expanded(
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 50,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              child: AppEmailInput(
+                textEditingController: usernameTextController,
+                onChanged: (text) {
+                  _cubit.changeUsername(username: text);
+                },
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              child: AppPasswordInput(
+                obscureTextController: obscurePasswordController,
+                textEditingController: passwordTextController,
+                onChanged: (text) {
+                  _cubit.changePassword(password: text);
+                },
+              ),
+            ),
+            const SizedBox(height: 32),
+            _buildButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton() {
     return BlocBuilder<SignInCubit, SignInState>(
       builder: (context, state) {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: AppTintButton(
-            title: S.of(context).button_signIn,
-            onPressed: _signIn,
-            isLoading: state.signInStatus == LoadStatus.loading,
+          child: Column(
+            children: [
+              AppTintButton(
+                title: S.of(context).button_signIn,
+                onPressed: _signIn,
+                isLoading: state.signInStatus == LoadStatus.loading,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text("Forgot password"),
+                    ),
+                  ),
+                  const Expanded(child: SizedBox()),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text("Register now"),
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },

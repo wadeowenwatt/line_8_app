@@ -30,7 +30,7 @@ class AppPasswordInput extends StatelessWidget {
 
   const AppPasswordInput({
     Key? key,
-    this.labelText = "Mật khẩu",
+    this.labelText = "Password",
     this.labelStyle,
     this.highlightText = "*",
     this.suffixIcon,
@@ -73,7 +73,7 @@ class AppPasswordInput extends StatelessWidget {
                   onChanged: onChanged,
                   controller: textEditingController,
                   focusNode: passwordFocusNode,
-                  style: textStyle ?? AppTextStyle.blackS16,
+                  style: textStyle ?? AppTextStyle.blackS18W800,
                   maxLines: 1,
                   decoration: InputDecoration(
                     enabledBorder: const UnderlineInputBorder(

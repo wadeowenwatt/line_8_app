@@ -48,7 +48,7 @@ class _SplashChildPageState extends State<SplashChildPage> {
                 gradient: LinearGradient(colors: [
                   AppColors.primaryDarkColorLeft,
                   AppColors.primaryLightColorRight
-                ], begin: Alignment.centerLeft, end: Alignment.centerRight)
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight)
             ),
           ),
           Center(

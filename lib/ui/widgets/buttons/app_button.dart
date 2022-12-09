@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_dimens.dart';
 
 import '../app_circular_progress_indicator.dart';
@@ -21,30 +22,42 @@ class AppButton extends StatelessWidget {
   final TextStyle? textStyle;
 
   final VoidCallback? onPressed;
+  final Gradient? gradient;
 
-  const AppButton({
-    Key? key,
-    this.title,
-    this.leadingIcon,
-    this.trailingIcon,
-    this.isLoading = false,
-    this.height,
-    this.width,
-    this.borderWidth,
-    this.cornerRadius,
-    this.backgroundColor,
-    this.borderColor,
-    this.textStyle,
-    this.onPressed,
-  }) : super(key: key);
+  const AppButton(
+      {Key? key,
+      this.title,
+      this.leadingIcon,
+      this.trailingIcon,
+      this.isLoading = false,
+      this.height,
+      this.width,
+      this.borderWidth,
+      this.cornerRadius,
+      this.backgroundColor,
+      this.borderColor,
+      this.textStyle,
+      this.onPressed,
+      this.gradient})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: height ?? AppDimens.buttonHeight,
       width: width ?? double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(12)),
+          gradient: gradient ??
+              const LinearGradient(colors: [
+                AppColors.primaryDarkColorLeft,
+                AppColors.primaryLightColorRight
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          primary: Colors.transparent,
+          onSurface: Colors.transparent,
+          shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
                 cornerRadius ?? AppDimens.buttonCornerRadius),
@@ -53,7 +66,6 @@ class AppButton extends StatelessWidget {
             color: borderColor ?? Colors.transparent,
             width: borderWidth ?? 0,
           ),
-          primary: backgroundColor,
           padding: const EdgeInsets.all(0),
         ),
         onPressed: onPressed,
