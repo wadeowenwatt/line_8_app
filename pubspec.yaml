@@ -105,6 +105,7 @@ flutter:
     - assets/images/ic_eye_close.png
     - assets/images/ic_eye_open.png
     - assets/images/ic_eye_open.png
+    - assets/images/ic_logo_transparent_no_background.png
 
   fonts:
     - family: Arimo

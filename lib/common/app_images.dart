@@ -4,6 +4,7 @@ class AppImages {
   static const icLogo = 'assets/images/ic_logo.png';
   static const icLogoTransparent = 'assets/images/ic_logo_transparent.png';
   static const icAvatar = 'assets/images/ic_avatar.png';
+  static const icLogoTransparentNoBackGround = 'assets/images/ic_logo_transparent_no_background.png';
 
   ///Sign-In
   static const icEyeClose = 'assets/images/ic_eye_close.png';
