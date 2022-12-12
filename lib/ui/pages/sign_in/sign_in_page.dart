@@ -4,10 +4,13 @@ import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/generated/l10n.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
+import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
 import 'package:flutter_base/ui/widgets/input/app_password_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../../repositories/auth_repository.dart';
 import '../../../repositories/user_repository.dart';
@@ -80,21 +83,19 @@ class _SignInChildPageState extends State<SignInChildPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 100),
-          SizedBox(
-              height: showingKeyboard ? 0 : 100,
-              width: 400,
-              child: const Image(
-                fit: BoxFit.contain,
-                image: AssetImage(AppImages.imageDecorate),
-              )),
+          const SizedBox(height: 70),
+          const AspectRatio(
+            aspectRatio: 5/1,
+            child: SizedBox(
+                child: Image(
+              fit: BoxFit.contain,
+              image: AssetImage(AppImages.imageDecorate),
+            )),
+          ),
           SizedBox(
             height: showingKeyboard ? 0 : 200,
-            width: 200,
+            width: 150,
             child: Image.asset(AppImages.icLogoTransparentNoBackGround),
-          ),
-          const SizedBox(
-            height: 30,
           ),
           _buildExpanded()
         ],
@@ -102,7 +103,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
     );
   }
 
-  Expanded _buildExpanded() {
+  Widget _buildExpanded() {
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(
@@ -124,7 +125,6 @@ class _SignInChildPageState extends State<SignInChildPage> {
                 },
               ),
             ),
-            const SizedBox(height: 12),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 30),
               child: AppPasswordInput(
@@ -135,7 +135,6 @@ class _SignInChildPageState extends State<SignInChildPage> {
                 },
               ),
             ),
-            const SizedBox(height: 32),
             _buildButton(),
           ],
         ),
@@ -169,7 +168,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
                   Align(
                     alignment: AlignmentDirectional.centerEnd,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _signUp();
+                      },
                       child: const Text("Register now"),
                     ),
                   ),
@@ -184,5 +185,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
 
   void _signIn() {
     _cubit.signIn();
+  }
+
+  void _signUp() {
+    Get.offNamed(RouteConfig.signUp);
   }
 }
