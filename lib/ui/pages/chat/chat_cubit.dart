@@ -40,16 +40,16 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> onSend(ChatMessageEntity newMessage) async {
-    newMessage.roomId = "LB92pLVDUomWoHsHxpCw";
-    final result = await chatRepository.sendMessage(newMessage);
-    newMessage.messageId = state.messages.length.toString();
-    emit(
-      state.copyWith(
-        messages: <ChatMessageEntity>[
-          ...state.messages,
-          result,
-        ],
-      ),
-    );
+    try {
+      newMessage.roomId = "LB92pLVDUomWoHsHxpCw";
+      await chatRepository.sendMessage(newMessage);
+      final result =
+          await chatRepository.getMessagesByRoomId("LB92pLVDUomWoHsHxpCw");
+      emit(
+        state.copyWith(fetchDataStatus: LoadStatus.success, messages: result),
+      );
+    } catch (error) {
+      logger.e(error);
+    }
   }
 }

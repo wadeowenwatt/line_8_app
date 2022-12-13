@@ -14,4 +14,6 @@ class AppImages {
   static const String icSend = "assets/images/ic_send.svg";
   static const String icCall = "assets/images/ic_call.svg";
   static const String icArrowBack = "assets/images/ic_arrow_back.svg";
+  static const String icPlay = "assets/images/ic_play.svg";
+  static const String icPause = "assets/images/ic_pause.svg";
 }
