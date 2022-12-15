@@ -3,6 +3,7 @@ import 'package:flutter_base/models/entities/chat/chat_message_entity.dart';
 import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 import 'package:flutter_base/models/enums/message_type.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message/audio_message.dart';
+import 'package:flutter_base/ui/pages/chat/widgets/message/file_message.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message/image_message.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message/text_message.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message/video_message.dart';
@@ -50,6 +51,11 @@ class MessageRow extends StatelessWidget {
       );
     } else if (message.type == MessageType.video) {
       return VideoMessage(
+        message: message,
+        currentUser: currentUser,
+      );
+    } else if (message.type == MessageType.file) {
+      return FileMessage(
         message: message,
         currentUser: currentUser,
       );

@@ -48,17 +48,14 @@ class VideoMessage extends StatelessWidget {
               url: message.meta?["thumbnailUrl"] ?? "",
               fit: BoxFit.fill,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: IconButton(
-                onPressed: onPlayVideo,
-                icon: const Icon(
-                  Icons.play_circle_fill_outlined,
-                  size: 48,
-                  color: AppColors.orangeAccent,
-                ),
+            InkWell(
+              onTap: onPlayVideo,
+              child: const Icon(
+                Icons.play_circle_fill_outlined,
+                size: 48,
+                color: AppColors.orangeAccent,
               ),
-            )
+            ),
           ],
         ),
       ),

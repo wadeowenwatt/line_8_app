@@ -220,6 +220,33 @@ class ChatInput extends StatelessWidget {
     }
   }
 
+  Future<void> _onSendFileMessage() async {
+    final storageRef = FirebaseStorage.instance.ref();
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      final fileRef = storageRef.child("/files/${result.files.single.name}");
+      try {
+        AppDialog.showLoadingDialog();
+        await fileRef.putFile(file);
+        final url = await fileRef.getDownloadURL();
+        final ChatMessageEntity fileMessage = ChatMessageEntity(
+          authorId: currentUser.chatUserId,
+          type: MessageType.file,
+          meta: {"url": url, "fileName": result.files.single.name},
+        );
+        onSend(fileMessage);
+      } on FirebaseException catch (e) {
+        logger.e(e);
+      } finally {
+        Get.back();
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
   void onTapOptions(BuildContext context) {
     _hideKeyboard(context);
 
@@ -233,6 +260,9 @@ class ChatInput extends StatelessWidget {
           Get.back();
         } else if (messageType == MessageType.video) {
           await _onSendVideoMessage(context);
+          Get.back();
+        } else if (messageType == MessageType.file) {
+          await _onSendFileMessage();
           Get.back();
         }
       },
