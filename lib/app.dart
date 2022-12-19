@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/configs/app_configs.dart';
-import 'package:flutter_base/ui/pages/splash/splash_page.dart';
+import 'package:flutter_base/repositories/chat_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -58,6 +58,9 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider<UserRepository>(create: (context) {
           return UserRepositoryImpl(apiClient: _apiClient);
         }),
+        RepositoryProvider<ChatRepository>(create: (context) {
+          return ChatRepositoryImpl();
+        }),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -90,7 +93,7 @@ class _MyAppState extends State<MyApp> {
                 //   primaryColor: state.primaryColor,
                 // ).theme,
                 themeMode: state.themeMode,
-                initialRoute: RouteConfig.splash,
+                initialRoute: RouteConfig.chat,
                 getPages: RouteConfig.getPages,
                 localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,
