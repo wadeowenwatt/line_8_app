@@ -73,7 +73,9 @@ dependencies:
   video_player: ^2.4.9
   advance_pdf_viewer: ^2.0.1
   syncfusion_flutter_pdfviewer: ^20.3.59
-
+  audio_session: ^0.1.11
+  just_audio_mpv: ^0.1.6
+  just_audio_windows: ^0.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
