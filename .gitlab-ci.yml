@@ -1,20 +1,20 @@
-image: cirrusci/flutter:3.3.10
 stages:
   - stagingAndroid
   - lint
-before_script:
-  - flutter pub get
-  - flutter pub run intl_utils:generate
-  - flutter pub run build_runner build --delete-conflicting-outputs
 
 lint:
+  image: cirrusci/flutter:3.3.10
   stage: lint
   script:
+    - flutter pub get
+    - flutter pub run intl_utils:generate
+    - flutter pub run build_runner build --delete-conflicting-outputs
     - flutter format ./lib --set-exit-if-changed
     - flutter analyze
   tags:
     - ventura
 build_fad_android:
+  image: cirrusci/flutter:3.3.10
   stage: stagingAndroid
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './android'
