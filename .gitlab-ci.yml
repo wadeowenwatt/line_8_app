@@ -20,7 +20,8 @@ lint:
   script:
     - flutter format ./lib --set-exit-if-changed
     - flutter analyze
-
+  tags:
+    - ventura
 build_fad_android:
   stage: stagingAndroid
   variables:
