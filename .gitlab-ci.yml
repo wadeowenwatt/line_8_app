@@ -1,5 +1,6 @@
 stages:
   - stagingAndroid
+  - lint
 before_script:
   - gem install bundler
   - bundle install
