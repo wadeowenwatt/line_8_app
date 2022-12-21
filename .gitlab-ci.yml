@@ -5,6 +5,9 @@ stages:
 lint:
   image: cirrusci/flutter:3.3.10
   stage: lint
+  before_script:
+    - export PATH="$PATH":"$HOME/.pub-cache/bin"
+    - $Env:Path += ";$HOME\.pub-cache\bin"
   script:
     - flutter pub get
     - flutter pub run intl_utils:generate
