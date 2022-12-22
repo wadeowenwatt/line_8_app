@@ -18,6 +18,6 @@ build_fad_android:
     SECURE_FILES_DOWNLOAD_PATH: './android'
   script:
     - export GOOGLE_APPLICATION_CREDENTIALS=$SECURE_FILES_DOWNLOAD_PATH
-    - cd android && fastlane build_qa versionName="$CI_COMMIT_TAG" buildNumber="$CI_PIPELINE_IID" groups="nws-tester" releaseNotes="$CI_COMMIT_TAG_MESSAGE"
+    - cd android && fastlane beta versionName="$CI_COMMIT_TAG" buildNumber="$CI_PIPELINE_IID" groups="nws-tester" releaseNotes="$CI_COMMIT_TAG_MESSAGE"
   tags:
     - ventura
