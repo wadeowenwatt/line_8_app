@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
@@ -49,13 +51,16 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBodyWidget(),
+      body: SingleChildScrollView(child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }
 
   Widget buildBodyWidget() {
     final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final heightOfScreen = MediaQuery.of(context).size.height;
+    final widthOfScreen = MediaQuery.of(context).size.width;
 
     return Container(
       decoration: const BoxDecoration(
@@ -65,77 +70,74 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
         ], begin: Alignment.topLeft, end: Alignment.bottomRight),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: 70),
+          SizedBox(height: heightOfScreen / 12),
           AspectRatio(
-            aspectRatio: 5/1,
+            aspectRatio: 5 / 1,
             child: SizedBox(
-                height: showingKeyboard ? 0 : 100,
-                width: 400,
+                // height: showingKeyboard ? 0 : 100,
+                width: heightOfScreen * (1/6),
                 child: const Image(
                   fit: BoxFit.contain,
                   image: AssetImage(AppImages.imageDecorate),
                 )),
           ),
           SizedBox(
-            height: showingKeyboard ? 0 : 200,
-            width: 150,
+            // height: showingKeyboard ? 0 : 200,
+            width: heightOfScreen * (1/4),
             child: Image.asset(AppImages.icLogoTransparentNoBackGround),
           ),
-          _buildExpanded()
+
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: heightOfScreen / 15,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                  child: AppEmailInput(
+                    onChanged: (text) {},
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                  child: AppPasswordInput(
+                    obscureTextController: obscurePasswordController,
+                    onChanged: (text) {},
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                  child: AppPasswordInput(
+                    labelText: "Confirm Password",
+                    obscureTextController: obscureConfirmPasswordController,
+                    onChanged: (text) {},
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                    child: AppTintButton(
+                      title: "Sign Up",
+                      onPressed: () {},
+                    )),
+                SizedBox(height: showingKeyboard ? (keyboardHeight) + 20 : 200)
+              ],
+            ),
+          )
         ],
       ),
     );
-  }
-
-  Expanded _buildExpanded() {
-    return Expanded(
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-          ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 50,
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: AppEmailInput(
-                  onChanged: (text) {},
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: AppPasswordInput(
-                  obscureTextController: obscurePasswordController,
-                  onChanged: (text) {},
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: AppPasswordInput(
-                  labelText: "Confirm Password",
-                  obscureTextController: obscureConfirmPasswordController,
-                  onChanged: (text) {},
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 30),
-                  child: AppTintButton(
-                    title: "Sign Up",
-                    onPressed: () {},
-                  ))
-            ],
-          ),
-        ));
   }
 }

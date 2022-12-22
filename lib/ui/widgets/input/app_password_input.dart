@@ -27,6 +27,7 @@ class AppPasswordInput extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final TextInputType textInputType;
   final FocusNode? passwordFocusNode;
+  final EdgeInsets? scrollPadding;
 
   const AppPasswordInput({
     Key? key,
@@ -43,6 +44,7 @@ class AppPasswordInput extends StatelessWidget {
     this.onSubmitted,
     this.textInputType = TextInputType.text,
     this.passwordFocusNode,
+    this.scrollPadding
   }) : super(key: key);
 
   @override
