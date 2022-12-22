@@ -35,7 +35,7 @@ platform :android do
         app: options[:app_id],
         groups: options[:groups],
         android_artifact_type: "AAB",
-        service_credentials_file: options[:credentialsFilePath]
+        service_credentials_file: options[:credentialsFilePath],
         release_notes: options[:releaseNotes]
     )
   end
