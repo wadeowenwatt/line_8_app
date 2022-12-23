@@ -9,6 +9,7 @@ import 'package:flutter_base/ui/pages/profile/profile_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../new_home/new_home_page.dart';
 import 'main_state.dart';
 import 'main_tab.dart';
 
@@ -52,7 +53,7 @@ class _MainPageState extends State<_MainPage> {
     super.initState();
     //PageView page
     pageList = [
-      const HomePage(),
+      const NewHomePage(),
       Container(color: Colors.red),
       Container(color: Colors.green),
       Container(color: Colors.blue),

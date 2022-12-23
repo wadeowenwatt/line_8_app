@@ -59,4 +59,6 @@ class AppColors {
   ///BottomNavigationBar
   static const Color bottomNavigationBar = Color(0xFF919191);
 
+
+  static const Color selectCardColor = Color(0xFFF5F6FC);
 }

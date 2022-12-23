@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
                 //   primaryColor: state.primaryColor,
                 // ).theme,
                 themeMode: state.themeMode,
-                initialRoute: RouteConfig.signUp,
+                initialRoute: RouteConfig.main,
                 getPages: RouteConfig.getPages,
                 localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,
