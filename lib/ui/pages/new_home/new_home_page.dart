@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/app_colors.dart';
@@ -27,21 +26,17 @@ class NewHomePage extends StatelessWidget {
                 ListView.builder(
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    if (index % 2 == 1) {
-                      if (index == 1) {
-                        return BigSelectCardRow(
-                            choice1: choices[index - 1],
-                            choice2: choices[index]);
-                      }
-                      return SelectCardRow(
-                          choice1: choices[index - 1], choice2: choices[index]);
+                    if (index == 0) {
+                      return BigSelectCardRow(
+                          choice1: choices[index], choice2: choices[index + 1]);
                     }
-                    return const SizedBox(
-                      height: 5,
+                    return SelectCardRow(
+                        choice1: choices[index * 2],
+                        choice2: (index * 2 + 1) >= choices.length ? null : choices[index * 2 + 1]
                     );
                   },
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  itemCount: choices.length,
+                  itemCount: (choices.length / 2).round(),
                 )
               ]),
             ),
@@ -235,10 +230,10 @@ class BigSelectCardRow extends StatelessWidget {
 }
 
 class SelectCardRow extends StatelessWidget {
-  const SelectCardRow({Key? key, required this.choice1, required this.choice2})
+  const SelectCardRow({Key? key, required this.choice1, this.choice2})
       : super(key: key);
   final Choice choice1;
-  final Choice choice2;
+  final Choice? choice2;
 
   @override
   Widget build(BuildContext context) {
@@ -272,26 +267,28 @@ class SelectCardRow extends StatelessWidget {
         Expanded(
           child: SizedBox(
             height: 130,
-            child: Card(
-              color: AppColors.selectCardColor,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.asset(choice2.pathImage),
-                    Text(
-                      choice2.title,
-                      style: const TextStyle(color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            child: choice2 == null
+                ? const SizedBox()
+                : Card(
+                    color: AppColors.selectCardColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(choice2!.pathImage),
+                          Text(
+                            choice2!.title,
+                            style: const TextStyle(color: Colors.black),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
           ),
         ),
       ],
