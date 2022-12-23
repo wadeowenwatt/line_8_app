@@ -7,9 +7,6 @@ class NewHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heightOfScreen = MediaQuery.of(context).size.height;
-    final widthOfScreen = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -27,13 +24,14 @@ class NewHomePage extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     if (index == 0) {
-                      return BigSelectCardRow(
+                      return RowTwoBigCardSelection(
                           choice1: choices[index], choice2: choices[index + 1]);
                     }
-                    return SelectCardRow(
+                    return RowTwoCardSelection(
                         choice1: choices[index * 2],
-                        choice2: (index * 2 + 1) >= choices.length ? null : choices[index * 2 + 1]
-                    );
+                        choice2: (index * 2 + 1) >= choices.length
+                            ? null
+                            : choices[index * 2 + 1]);
                   },
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                   itemCount: (choices.length / 2).round(),
@@ -139,20 +137,17 @@ const List choices = [
       bigText: "300\$",
       smallText: "Amount"),
   Choice(title: "2", pathImage: "assets/images/img.png"),
-  Choice(title: "3", pathImage: "assets/images/img.png"),
-  Choice(title: "4", pathImage: "assets/images/img_1.png"),
-  Choice(title: "5", pathImage: "assets/images/img_2.png"),
-  Choice(title: "6", pathImage: "assets/images/img_3.png"),
-  Choice(title: "7", pathImage: "assets/images/img_4.png"),
-  Choice(title: "8", pathImage: "assets/images/img_5.png"),
-  Choice(title: "9", pathImage: "assets/images/img_6.png"),
-  Choice(title: "10", pathImage: "assets/images/img_7.png"),
-  Choice(title: "11", pathImage: "assets/images/img_6.png"),
-  Choice(title: "12", pathImage: "assets/images/img_7.png"),
+  Choice(title: "3", pathImage: "assets/images/img_1.png"),
+  Choice(title: "4", pathImage: "assets/images/img_2.png"),
+  Choice(title: "5", pathImage: "assets/images/img_3.png"),
+  Choice(title: "6", pathImage: "assets/images/img_4.png"),
+  Choice(title: "7", pathImage: "assets/images/img_5.png"),
+  Choice(title: "8", pathImage: "assets/images/img_6.png"),
+  Choice(title: "9", pathImage: "assets/images/img_7.png"),
 ];
 
-class BigSelectCardRow extends StatelessWidget {
-  const BigSelectCardRow(
+class RowTwoBigCardSelection extends StatelessWidget {
+  const RowTwoBigCardSelection(
       {Key? key, required this.choice1, required this.choice2})
       : super(key: key);
   final BigChoice choice1;
@@ -229,8 +224,8 @@ class BigSelectCardRow extends StatelessWidget {
   }
 }
 
-class SelectCardRow extends StatelessWidget {
-  const SelectCardRow({Key? key, required this.choice1, this.choice2})
+class RowTwoCardSelection extends StatelessWidget {
+  const RowTwoCardSelection({Key? key, required this.choice1, this.choice2})
       : super(key: key);
   final Choice choice1;
   final Choice? choice2;
@@ -253,7 +248,12 @@ class SelectCardRow extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset(choice1.pathImage),
+                    Image.asset(
+                      choice1.pathImage,
+                      height: 45,
+                      width: 40,
+                      fit: BoxFit.fill,
+                    ),
                     Text(
                       choice1.title,
                       style: const TextStyle(color: Colors.black),
@@ -280,7 +280,12 @@ class SelectCardRow extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Image.asset(choice2!.pathImage),
+                          Image.asset(
+                            choice2!.pathImage,
+                            height: 45,
+                            width: 40,
+                            fit: BoxFit.fill,
+                          ),
                           Text(
                             choice2!.title,
                             style: const TextStyle(color: Colors.black),
