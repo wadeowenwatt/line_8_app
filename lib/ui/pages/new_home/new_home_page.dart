@@ -4,6 +4,7 @@ import 'package:flutter_base/ui/pages/new_home/widgets/big_double_card_widget.da
 import 'package:flutter_base/ui/pages/new_home/widgets/double_card_widget.dart';
 
 import '../../../common/app_colors.dart';
+part 'method.dart';
 
 const List choices = [
   BigChoice(
@@ -66,22 +67,4 @@ class NewHomePage extends StatelessWidget {
     );
   }
 
-  Widget backgroundCard() {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 120,
-        ),
-        Expanded(
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

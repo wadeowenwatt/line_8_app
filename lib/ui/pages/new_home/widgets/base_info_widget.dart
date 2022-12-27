@@ -41,10 +41,15 @@ class InformationWidget extends StatelessWidget {
             ],
           ),
           const Expanded(child: SizedBox()),
-          const CircleAvatar(
-            radius: 30,
-            backgroundImage:
-            AssetImage("assets/images/bg_image_placeholder.png"),
+          GestureDetector(
+            onTap: () {
+
+            },
+            child: const CircleAvatar(
+              radius: 30,
+              backgroundImage:
+              AssetImage("assets/images/bg_image_placeholder.png"),
+            ),
           ),
         ],
       ),

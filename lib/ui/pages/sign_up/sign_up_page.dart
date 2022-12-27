@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
@@ -51,7 +50,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(child: buildBodyWidget()),
+      body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics() ,child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }
