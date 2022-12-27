@@ -188,6 +188,6 @@ class _SignInChildPageState extends State<SignInChildPage> {
   }
 
   void _signUp() {
-    Get.offNamed(RouteConfig.signUp);
+    Get.toNamed(RouteConfig.signUp);
   }
 }
