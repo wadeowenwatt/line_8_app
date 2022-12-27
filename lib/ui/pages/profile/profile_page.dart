@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
+import 'package:flutter_base/ui/pages/profile/widgets/row_text_field.dart';
+import 'package:flutter_base/ui/pages/profile/widgets/text_field_custom_widget.dart';
 import 'package:flutter_base/ui/pages/setting/setting_page.dart';
 import 'package:flutter_base/ui/widgets/appbar/app_bar_widget.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_button.dart';
@@ -92,54 +94,6 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
     );
   }
 
-  AppBar buildAppBar() {
-    final theme = Theme.of(context);
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      // margin: EdgeInsets.all(20),
-      // height: 60,
-      // preferredSize: Size(double.infinity, 60),
-      toolbarHeight: 56,
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        child: BlocBuilder<AppCubit, AppState>(
-          bloc: _appCubit,
-          builder: (context, state) {
-            return AppCircleAvatar(url: state.user?.avatarUrl ?? "", size: 48);
-          },
-        ),
-      ),
-      title: Row(
-        children: [
-          // AppCircleAvatar(url: state.user.value?.avatarUrl ?? "", size: 60),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                BlocBuilder<AppCubit, AppState>(
-                  bloc: _appCubit,
-                  builder: (context, state) {
-                    return Text(
-                      state.user?.username ?? "",
-                      style: theme.textTheme.headline6,
-                    );
-                  },
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  "View profile",
-                  style: theme.textTheme.subtitle2,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   SliverAppBar buildSliverAppBar() {
     return SliverAppBar(
       snap: true,
@@ -163,6 +117,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
                 borderRadius: BorderRadius.circular(30),
               ),
               backgroundColor: Colors.white,
+              foregroundColor: Colors.grey,
               padding: const EdgeInsets.only(right: 10, left: 10),
             ),
             child: Row(
@@ -298,110 +253,6 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
     );
   }
 
-  Widget buildSignOutButton() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: BlocBuilder<AppCubit, AppState>(
-        buildWhen: (prev, current) {
-          return prev.signOutStatus != current.signOutStatus;
-        },
-        builder: (context, state) {
-          return AppTintButton(
-            title: 'Logout',
-            isLoading: state.signOutStatus == LoadStatus.loading,
-            onPressed: _handleSignOut,
-          );
-        },
-      ),
-    );
-  }
-
-  Widget buildMenusWidget() {
-    return Column(
-      children: [
-        const MenuHeaderWidget(title: "Lists"),
-        // MenuItemWidget(title: "Watchlist"),
-        const MenuItemWidget(title: "History"),
-        // MenuItemWidget(title: "Collection"),
-        // MenuItemWidget(title: "Personal Lists"),
-        // MenuItemWidget(title: "Reminders"),
-        // MenuItemWidget(title: "Hidden Items"),
-        const MenuHeaderWidget(title: "Settings"),
-        // MenuItemWidget(title: "Go Premium"),
-        MenuItemWidget(
-          title: "Settings",
-          onPressed: () {
-            Get.to(() => const SettingPage());
-          },
-        ),
-        const MenuItemWidget(title: "Help & feedback"),
-        const MenuItemWidget(title: "About"),
-      ],
-    );
-  }
-
-  void _handleSignOut() {
-    BlocProvider.of<AppCubit>(context).signOut();
-  }
-
   @override
   bool get wantKeepAlive => true;
-}
-
-class TextFieldCustom extends StatelessWidget {
-  const TextFieldCustom({
-    super.key,
-    required this.labelText,
-    required this.haveSuffixIcon,
-  });
-
-  final String labelText;
-  final bool haveSuffixIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      style: const TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        border: const UnderlineInputBorder(),
-        labelText: labelText,
-        suffixIcon: haveSuffixIcon
-            ? Image.asset(
-                "assets/images/ic_suffix_textfield.png",
-              )
-            : null,
-      ),
-    );
-  }
-}
-
-class RowTextField extends StatelessWidget {
-  const RowTextField({
-    super.key,
-    required this.textField1,
-    required this.textField2,
-  });
-
-  final TextFieldCustom textField1;
-  final TextFieldCustom textField2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(17),
-      child: Row(
-        children: [
-          Expanded(
-            child: textField1
-          ),
-          const SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: textField2
-          )
-        ],
-      ),
-    );
-  }
 }
