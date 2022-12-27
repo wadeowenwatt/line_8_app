@@ -33,6 +33,12 @@ class _WikiWebViewPageState extends State<WikiWebViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Wiki Newwave"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.replay),
+            onPressed: () => _controller.reload(),
+          ),
+        ],
       ),
       body: WebViewWidget(
         controller: _controller,
