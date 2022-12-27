@@ -61,4 +61,11 @@ class AppColors {
 
 
   static const Color selectCardColor = Color(0xFFF5F6FC);
+  static const Color whiteAccent = Color(0xFFFAFAFA);
+  static const Color orangeAccent = Color(0xFFF4A135);
+  static const Color orangeDark = Color(0xFFFD28A2C);
+  static const Color blackAccent = Color(0xFF404040);
+  static const Color greyAccent = Color(0xFFF0F0F0);
+  static const Color redAccent = Color(0xFFF15223);
+
 }

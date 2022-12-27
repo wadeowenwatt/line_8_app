@@ -1,4 +1,6 @@
+import 'package:flutter_base/ui/pages/chat/chat_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
+import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:get/get.dart';
 
 import '../ui/pages/main/main_page.dart';
@@ -12,6 +14,8 @@ class RouteConfig {
   static const String splash = "/splash";
   static const String main = "/main";
   static const String signIn = "/signIn";
+  static const String wiki = "/wiki";
+  static const String chat = "/chat";
   static const String signUp = "/signUp";
 
   ///Alias ​​mapping page
@@ -20,5 +24,7 @@ class RouteConfig {
     GetPage(name: main, page: () => const MainPage()),
     GetPage(name: signIn, page: () => const SignInPage()),
     GetPage(name: signUp, page: () => const SignUpPage()),
+    GetPage(name: chat, page: () => const ChatPage()),
+    GetPage(name: wiki, page: () => const WikiPage()),
   ];
 }
