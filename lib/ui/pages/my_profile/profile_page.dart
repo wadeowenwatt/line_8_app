@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
-import 'package:flutter_base/ui/pages/profile/widgets/row_text_field.dart';
-import 'package:flutter_base/ui/pages/profile/widgets/text_field_custom_widget.dart';
-import 'package:flutter_base/ui/pages/setting/setting_page.dart';
-import 'package:flutter_base/ui/widgets/appbar/app_bar_widget.dart';
-import 'package:flutter_base/ui/widgets/buttons/app_button.dart';
+import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
+import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-
 import '../../../common/app_colors.dart';
 import '../../widgets/images/app_circle_avatar.dart';
 import 'profile_cubit.dart';
-import 'widgets/menu_header_widget.dart';
-import 'widgets/menu_item_widget.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -98,15 +91,8 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
     return SliverAppBar(
       snap: true,
       floating: true,
-      leading: IconButton(
-        onPressed: () {},
-        icon: Image.asset(
-          'assets/images/ic_back_arrow.png',
-          fit: BoxFit.fitWidth,
-          height: 25,
-        ),
-      ),
       title: const Text("My Profile"),
+      elevation: 0,
       actions: [
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
@@ -190,14 +176,17 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
               ],
             ),
             Expanded(
-              child: IconButton(
-                icon: Image.asset(
-                  "assets/images/ic_camera.png",
-                  width: 30,
-                  height: 25,
-                  fit: BoxFit.fitHeight,
+              child: Align(
+                alignment: AlignmentDirectional.topEnd,
+                child: IconButton(
+                  icon: Image.asset(
+                    "assets/images/ic_camera.png",
+                    width: 30,
+                    height: 25,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  onPressed: () {},
                 ),
-                onPressed: () {},
               ),
             ),
           ],
@@ -210,15 +199,18 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
     return Column(
       children: [
         const RowTextField(
-          textField1: TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: false),
+          textField1:
+              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: false),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: false),
         ),
         const RowTextField(
-          textField1: TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
+          textField1:
+              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
         ),
         const RowTextField(
-          textField1: TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
+          textField1:
+              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
         ),
         const Padding(
@@ -327,7 +319,3 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
   @override
   bool get wantKeepAlive => true;
 }
-
-
-
-

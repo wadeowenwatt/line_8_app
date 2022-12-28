@@ -19,8 +19,8 @@ const List choices = [
       bigText: "300\$",
       smallText: "Amount"),
   Choice(title: "Wiki", pathImage: "assets/images/img.png", pathScreen: RouteConfig.wiki),
-  Choice(title: "3", pathImage: "assets/images/img_1.png", pathScreen: ""),
-  Choice(title: "4", pathImage: "assets/images/img_2.png", pathScreen: ""),
+  Choice(title: "Member", pathImage: "assets/images/img_1.png", pathScreen: RouteConfig.memberList),
+  Choice(title: "Feedback", pathImage: "assets/images/img_2.png", pathScreen: ""),
   Choice(title: "5", pathImage: "assets/images/img_3.png", pathScreen: ""),
   Choice(title: "6", pathImage: "assets/images/img_4.png", pathScreen: ""),
   Choice(title: "7", pathImage: "assets/images/img_5.png", pathScreen: ""),
@@ -59,11 +59,11 @@ class NewHomePage extends StatelessWidget {
                           ? null
                           : choices[index * 2 + 1],
                       onClick1: () {
-                        _onClick1((choices[index * 2] as Choice).pathScreen);
+                        _onClick((choices[index * 2] as Choice).pathScreen);
                       },
                       onClick2: () {
                         (index * 2 + 1) >= choices.length ? {} :
-                        _onClick2(
+                        _onClick(
                             (choices[index * 2 + 1] as Choice).pathScreen);
                       },
                     );
@@ -79,11 +79,10 @@ class NewHomePage extends StatelessWidget {
     );
   }
 
-  void _onClick1(String path) {
-    if (path != "") Get.toNamed(path);
+  void _onClick(String path) {
+    if (path != "") {
+      Get.toNamed(path);
+    }
   }
 
-  void _onClick2(String path) {
-    /// Todo
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WikiPage extends StatelessWidget {
@@ -32,6 +33,7 @@ class _WikiWebViewPageState extends State<WikiWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.primaryLightColorLeft,
         title: const Text("Wiki Newwave"),
         actions: [
           IconButton(
@@ -39,6 +41,11 @@ class _WikiWebViewPageState extends State<WikiWebViewPage> {
             onPressed: () => _controller.reload(),
           ),
         ],
+        flexibleSpace: Image.asset(
+          "assets/images/bg_appbar.png",
+          fit: BoxFit.fitWidth,
+          height: 100,
+        ),
       ),
       body: WebViewWidget(
         controller: _controller,

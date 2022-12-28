@@ -137,8 +137,9 @@ flutter:
     - assets/images/ic_back_arrow.png
     - assets/images/ic_done_button.png
     - assets/images/ic_camera.png
-    - assets/images/ic_suffix_textfield.png
+    - assets/images/ic_lock.png
     - assets/images/
+    - assets/images/ic_lock.svg
   fonts:
     - family: Arimo
       fonts:

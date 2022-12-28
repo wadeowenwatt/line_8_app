@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../../common/app_images.dart';
 
 class TextFieldCustom extends StatelessWidget {
   const TextFieldCustom({
@@ -18,9 +21,10 @@ class TextFieldCustom extends StatelessWidget {
         border: const UnderlineInputBorder(),
         labelText: labelText,
         suffixIcon: haveSuffixIcon
-            ? Image.asset(
-          "assets/images/ic_suffix_textfield.png",
-        )
+            ? SvgPicture.asset(
+                AppImages.icLock,
+                fit: BoxFit.none,
+              )
             : null,
       ),
     );

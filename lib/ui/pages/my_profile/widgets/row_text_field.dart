@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/pages/profile/widgets/text_field_custom_widget.dart';
+import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
 
 class RowTextField extends StatelessWidget {
   const RowTextField({

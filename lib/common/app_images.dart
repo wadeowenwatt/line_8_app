@@ -18,4 +18,8 @@ class AppImages {
   static const String icPlay = "assets/images/ic_play.svg";
   static const String icPause = "assets/images/ic_pause.svg";
   static const imageDecorate = 'assets/images/img_decorate.png';
+
+  /// Profile
+  static const icLock = 'assets/images/ic_lock.svg';
+
 }
