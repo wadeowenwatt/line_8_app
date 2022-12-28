@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_images.dart';
+import 'package:flutter_base/router/route_config.dart';
+import 'package:get/get.dart';
 
 import '../../../common/app_colors.dart';
 
@@ -46,7 +48,7 @@ Widget buildBody() {
         itemBuilder: (context, index) {
           return const Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-            child: ItemMember(),
+            child: ItemMember(getMemberInfo: _getMemberInfo),
           );
         },
         itemCount: 12,
@@ -55,13 +57,18 @@ Widget buildBody() {
   );
 }
 
+void _getMemberInfo() {
+  Get.toNamed(RouteConfig.memberProfile);
+}
+
 class ItemMember extends StatelessWidget {
-  const ItemMember({Key? key}) : super(key: key);
+  const ItemMember({Key? key, required this.getMemberInfo}) : super(key: key);
+  final VoidCallback getMemberInfo;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _getMemberInfo(),
+      onTap: getMemberInfo,
       child: Card(
         color: AppColors.selectCardColor,
         child: Padding(
@@ -80,7 +87,7 @@ class ItemMember extends StatelessWidget {
                     style: TextStyle(color: Colors.black),
                   ),
                   Text(
-                    "Member",
+                    "Admin",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -90,9 +97,5 @@ class ItemMember extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _getMemberInfo() {
-
   }
 }

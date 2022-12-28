@@ -20,7 +20,7 @@ const List choices = [
       smallText: "Amount"),
   Choice(title: "Wiki", pathImage: "assets/images/img.png", pathScreen: RouteConfig.wiki),
   Choice(title: "Member", pathImage: "assets/images/img_1.png", pathScreen: RouteConfig.memberList),
-  Choice(title: "Feedback", pathImage: "assets/images/img_2.png", pathScreen: ""),
+  Choice(title: "Feedback", pathImage: "assets/images/img_2.png", pathScreen: RouteConfig.feedback),
   Choice(title: "5", pathImage: "assets/images/img_3.png", pathScreen: ""),
   Choice(title: "6", pathImage: "assets/images/img_4.png", pathScreen: ""),
   Choice(title: "7", pathImage: "assets/images/img_5.png", pathScreen: ""),
@@ -84,5 +84,4 @@ class NewHomePage extends StatelessWidget {
       Get.toNamed(path);
     }
   }
-
 }

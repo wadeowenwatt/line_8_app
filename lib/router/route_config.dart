@@ -1,10 +1,13 @@
 import 'package:flutter_base/ui/pages/chat/chat_page.dart';
+import 'package:flutter_base/ui/pages/my_profile/profile_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
 import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:get/get.dart';
 
+import '../ui/pages/feedback/feedback_page.dart';
 import '../ui/pages/list_member/list_member_page.dart';
 import '../ui/pages/main/main_page.dart';
+import '../ui/pages/member_profile/member_profile_page.dart';
 import '../ui/pages/sign_up/sign_up_page.dart';
 import '../ui/pages/splash/splash_page.dart';
 
@@ -19,6 +22,9 @@ class RouteConfig {
   static const String chat = "/chat";
   static const String signUp = "/signUp";
   static const String memberList = "/members";
+  static const String feedback = "/feedback";
+  static const String memberProfile = "/memberProfile";
+  static const String myProfile = "/myProfile";
 
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
@@ -29,5 +35,8 @@ class RouteConfig {
     GetPage(name: chat, page: () => const ChatPage()),
     GetPage(name: wiki, page: () => const WikiPage()),
     GetPage(name: memberList, page: () => const ListMemberPage()),
+    GetPage(name: feedback, page: () => const FeedbackPage()),
+    GetPage(name: memberProfile, page: () => const MemberProfilePage()),
+    GetPage(name: myProfile, page: () => const ProfilePage()),
   ];
 }
