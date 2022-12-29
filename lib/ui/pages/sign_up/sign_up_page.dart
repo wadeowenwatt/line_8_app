@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
+import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../common/app_colors.dart';
+import '../../../common/app_images.dart';
+import '../../widgets/input/app_email_input.dart';
+import '../../widgets/input/app_password_input.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -26,10 +35,139 @@ class SignUpChildPage extends StatefulWidget {
 }
 
 class _SignUpChildPageState extends State<SignUpChildPage> {
+  late TextEditingController usernameTextController;
+  late TextEditingController passwordTextController;
+  late TextEditingController confirmPasswordTextController;
+
+  late ObscureTextController obscurePasswordController;
+  late ObscureTextController obscureConfirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    obscurePasswordController = ObscureTextController(obscureText: true);
+    obscureConfirmPasswordController = ObscureTextController(obscureText: true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Text('SignUp Page'),
+    return Scaffold(
+      body: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(), child: buildBodyWidget()),
+      resizeToAvoidBottomInset: false,
     );
+  }
+
+  Widget buildBodyWidget() {
+    final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final heightOfScreen = MediaQuery.of(context).size.height;
+    final widthOfScreen = MediaQuery.of(context).size.width;
+
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(colors: [
+          AppColors.primaryDarkColorLeft,
+          AppColors.primaryLightColorRight
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+      ),
+      child: Stack(
+        children: [
+          Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: heightOfScreen / 12),
+              AspectRatio(
+                aspectRatio: 5 / 1,
+                child: SizedBox(
+                    // height: showingKeyboard ? 0 : 100,
+                    width: heightOfScreen * (1 / 6),
+                    child: const Image(
+                      fit: BoxFit.contain,
+                      image: AssetImage(AppImages.imageDecorate),
+                    )),
+              ),
+              SizedBox(
+                // height: showingKeyboard ? 0 : 200,
+                width: heightOfScreen * (1 / 4),
+                child: Image.asset(AppImages.icLogoTransparentNoBackGround),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30)),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: heightOfScreen / 15,
+                    ),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                      child: AppEmailInput(
+                        onChanged: (text) {},
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                      child: AppPasswordInput(
+                        obscureTextController: obscurePasswordController,
+                        onChanged: (text) {},
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                      child: AppPasswordInput(
+                        labelText: "Confirm Password",
+                        obscureTextController: obscureConfirmPasswordController,
+                        onChanged: (text) {},
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: widthOfScreen / 15),
+                        child: AppTintButton(
+                          title: "Sign Up",
+                          onPressed: () {},
+                        )),
+                    SizedBox(
+                        height: showingKeyboard ? (keyboardHeight) + 20 : 200)
+                  ],
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              SizedBox(height: heightOfScreen / 12,),
+              IconButton(
+                padding: const EdgeInsets.all(20),
+                onPressed: () => _backSignIn(),
+                icon: Image.asset(
+                  'assets/images/ic_back_arrow.png',
+                  fit: BoxFit.fitHeight,
+                  height: 25,
+                ),
+              ),
+            ],
+
+          )
+        ],
+      ),
+    );
+  }
+
+  void _backSignIn() {
+    Get.offNamed(RouteConfig.signIn);
   }
 }

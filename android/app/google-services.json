@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "160322392119",
+    "project_id": "line8-app",
+    "storage_bucket": "line8-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160322392119:android:994af2d0e09f84eee16fb2",
+        "android_client_info": {
+          "package_name": "vn.newwave.line8"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "160322392119-b74cedr2be8uoi78cnar7dq0nihducaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbI8cvId6dMrxP47xqOVzIErvdMNIpdGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "160322392119-b74cedr2be8uoi78cnar7dq0nihducaa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "160322392119-on3s9mevbjbfj82aaiasodc3eb6cv8m9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "vn.newwave.line8"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

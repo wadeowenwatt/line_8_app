@@ -20,7 +20,7 @@ class SplashCubit extends Cubit<SplashState> {
   }) : super(const SplashState());
 
   void checkLogin() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
     final token = await authRepo.getToken();
     if (token == null) {
       Get.offAll(() => const SignInPage());
