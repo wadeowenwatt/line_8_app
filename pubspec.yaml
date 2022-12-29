@@ -78,6 +78,7 @@ dependencies:
   audio_session: ^0.1.11
   just_audio_mpv: ^0.1.6
   just_audio_windows: ^0.2.0
+  flutter_rating_bar: ^4.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

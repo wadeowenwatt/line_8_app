@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({Key? key}) : super(key: key);
@@ -52,9 +53,7 @@ class FeedbackPage extends StatelessWidget {
               const SizedBox(
                 height: 40,
               ),
-
-              // buildRatingWidget(),
-
+              buildRatingWidget(),
               const SizedBox(
                 height: 40,
               ),
@@ -105,5 +104,45 @@ class FeedbackPage extends StatelessWidget {
 
   void _sendFeedback() {
     /// Todo
+  }
+
+  Widget buildRatingWidget() {
+    return Center(
+      child: RatingBar.builder(
+        itemPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+        itemBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return const Icon(
+                Icons.sentiment_very_dissatisfied,
+                color: Colors.red,
+              );
+            case 1:
+              return const Icon(
+                Icons.sentiment_dissatisfied,
+                color: Colors.redAccent,
+              );
+            case 2:
+              return const Icon(
+                Icons.sentiment_neutral,
+                color: Colors.amber,
+              );
+            case 3:
+              return const Icon(
+                Icons.sentiment_satisfied,
+                color: Colors.lightGreen,
+              );
+            default:
+              return const Icon(
+                Icons.sentiment_very_satisfied,
+                color: Colors.green,
+              );
+          }
+        },
+        onRatingUpdate: (rating) {
+          print(rating);
+        },
+      ),
+    );
   }
 }
