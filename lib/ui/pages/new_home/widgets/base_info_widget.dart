@@ -1,9 +1,11 @@
-
 import 'package:flutter/material.dart';
 import '../../../../common/app_colors.dart';
 
 class InformationWidget extends StatelessWidget {
-  const InformationWidget({Key? key}) : super(key: key);
+  const InformationWidget({Key? key})
+      : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +44,11 @@ class InformationWidget extends StatelessWidget {
           ),
           const Expanded(child: SizedBox()),
           GestureDetector(
-            onTap: () {
-
-            },
+            onTap: () {},
             child: const CircleAvatar(
               radius: 30,
               backgroundImage:
-              AssetImage("assets/images/bg_image_placeholder.png"),
+                  AssetImage("assets/images/bg_image_placeholder.png"),
             ),
           ),
         ],
