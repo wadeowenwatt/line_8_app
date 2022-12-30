@@ -4,6 +4,7 @@ import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
 import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:get/get.dart';
 
+import '../ui/pages/calendar/calendar_page.dart';
 import '../ui/pages/feedback/feedback_page.dart';
 import '../ui/pages/list_member/list_member_page.dart';
 import '../ui/pages/main/main_page.dart';
@@ -25,6 +26,7 @@ class RouteConfig {
   static const String feedback = "/feedback";
   static const String memberProfile = "/memberProfile";
   static const String myProfile = "/myProfile";
+  static const String calendar = "/calendar";
 
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
@@ -38,5 +40,6 @@ class RouteConfig {
     GetPage(name: feedback, page: () => const FeedbackPage()),
     GetPage(name: memberProfile, page: () => const MemberProfilePage()),
     GetPage(name: myProfile, page: () => const ProfilePage()),
+    GetPage(name: calendar, page: () => const CalendarPage())
   ];
 }
