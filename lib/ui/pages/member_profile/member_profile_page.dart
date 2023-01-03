@@ -56,7 +56,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                            height: MediaQuery.of(context).viewPadding.top +
+                            height: AppBar().preferredSize.height +
                                 MediaQuery.of(context).padding.top),
                         const CircleAvatar(
                           backgroundColor: Colors.white,

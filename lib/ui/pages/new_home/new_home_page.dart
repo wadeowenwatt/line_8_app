@@ -57,7 +57,7 @@ class NewHomePage extends StatelessWidget {
         ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: Column(
           children: [
-            InformationWidget(),
+            const InformationWidget(),
             Expanded(
               child: Stack(
                 children: [

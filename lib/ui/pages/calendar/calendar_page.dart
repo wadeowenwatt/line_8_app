@@ -2,8 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
+import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Event {
@@ -22,11 +24,13 @@ int getHashCode(DateTime key) {
 }
 
 var events = LinkedHashMap<DateTime, List<Event>>(
-  equals: isSameDay,
-  hashCode: getHashCode
-)..addAll(eventOfDay);
+    equals: isSameDay, hashCode: getHashCode)
+  ..addAll(eventOfDay);
 
-var eventOfDay = {DateTime.now(): [Event("Abc"), Event("cbc")], DateTime.now().subtract(Duration(days: 3)): [Event("27"), Event("event")]};
+var eventOfDay = {
+  DateTime.now(): [Event("Abc"), Event("cbc")],
+  DateTime.now().subtract(Duration(days: 3)): [Event("27"), Event("event")]
+};
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({Key? key}) : super(key: key);
@@ -79,9 +83,17 @@ class _CalendarPageState extends State<CalendarPage> {
           color: Colors.white,
         ),
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Get.toNamed(RouteConfig.);
+              print(Get.statusBarHeight);
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
-      body:
-      Container(
+      body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -93,8 +105,10 @@ class _CalendarPageState extends State<CalendarPage> {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top +
-              MediaQuery.of(context).padding.top,),
+          padding: EdgeInsets.only(
+            top: AppBar().preferredSize.height +
+                MediaQuery.of(context).padding.top,
+          ),
           child: Container(
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -102,8 +116,7 @@ class _CalendarPageState extends State<CalendarPage> {
                   topRight: Radius.circular(30),
                 ),
                 color: Colors.white),
-            child:
-            Column(
+            child: Column(
               children: [
                 TableCalendar(
                   focusedDay: _focusedDay,
@@ -126,8 +139,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       color: AppColors.weekendColor,
                     ),
                     weekendTextStyle: TextStyle(color: Colors.black),
-                    holidayTextStyle:
-                    TextStyle(color: AppColors.holidayColor),
+                    holidayTextStyle: TextStyle(color: AppColors.holidayColor),
                     defaultTextStyle: TextStyle(color: Colors.black),
                     markerDecoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -163,7 +175,10 @@ class _CalendarPageState extends State<CalendarPage> {
                             ),
                             child: ListTile(
                               onTap: () => print('${value[index]}'),
-                              title: Text('${value[index]}', style: TextStyle(color: Colors.black),),
+                              title: Text(
+                                '${value[index]}',
+                                style: TextStyle(color: Colors.black),
+                              ),
                             ),
                           );
                         },
@@ -171,7 +186,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                   ),
                 ),
-                Expanded(child: SvgPicture.asset("assets/images/vector.svg"))
+                // Expanded(child: SvgPicture.asset("assets/images/vector.svg"))
               ],
             ),
           ),

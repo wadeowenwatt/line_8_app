@@ -36,7 +36,7 @@ class RequestSeminalPage extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.only(
-                top: MediaQuery.of(context).viewPadding.top +
+                top: AppBar().preferredSize.height +
                     MediaQuery.of(context).padding.top),
             child: Container(
               decoration: const BoxDecoration(
