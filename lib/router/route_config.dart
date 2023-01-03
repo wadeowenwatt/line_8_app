@@ -5,11 +5,11 @@ import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:get/get.dart';
 
 import '../ui/pages/calendar/calendar_page.dart';
-import '../ui/pages/create_event/create_event_page.dart';
+import '../ui/pages/calendar/create_event/create_event_page.dart';
 import '../ui/pages/feedback/feedback_page.dart';
 import '../ui/pages/list_member/list_member_page.dart';
+import '../ui/pages/list_member/member_profile/member_profile_page.dart';
 import '../ui/pages/main/main_page.dart';
-import '../ui/pages/member_profile/member_profile_page.dart';
 import '../ui/pages/request_seminal/request_seminal_page.dart';
 import '../ui/pages/sign_up/sign_up_page.dart';
 import '../ui/pages/splash/splash_page.dart';

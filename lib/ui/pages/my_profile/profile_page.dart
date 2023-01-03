@@ -197,123 +197,52 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
 
   Widget buildInputField() {
     return Column(
-      children: [
-        const RowTextField(
+      children: const [
+        RowTextField(
           textField1:
               TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: false),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: false),
         ),
-        const RowTextField(
+        RowTextField(
           textField1:
               TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
         ),
-        const RowTextField(
+        RowTextField(
           textField1:
               TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
           textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(17),
           child: TextFieldCustom(
             labelText: "Email",
             haveSuffixIcon: true,
           ),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(17),
           child: TextFieldCustom(
             labelText: "Email",
             haveSuffixIcon: true,
           ),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(17),
           child: TextFieldCustom(
             labelText: "Email",
             haveSuffixIcon: true,
           ),
         ),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(17),
           child: TextFieldCustom(
             labelText: "Email",
             haveSuffixIcon: true,
           ),
         ),
-        buildSignOutButton()
       ],
     );
-  }
-
-  Widget buildSignOutButton() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      child: BlocBuilder<AppCubit, AppState>(
-        buildWhen: (prev, current) {
-          return prev.signOutStatus != current.signOutStatus;
-        },
-        builder: (context, state) {
-          return AppTintButton(
-            title: 'Logout',
-            isLoading: state.signOutStatus == LoadStatus.loading,
-            onPressed: _handleSignOut,
-          );
-        },
-      ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    final theme = Theme.of(context);
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      // margin: EdgeInsets.all(20),
-      // height: 60,
-      // preferredSize: Size(double.infinity, 60),
-      toolbarHeight: 56,
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        child: BlocBuilder<AppCubit, AppState>(
-          bloc: _appCubit,
-          builder: (context, state) {
-            return AppCircleAvatar(url: state.user?.avatarUrl ?? "", size: 48);
-          },
-        ),
-      ),
-      title: Row(
-        children: [
-          // AppCircleAvatar(url: state.user.value?.avatarUrl ?? "", size: 60),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                BlocBuilder<AppCubit, AppState>(
-                  bloc: _appCubit,
-                  builder: (context, state) {
-                    return Text(
-                      state.user?.username ?? "",
-                      style: theme.textTheme.headline6,
-                    );
-                  },
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  "View profile",
-                  style: theme.textTheme.subtitle2,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _handleSignOut() {
-    BlocProvider.of<AppCubit>(context).signOut();
   }
 
   @override
