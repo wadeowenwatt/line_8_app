@@ -86,8 +86,7 @@ class _CalendarPageState extends State<CalendarPage> {
         actions: [
           IconButton(
             onPressed: () {
-              // Get.toNamed(RouteConfig.);
-              print(Get.statusBarHeight);
+              Get.toNamed(RouteConfig.createEvent);
             },
             icon: const Icon(Icons.add),
           )
@@ -174,10 +173,10 @@ class _CalendarPageState extends State<CalendarPage> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: ListTile(
-                              onTap: () => print('${value[index]}'),
+                              onTap: () => Get,
                               title: Text(
                                 '${value[index]}',
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
                             ),
                           );
@@ -186,7 +185,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     },
                   ),
                 ),
-                // Expanded(child: SvgPicture.asset("assets/images/vector.svg"))
+                Expanded(child: SvgPicture.asset("assets/images/vector.svg"))
               ],
             ),
           ),

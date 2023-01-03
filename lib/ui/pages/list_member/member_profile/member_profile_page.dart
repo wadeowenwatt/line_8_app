@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
-import 'package:flutter_base/ui/pages/member_profile/widgets/label_text_widget.dart';
+import 'package:flutter_base/ui/pages/list_member/member_profile/widgets/label_text_widget.dart';
 
 class MemberProfilePage extends StatefulWidget {
   const MemberProfilePage({Key? key}) : super(key: key);
