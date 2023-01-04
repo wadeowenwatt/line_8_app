@@ -39,7 +39,7 @@ List choices = [
   Choice(
     title: "Member Skill",
     pathImage: "assets/images/img_4.png",
-    pathScreen: "",
+    pathScreen: RouteConfig.memberSkills,
   ),
   Choice(
     title: "7",

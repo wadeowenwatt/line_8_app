@@ -1,4 +1,5 @@
 import 'package:flutter_base/ui/pages/chat/chat_page.dart';
+import 'package:flutter_base/ui/pages/member_skills/skill_members_page.dart';
 import 'package:flutter_base/ui/pages/my_profile/profile_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
 import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
@@ -31,6 +32,7 @@ class RouteConfig {
   static const String calendar = "/calendar";
   static const String requestSeminal = "/requestSeminal";
   static const String createEvent = "/createEvent";
+  static const String memberSkills = "/memberSkills";
 
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
@@ -47,5 +49,6 @@ class RouteConfig {
     GetPage(name: calendar, page: () => const CalendarPage()),
     GetPage(name: requestSeminal, page: () => const RequestSeminalPage()),
     GetPage(name: createEvent, page: () => const CreateEventPage()),
+    GetPage(name: memberSkills, page: () => const MemberSkillsPage()),
   ];
 }
