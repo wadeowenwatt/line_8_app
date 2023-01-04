@@ -36,7 +36,8 @@ platform :android do
         groups: options[:groups],
         android_artifact_type: "APK",
         service_credentials_file: options[:credentialsFilePath],
-        release_notes: options[:releaseNotes]
+        release_notes: options[:releaseNotes],
+        android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk"
     )
   end
 
