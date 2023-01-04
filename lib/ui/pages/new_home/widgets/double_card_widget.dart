@@ -6,13 +6,13 @@ class Choice {
   final String title;
   final String pathImage;
   final String pathScreen;
-  bool isLogout = false;
+  bool isLogoutButton = false;
 
   Choice({
     required this.title,
     required this.pathImage,
     required this.pathScreen,
-    this.isLogout = false,
+    this.isLogoutButton = false,
   });
 }
 

@@ -23,7 +23,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.white10),
+        decoration: const BoxDecoration(color: Colors.white10),
         child: Column(
           children: [
             Container(

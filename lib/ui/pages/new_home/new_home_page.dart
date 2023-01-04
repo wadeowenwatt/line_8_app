@@ -12,37 +12,25 @@ import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
 
 List choices = [
-  const BigChoice(
+  BigChoice(
       pathImage: "assets/images/ic_fake_1.png",
       bigText: "89.69%",
       smallText: "Attendance"),
-  const BigChoice(
+  BigChoice(
       pathImage: "assets/images/ic_fake_2.png",
-      bigText: "300\$",
-      smallText: "Amount"),
-  Choice(
-      title: "Wiki",
-      pathImage: "assets/images/img.png",
-      pathScreen: RouteConfig.wiki),
+      bigText: "Team Fund",
+      smallText: "23.000.000",
+      pathScreen: RouteConfig.teamFund),
   Choice(
       title: "Member",
       pathImage: "assets/images/img_1.png",
       pathScreen: RouteConfig.memberList),
   Choice(
-      title: "Feedback",
-      pathImage: "assets/images/img_2.png",
-      pathScreen: RouteConfig.feedback),
-  Choice(
       title: "Calendar",
       pathImage: "assets/images/img_3.png",
       pathScreen: RouteConfig.calendar),
   Choice(
-    title: "Member Skill",
-    pathImage: "assets/images/img_4.png",
-    pathScreen: RouteConfig.memberSkills,
-  ),
-  Choice(
-    title: "7",
+    title: "Weekly Report",
     pathImage: "assets/images/img_5.png",
     pathScreen: "",
   ),
@@ -51,15 +39,28 @@ List choices = [
       pathImage: "assets/images/img_6.png",
       pathScreen: RouteConfig.requestSeminal),
   Choice(
+      title: "Wiki",
+      pathImage: "assets/images/img.png",
+      pathScreen: RouteConfig.wiki),
+  Choice(
+    title: "Member Skill",
+    pathImage: "assets/images/img_4.png",
+    pathScreen: RouteConfig.memberSkills,
+  ),
+  Choice(
     title: "9",
     pathImage: "assets/images/img_7.png",
     pathScreen: "",
   ),
   Choice(
+      title: "Feedback",
+      pathImage: "assets/images/img_2.png",
+      pathScreen: RouteConfig.feedback),
+  Choice(
     title: "Log out",
     pathImage: "assets/images/ic_logout.png",
     pathScreen: "",
-    isLogout: true,
+    isLogoutButton: true,
   ),
 ];
 
@@ -85,7 +86,6 @@ class _NewHomePage extends StatefulWidget {
 }
 
 class _NewHomePageState extends State<_NewHomePage> {
-
   late AppCubit _appCubit;
 
   @override
@@ -122,8 +122,16 @@ class _NewHomePageState extends State<_NewHomePage> {
                           itemBuilder: (context, index) {
                             if (index == 0) {
                               return RowTwoBigCardSelection(
-                                  choice1: choices[index],
-                                  choice2: choices[index + 1]);
+                                choice1: choices[index],
+                                choice2: choices[index + 1],
+                                onClick1: () {
+
+                                },
+                                onClick2: () {
+                                  _onClick(
+                                      (choices[index + 1] as BigChoice).pathScreen);
+                                },
+                              );
                             }
                             return RowTwoCardSelection(
                               choice1: choices[index * 2],
@@ -131,18 +139,19 @@ class _NewHomePageState extends State<_NewHomePage> {
                                   ? null
                                   : choices[index * 2 + 1],
                               onClick1: () {
-                                (choices[index * 2] as Choice).isLogout
+                                (choices[index * 2] as Choice).isLogoutButton
                                     ? _handleSignOut()
-                                    : _onClick(
-                                    (choices[index * 2] as Choice).pathScreen);
+                                    : _onClick((choices[index * 2] as Choice)
+                                    .pathScreen);
                               },
                               onClick2: () {
                                 (index * 2 + 1) >= choices.length
                                     ? {}
-                                    : (choices[index * 2] as Choice).isLogout
+                                    : (choices[index * 2] as Choice).isLogoutButton
                                     ? _handleSignOut()
-                                    : _onClick((choices[index * 2 + 1] as Choice)
-                                    .pathScreen);
+                                    : _onClick(
+                                    (choices[index * 2 + 1] as Choice)
+                                        .pathScreen);
                               },
                             );
                           },
@@ -190,4 +199,3 @@ class _NewHomePageState extends State<_NewHomePage> {
     }
   }
 }
-
