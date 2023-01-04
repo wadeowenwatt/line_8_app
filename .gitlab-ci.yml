@@ -9,6 +9,9 @@ lint:
     - flutter pub run intl_utils:generate
     - flutter pub run build_runner build --delete-conflicting-outputs
     - flutter format ./lib --set-exit-if-changed
+  only:
+    - tags
+    - merge_requests
   tags:
     - ventura
 
