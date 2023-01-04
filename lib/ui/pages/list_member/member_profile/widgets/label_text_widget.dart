@@ -17,13 +17,14 @@ class LabelText extends StatelessWidget {
         Text(
           nameLabel,
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16),
         ),
+        const SizedBox(height: 5,),
         Text(
           text,
           style: const TextStyle(
             color: Colors.black,
-            fontSize: 18
+            fontSize: 14
           ),
         )
       ],
