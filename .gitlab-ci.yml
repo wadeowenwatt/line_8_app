@@ -14,6 +14,7 @@ lint:
 
 build_fad_android:
   stage: stagingAndroid
+  needs: ["lint"]
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './android'
   script:

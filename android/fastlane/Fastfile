@@ -37,7 +37,8 @@ platform :android do
         android_artifact_type: "APK",
         service_credentials_file: options[:credentialsFilePath],
         release_notes: options[:releaseNotes],
-        android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk"
+        android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
+        debug: true
     )
   end
 
