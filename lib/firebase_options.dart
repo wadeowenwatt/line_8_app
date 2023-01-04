@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '160322392119',
     projectId: 'line8-app',
     storageBucket: 'line8-app.appspot.com',
-    iosClientId: '160322392119-on3s9mevbjbfj82aaiasodc3eb6cv8m9.apps.googleusercontent.com',
+    iosClientId:
+        '160322392119-on3s9mevbjbfj82aaiasodc3eb6cv8m9.apps.googleusercontent.com',
     iosBundleId: 'vn.newwave.line8',
   );
 }

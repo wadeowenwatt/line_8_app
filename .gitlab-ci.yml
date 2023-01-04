@@ -1,0 +1,31 @@
+stages:
+  - lint
+  - stagingAndroid
+
+lint:
+  stage: lint
+  script:
+    - flutter pub get
+    - flutter pub run intl_utils:generate
+    - flutter pub run build_runner build --delete-conflicting-outputs
+    - flutter format ./lib --set-exit-if-changed
+  only:
+    - tags
+    - merge_requests
+  tags:
+    - ventura
+
+build_fad_android:
+  stage: stagingAndroid
+  needs: ["lint"]
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: './android'
+  script:
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/firebase.json"
+    - echo "$FIREBASE_APP_ID"
+    - cd android && fastlane beta credentialsFilePath:"`pwd`/firebase.json" app_id:"$FIREBASE_APP_ID" versionName:"$CI_COMMIT_TAG" buildNumber:"$CI_PIPELINE_IID" groups:"nws-tester" releaseNotes:"$CI_COMMIT_TAG_MESSAGE"
+  only:
+    - tags
+  tags:
+    - ventura

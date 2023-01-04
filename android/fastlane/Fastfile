@@ -1,0 +1,50 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  lane :build_dart do |options|
+      Dir.chdir "../.." do
+        sh("flutter", "packages", "get")
+        sh("flutter", "pub", "run", "intl_utils:generate")
+        sh("flutter", "pub", "run", "build_runner", "build", "--delete-conflicting-outputs")
+        sh("flutter", "clean")
+        sh("flutter build apk --obfuscate --split-debug-info=build/app/outputs/symbols --build-name=#{options[:build_name]} --build-number=#{options[:build_number]} --dart-define=build_name=#{options[:build_name]} --dart-define=build_number=#{options[:build_number]}")
+      end
+  end
+  desc "Submit a new Beta Build to Firebase App Distribution"
+  lane :beta do |options|
+    build_dart(scheme: "prod",
+    build_name: options[:versionName],
+    build_number: options[:buildNumber],
+    )
+    firebase_app_distribution(
+        app: options[:app_id],
+        groups: options[:groups],
+        android_artifact_type: "APK",
+        service_credentials_file: options[:credentialsFilePath],
+        release_notes: options[:releaseNotes],
+        android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
+        debug: true
+    )
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+end
