@@ -1,4 +1,5 @@
 def localProperties = new Properties()
+ def keystoreProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (localPropertiesFile.exists()) {
@@ -7,9 +8,7 @@ if (localPropertiesFile.exists()) {
     }
 }
 if (keystorePropertiesFile.exists()) {
-    keystorePropertiesFile.withReader('UTF-8') { reader ->
-        keystorePropertiesFile.load(reader)
-    }
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
@@ -52,10 +51,10 @@ android {
     }
     signingConfigs {
         release {
-            keyAlias keystorePropertiesFile['keyAlias']
-            keyPassword keystorePropertiesFile['keyPassword']
-            storeFile keystorePropertiesFile['storeFile'] ? file(keystorePropertiesFile['storeFile']) : null
-            storePassword keystorePropertiesFile['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
         }
     }
 
