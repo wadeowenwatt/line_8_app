@@ -68,4 +68,7 @@ class AppColors {
   static const Color greyAccent = Color(0xFFF0F0F0);
   static const Color redAccent = Color(0xFFF15223);
 
+  static const Color weekendColor = Color(0xFFD4E2FF);
+  static const Color holidayColor = Color(0xFF0BAC00);
+
 }

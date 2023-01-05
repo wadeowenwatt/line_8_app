@@ -79,6 +79,8 @@ dependencies:
   just_audio_mpv: ^0.1.6
   just_audio_windows: ^0.2.0
   flutter_rating_bar: ^4.0.1
+  table_calendar: ^3.0.8
+  date_time_picker: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -141,6 +143,10 @@ flutter:
     - assets/images/ic_lock.png
     - assets/images/
     - assets/images/ic_lock.svg
+    - assets/images/vector.svg
+    - assets/images/ic_logout.png
+    - assets/images/ic_logout.svg
+
   fonts:
     - family: Arimo
       fonts:

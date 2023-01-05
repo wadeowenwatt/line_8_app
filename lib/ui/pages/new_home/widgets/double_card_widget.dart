@@ -6,9 +6,14 @@ class Choice {
   final String title;
   final String pathImage;
   final String pathScreen;
+  bool isLogoutButton = false;
 
-  const Choice(
-      {required this.title, required this.pathImage, required this.pathScreen});
+  Choice({
+    required this.title,
+    required this.pathImage,
+    required this.pathScreen,
+    this.isLogoutButton = false,
+  });
 }
 
 class RowTwoCardSelection extends StatelessWidget {
