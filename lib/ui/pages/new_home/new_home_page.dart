@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 
 import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
+import '../main/main_cubit.dart';
 
 List choices = [
   BigChoice(
@@ -87,10 +88,12 @@ class _NewHomePage extends StatefulWidget {
 
 class _NewHomePageState extends State<_NewHomePage> {
   late AppCubit _appCubit;
+  late MainCubit _mainCubit;
 
   @override
   void initState() {
     _appCubit = BlocProvider.of<AppCubit>(context);
+    _mainCubit = BlocProvider.of<MainCubit>(context);
     super.initState();
   }
 
@@ -100,9 +103,9 @@ class _NewHomePageState extends State<_NewHomePage> {
       body: Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-              AppColors.primaryDarkColorLeft,
-              AppColors.primaryLightColorRight
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+          AppColors.primaryDarkColorLeft,
+          AppColors.primaryLightColorRight
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: BlocBuilder<AppCubit, AppState>(
           builder: (context, state) {
             if (state.signOutStatus == LoadStatus.loading) {
@@ -112,7 +115,9 @@ class _NewHomePageState extends State<_NewHomePage> {
             } else {
               return Column(
                 children: [
-                  const InformationWidget(),
+                  InformationWidget(
+                    onClick: () => _moveToProfile(),
+                  ),
                   Expanded(
                     child: Stack(
                       children: [
@@ -124,12 +129,10 @@ class _NewHomePageState extends State<_NewHomePage> {
                               return RowTwoBigCardSelection(
                                 choice1: choices[index],
                                 choice2: choices[index + 1],
-                                onClick1: () {
-
-                                },
+                                onClick1: () {},
                                 onClick2: () {
-                                  _onClick(
-                                      (choices[index + 1] as BigChoice).pathScreen);
+                                  _onClick((choices[index + 1] as BigChoice)
+                                      .pathScreen);
                                 },
                               );
                             }
@@ -142,16 +145,17 @@ class _NewHomePageState extends State<_NewHomePage> {
                                 (choices[index * 2] as Choice).isLogoutButton
                                     ? _handleSignOut()
                                     : _onClick((choices[index * 2] as Choice)
-                                    .pathScreen);
+                                        .pathScreen);
                               },
                               onClick2: () {
                                 (index * 2 + 1) >= choices.length
                                     ? {}
-                                    : (choices[index * 2] as Choice).isLogoutButton
-                                    ? _handleSignOut()
-                                    : _onClick(
-                                    (choices[index * 2 + 1] as Choice)
-                                        .pathScreen);
+                                    : (choices[index * 2] as Choice)
+                                            .isLogoutButton
+                                        ? _handleSignOut()
+                                        : _onClick(
+                                            (choices[index * 2 + 1] as Choice)
+                                                .pathScreen);
                               },
                             );
                           },
@@ -190,7 +194,11 @@ class _NewHomePageState extends State<_NewHomePage> {
   }
 
   void _handleSignOut() {
-    BlocProvider.of<AppCubit>(context).signOut();
+    _appCubit.signOut();
+  }
+
+  void _moveToProfile() {
+    _mainCubit.switchTap(4);
   }
 
   void _onClick(String path) {

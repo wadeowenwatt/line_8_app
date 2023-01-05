@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
-import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
-import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../common/app_colors.dart';
-import '../../widgets/images/app_circle_avatar.dart';
+import '../../../../common/app_colors.dart';
 import 'profile_cubit.dart';
 
 class ProfilePage extends StatelessWidget {

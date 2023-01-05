@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../../common/app_colors.dart';
 
 class InformationWidget extends StatelessWidget {
-  const InformationWidget({Key? key})
+  const InformationWidget({Key? key, required this.onClick})
       : super(key: key);
 
-
+  final VoidCallback onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class InformationWidget extends StatelessWidget {
           ),
           const Expanded(child: SizedBox()),
           GestureDetector(
-            onTap: () {},
+            onTap: onClick,
             child: const CircleAvatar(
               radius: 30,
               backgroundImage:
