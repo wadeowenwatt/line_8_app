@@ -28,7 +28,6 @@ class _MemberSkillsPageState extends State<_MemberSkillsPage> {
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
         },
-
       ),
     )
     ..loadRequest(Uri.parse(

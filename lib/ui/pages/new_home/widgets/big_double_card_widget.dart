@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../common/app_images.dart';
-import 'currency_textfield.dart';
+import '../../team_fund/widgets/currency_textfield.dart';
 
 class BigChoice {
   final String pathImage;

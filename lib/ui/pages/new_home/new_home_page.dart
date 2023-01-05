@@ -32,7 +32,7 @@ List choices = [
   Choice(
     title: "Weekly Report",
     pathImage: "assets/images/img_5.png",
-    pathScreen: "",
+    pathScreen: RouteConfig.weeklyReport,
   ),
   Choice(
       title: "Request Seminal",

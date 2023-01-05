@@ -3,6 +3,7 @@ import 'package:flutter_base/ui/pages/member_skills/skill_members_page.dart';
 import 'package:flutter_base/ui/pages/my_profile/profile_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
 import 'package:flutter_base/ui/pages/team_fund/team_fund_page.dart';
+import 'package:flutter_base/ui/pages/weekly_report/weekly_report_page.dart';
 import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:get/get.dart';
 
@@ -35,6 +36,7 @@ class RouteConfig {
   static const String createEvent = "/createEvent";
   static const String memberSkills = "/memberSkills";
   static const String teamFund = "/teamFund";
+  static const String weeklyReport = "/weeklyReport";
 
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
@@ -53,5 +55,6 @@ class RouteConfig {
     GetPage(name: createEvent, page: () => const CreateEventPage()),
     GetPage(name: memberSkills, page: () => const MemberSkillsPage()),
     GetPage(name: teamFund, page: () => const TeamFundPage()),
+    GetPage(name: weeklyReport, page: () => const WeeklyReportPage()),
   ];
 }

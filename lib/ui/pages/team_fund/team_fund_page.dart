@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/pages/new_home/widgets/currency_textfield.dart';
+import 'package:flutter_base/ui/pages/team_fund/widgets/currency_textfield.dart';
 
 import '../../../common/app_colors.dart';
 
