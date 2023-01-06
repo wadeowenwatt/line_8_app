@@ -7,6 +7,7 @@ import 'package:flutter_base/ui/pages/main/main_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../member_manager/member_manager_page.dart';
 import '../my_profile/my_profile_page.dart';
 import '../new_home/new_home_page.dart';
 import 'main_state.dart';
@@ -53,7 +54,7 @@ class _MainPageState extends State<_MainPage> {
     //PageView page
     pageList = [
       const NewHomePage(),
-      Container(color: Colors.red),
+      const MemberManagerPage(),
       Container(color: Colors.green),
       Container(color: Colors.blue),
       const MyProfilePage(),
