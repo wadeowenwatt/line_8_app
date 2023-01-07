@@ -53,6 +53,10 @@ List choices = [
       pathImage: "assets/images/img_2.png",
       pathScreen: RouteConfig.feedback),
   Choice(
+      title: "Feedback",
+      pathImage: "assets/images/img_2.png",
+      pathScreen: RouteConfig.feedback),
+  Choice(
     title: "Log out",
     pathImage: "assets/images/ic_logout.png",
     pathScreen: "",
@@ -189,7 +193,7 @@ class _NewHomePageState extends State<_NewHomePage> {
   }
 
   void _handleSignOut() {
-    _appCubit.signOut();
+    _appCubit.signOutGoogle();
   }
 
   void _moveToProfile() {

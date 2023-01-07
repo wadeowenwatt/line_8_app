@@ -60,4 +60,25 @@ class SignInCubit extends Cubit<SignInState> {
       emit(state.copyWith(signInStatus: LoadStatus.failure));
     }
   }
+  
+  Future<void> signInWithGoogle() async {
+    emit(state.copyWith(signInWithGoogleStatus: LoadStatus.loading));
+    try {
+      final result = await authRepo.signInWithGoogle();
+      if (result != null) {
+        // UserEntity? myProfile = await userRepo.getProfile();
+        appCubit.updateProfile();
+
+        emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
+        Get.offNamed(RouteConfig.main);
+      } else {
+        emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
+      }
+    } catch (error) {
+      logger.e(error);
+      emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
+    }
+
+  }
+  
 }

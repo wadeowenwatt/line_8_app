@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "160322392119-hl8fjdqfpj6jkcd9tmhup2jmdbfss86o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.newwave.line8",
+            "certificate_hash": "e831b2a664dd53aa8675916e1610fde9f8d46f8c"
+          }
+        },
+        {
           "client_id": "160322392119-b74cedr2be8uoi78cnar7dq0nihducaa.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -9,6 +9,8 @@ import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
 import 'package:flutter_base/ui/widgets/input/app_password_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -72,7 +74,10 @@ class _SignInChildPageState extends State<SignInChildPage> {
   }
 
   Widget buildBodyWidget() {
-    final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    final showingKeyboard = MediaQuery
+        .of(context)
+        .viewInsets
+        .bottom != 0;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
@@ -85,12 +90,12 @@ class _SignInChildPageState extends State<SignInChildPage> {
         children: [
           const SizedBox(height: 70),
           const AspectRatio(
-            aspectRatio: 5/1,
+            aspectRatio: 5 / 1,
             child: SizedBox(
                 child: Image(
-              fit: BoxFit.contain,
-              image: AssetImage(AppImages.imageDecorate),
-            )),
+                  fit: BoxFit.contain,
+                  image: AssetImage(AppImages.imageDecorate),
+                )),
           ),
           SizedBox(
             height: showingKeyboard ? 0 : 200,
@@ -150,10 +155,23 @@ class _SignInChildPageState extends State<SignInChildPage> {
           child: Column(
             children: [
               AppTintButton(
-                title: S.of(context).button_signIn,
-                onPressed: _signIn,
-                isLoading: state.signInStatus == LoadStatus.loading,
+                title: S
+                    .of(context)
+                    .button_signIn,
+                onPressed: () {},
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              SignInButton(Buttons.Google, onPressed: _signInWithGoogle,),
+              state.signInWithGoogleStatus == LoadStatus.loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : const SizedBox(),
+              // AppTintButton(
+              //   title: "Sign In With Google",
+              //   onPressed: _signInWithGoogle,
+              //   isLoading: state.signInWithGoogleStatus == LoadStatus.loading,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -175,7 +193,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         );
@@ -185,6 +203,12 @@ class _SignInChildPageState extends State<SignInChildPage> {
 
   void _signIn() {
     _cubit.signIn();
+  }
+
+  void _signInWithEmail() {}
+
+  void _signInWithGoogle() {
+    _cubit.signInWithGoogle();
   }
 
   void _signUp() {
