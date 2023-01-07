@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_images.dart';
+import 'package:flutter_base/models/entities/request/request_entity.dart';
 import 'package:flutter_base/ui/pages/member_manager/widgets/tab_noti_badge.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +38,20 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     User(firstName: "Yen", lastName: "Bon"),
   ];
 
-  List listRequest = [];
+  List<Request> listRequest = [
+    Request(
+        title: "Event 1",
+        content: "This is Event 1 and more more more.",
+        time: DateTime.now()),
+    Request(
+        title: "Event 2",
+        content: "This is Event 1 and more more more.",
+        time: DateTime.now().add(const Duration(days: 3))),
+    Request(
+        title: "Event 3",
+        content: "This is Event 1 and more more more.",
+        time: DateTime.now().add(const Duration(days: 5))),
+  ];
 
   @override
   void initState() {
@@ -197,10 +211,10 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   Widget _buildRequestManage() {
     return ListView.builder(
       itemBuilder: (context, index) {
-        // final item = listRequest[index];
-        return const EventCardWidget();
+        final item = listRequest[index];
+        return EventCardWidget(item: item,);
       },
-      itemCount: 3,
+      itemCount: listRequest.length,
     );
   }
 }

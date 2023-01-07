@@ -31,7 +31,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         child: Column(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: Get.width,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [

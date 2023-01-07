@@ -49,11 +49,6 @@ List choices = [
   //   pathScreen: RouteConfig.memberSkills,
   // ),
   Choice(
-    title: "9",
-    pathImage: "assets/images/img_7.png",
-    pathScreen: "",
-  ),
-  Choice(
       title: "Feedback",
       pathImage: "assets/images/img_2.png",
       pathScreen: RouteConfig.feedback),

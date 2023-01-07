@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/models/entities/request/request_entity.dart';
+import 'package:flutter_base/utils/app_date_utils.dart';
 
 class EventCardWidget extends StatelessWidget {
   const EventCardWidget({
     super.key,
-    // required this.item,
+    required this.item,
   });
 
-  // final Request item;
+  final Request item;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +21,10 @@ class EventCardWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Abcdef",
+            Text(
+              item.title!,
               style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
             Row(
               children: [
@@ -44,9 +46,9 @@ class EventCardWidget extends StatelessWidget {
                       RichText(
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,
-                        text: const TextSpan(
+                        text: TextSpan(
                           children: [
-                            WidgetSpan(
+                            const WidgetSpan(
                               child: Icon(
                                 Icons.access_time,
                                 size: 17,
@@ -54,15 +56,15 @@ class EventCardWidget extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: "12 Jan 21, 09:00 AM",
-                              style: TextStyle(color: Colors.blue),
+                              text: item.time!.toDateTimeString(),
+                              style: const TextStyle(color: Colors.blue),
                             ),
                           ],
                         ),
                       ),
-                      const Text(
-                        "asdasdasdkasdmsakdmkamsdmakmsdkamsdkmakmsdkmakmsdkamksdmkamsdkmkmasdm",
-                        style: TextStyle(color: Colors.black),
+                      Text(
+                        item.content!,
+                        style: const TextStyle(color: Colors.black),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
