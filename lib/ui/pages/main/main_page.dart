@@ -4,6 +4,8 @@ import 'package:flutter_base/blocs/setting/app_setting_cubit.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/main/main_cubit.dart';
+import 'package:flutter_base/ui/pages/member_skills/skill_members_page.dart';
+import 'package:flutter_base/ui/pages/wiki/wiki_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -55,8 +57,8 @@ class _MainPageState extends State<_MainPage> {
     pageList = [
       const NewHomePage(),
       const MemberManagerPage(),
-      Container(color: Colors.green),
-      Container(color: Colors.blue),
+      const WikiPage(),
+      const MemberSkillsPage(),
       const MyProfilePage(),
     ];
     //Page controller

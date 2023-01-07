@@ -19,19 +19,34 @@ class _MemberSkillsPage extends StatefulWidget {
 }
 
 class _MemberSkillsPageState extends State<_MemberSkillsPage> {
-  final _controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onProgress: (int progress) {},
-        onNavigationRequest: (NavigationRequest request) {
-          return NavigationDecision.navigate;
-        },
-      ),
-    )
-    ..loadRequest(Uri.parse(
-        'https://docs.google.com/spreadsheets/d/1V8mNA6vt6Yk8YcaGZ_G2MIKjW735n1X_JYCS9zEzZA8/edit?usp=sharing'));
+  late WebViewController _controller;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+          },
+          onPageFinished: (url) {
+            if (mounted) {
+              setState(() {
+                isLoading = false;
+              });
+            }
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(
+          'https://docs.google.com/spreadsheets/d/1V8mNA6vt6Yk8YcaGZ_G2MIKjW735n1X_JYCS9zEzZA8/edit?usp=sharing'));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +66,13 @@ class _MemberSkillsPageState extends State<_MemberSkillsPage> {
           height: 100,
         ),
       ),
-      body: WebViewWidget(
-        controller: _controller,
+      body: Stack(
+        children: [
+          WebViewWidget(
+            controller: _controller,
+          ),
+          Center(child: isLoading ? const CircularProgressIndicator() : const SizedBox(),)
+        ],
       ),
     );
   }

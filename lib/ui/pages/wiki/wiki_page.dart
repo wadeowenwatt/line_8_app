@@ -19,15 +19,31 @@ class WikiWebViewPage extends StatefulWidget {
 }
 
 class _WikiWebViewPageState extends State<WikiWebViewPage> {
-  final _controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(const Color(0x00000000))
-    ..setNavigationDelegate(NavigationDelegate(
-        onProgress: (int progress) {},
-        onNavigationRequest: (NavigationRequest request) {
-          return NavigationDecision.navigate;
-        }))
-    ..loadRequest(Uri.parse('https://wiki.newwave.vn'));
+  bool isLoading = true;
+  late WebViewController _controller;
+
+  @override
+  void initState() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+          },
+          onPageFinished: (url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse('https://wiki.newwave.vn'));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +63,13 @@ class _WikiWebViewPageState extends State<WikiWebViewPage> {
           height: 100,
         ),
       ),
-      body: WebViewWidget(
-        controller: _controller,
+      body: Stack(
+        children: [
+          WebViewWidget(
+            controller: _controller,
+          ),
+          Center(child: isLoading ? const CircularProgressIndicator() : const SizedBox()),
+        ],
       ),
     );
   }
