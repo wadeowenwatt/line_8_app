@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../blocs/app_cubit.dart';
 import '../../../models/enums/load_status.dart';
 import '../../../repositories/auth_repository.dart';
+import '../../../repositories/firestore_repository.dart';
 import '../../../repositories/user_repository.dart';
 import '../../../router/route_config.dart';
 import '../../commons/app_snackbar.dart';
@@ -15,12 +16,14 @@ part 'sign_up_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepo;
   final UserRepository userRepo;
+  final FirestoreRepository firestoreRepo;
   final AppCubit appCubit;
 
   SignUpCubit({
     required this.authRepo,
     required this.userRepo,
     required this.appCubit,
+    required this.firestoreRepo,
   }) : super(const SignUpState());
 
   void changeEmail({required String email}) {
@@ -59,8 +62,13 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(signUpStatus: LoadStatus.loading));
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
-      if (resultSignUp != null ) {
-        print(resultSignUp);
+      if (resultSignUp != null) {
+        firestoreRepo.updateUserData(
+          resultSignUp.uid,
+          resultSignUp.displayName ?? "Unknown",
+          resultSignUp.email,
+          "999",
+        );
         emit(state.copyWith(signUpStatus: LoadStatus.success));
         Get.offAllNamed(RouteConfig.main);
       } else {
@@ -71,5 +79,4 @@ class SignUpCubit extends Cubit<SignUpState> {
       emit(state.copyWith(signUpStatus: LoadStatus.failure));
     }
   }
-
 }

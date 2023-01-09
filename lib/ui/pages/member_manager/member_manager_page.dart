@@ -5,7 +5,6 @@ import 'package:flutter_base/ui/pages/member_manager/widgets/tab_noti_badge.dart
 import 'package:get/get.dart';
 
 import '../../../common/app_colors.dart';
-import '../../../models/entities/user/new_user_entity.dart';
 import 'widgets/event_card_widgets.dart';
 
 class MemberManagerPage extends StatelessWidget {
@@ -32,10 +31,10 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   late int _counterWeeklyReport;
 
   final controller = TextEditingController();
-  List<User> listUser = [
-    User(firstName: "Linh", lastName: "abc"),
-    User(firstName: "Thong", lastName: "Nguyen"),
-    User(firstName: "Yen", lastName: "Bon"),
+  List listUser = [
+    // User(firstName: "Linh", lastName: "abc"),
+    // User(firstName: "Thong", lastName: "Nguyen"),
+    // User(firstName: "Yen", lastName: "Bon"),
   ];
 
   List<Request> listRequest = [

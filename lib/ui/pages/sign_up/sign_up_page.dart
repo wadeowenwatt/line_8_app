@@ -10,6 +10,7 @@ import '../../../common/app_colors.dart';
 import '../../../common/app_images.dart';
 import '../../../models/enums/load_status.dart';
 import '../../../repositories/auth_repository.dart';
+import '../../../repositories/firestore_repository.dart';
 import '../../../repositories/user_repository.dart';
 import '../../widgets/input/app_email_input.dart';
 import '../../widgets/input/app_password_input.dart';
@@ -23,10 +24,13 @@ class SignUpPage extends StatelessWidget {
       create: (con) {
         final authRepo = RepositoryProvider.of<AuthRepository>(context);
         final userRepo = RepositoryProvider.of<UserRepository>(context);
+        final firestoreRepo =
+        RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
         return SignUpCubit(
           authRepo: authRepo,
           userRepo: userRepo,
+          firestoreRepo: firestoreRepo,
           appCubit: appCubit,
         );
       },
