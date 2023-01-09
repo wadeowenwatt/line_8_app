@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/database/secure_storage_helper.dart';
 import 'package:flutter_base/network/api_client.dart';
@@ -23,7 +26,6 @@ abstract class AuthRepository {
   Future signOutWithEmail();
 
   Future registerEmail(String email, String password);
-
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -55,6 +57,17 @@ class AuthRepositoryImpl extends AuthRepository {
         accessToken: 'app_access_token', refreshToken: 'app_refresh_token');
   }
 
+  Future<String> getBirthday(GoogleSignInAccount googleUser) async {
+    final headers = await googleUser.authHeaders;
+    final r = await http.get(
+        Uri.parse(
+            "https://people.googleapis.com/v1/people/me?personFields=birthdays&key="),
+        headers: {"Authorization": headers["Authorization"] ?? ""});
+    final response = jsonDecode(r.body);
+    String birthDay = '${response["birthdays"][1]["date"]["day"]}/${response["birthdays"][1]["date"]["month"]}/${response["birthdays"][1]["date"]["year"]}';
+    return birthDay;
+  }
+
   @override
   Future<User?> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -68,7 +81,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -77,9 +90,10 @@ class AuthRepositoryImpl extends AuthRepository {
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
 
         user = userCredential.user;
+        var birthDay = await getBirthday(googleUser);
         print(user!.providerData);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
@@ -100,7 +114,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await auth.signOut();
       await GoogleSignIn().signOut();
-    } catch(error) {
+    } catch (error) {
       print("$error sign out Google error!");
     }
   }
@@ -108,7 +122,8 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future registerEmail(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -128,10 +143,8 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<User?> signInWithEmail(String email, String password) async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password
-      );
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
       user = credential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -147,9 +160,8 @@ class AuthRepositoryImpl extends AuthRepository {
   Future signOutWithEmail() async {
     try {
       await auth.signOut();
-    } catch(error) {
+    } catch (error) {
       print("$error signout Email error");
     }
   }
-
 }
