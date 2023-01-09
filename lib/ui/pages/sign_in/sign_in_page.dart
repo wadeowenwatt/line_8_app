@@ -54,6 +54,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
 
   late SignInCubit _cubit;
 
+  late bool showingKeyboard = false;
+  late double keyboardHeight = 0;
+
   @override
   void initState() {
     super.initState();
@@ -68,13 +71,14 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBodyWidget(),
+      body: SingleChildScrollView(child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }
 
   Widget buildBodyWidget() {
-    final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
@@ -89,23 +93,24 @@ class _SignInChildPageState extends State<SignInChildPage> {
           const AspectRatio(
             aspectRatio: 5 / 1,
             child: SizedBox(
-                child: Image(
-              fit: BoxFit.contain,
-              image: AssetImage(AppImages.imageDecorate),
-            )),
+              child: Image(
+                fit: BoxFit.contain,
+                image: AssetImage(AppImages.imageDecorate),
+              ),
+            ),
           ),
           SizedBox(
             height: showingKeyboard ? 0 : 200,
             width: 150,
             child: Image.asset(AppImages.icLogoTransparentNoBackGround),
           ),
-          SingleChildScrollView(child: _buildExpanded())
+          _buildCardScroll(),
         ],
       ),
     );
   }
 
-  Widget _buildExpanded() {
+  Widget _buildCardScroll() {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -137,6 +142,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
             ),
           ),
           _buildButton(),
+          SizedBox(
+            height: showingKeyboard ? (keyboardHeight) + 20 : 150,
+          ),
         ],
       ),
     );
