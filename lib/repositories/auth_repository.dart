@@ -89,6 +89,7 @@ class AuthRepositoryImpl extends AuthRepository {
         }
       } catch (e) {
         /// Todo
+        print(e);
       }
     }
     return user;
