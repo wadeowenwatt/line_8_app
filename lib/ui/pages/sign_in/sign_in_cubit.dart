@@ -31,35 +31,6 @@ class SignInCubit extends Cubit<SignInState> {
   void changePassword({required String password}) {
     emit(state.copyWith(password: password));
   }
-  //
-  // void signIn() async {
-  //   final username = state.username ?? '';
-  //   final password = state.password ?? '';
-  //   if (username.isEmpty) {
-  //     AppSnackbar.showError(message: 'Username is empty');
-  //     return;
-  //   }
-  //   if (password.isEmpty) {
-  //     AppSnackbar.showError(message: 'Password is empty');
-  //     return;
-  //   }
-  //   emit(state.copyWith(signInStatus: LoadStatus.loading));
-  //   try {
-  //     final result = await authRepo.signIn(username, password);
-  //     if (result != null) {
-  //       UserEntity? myProfile = await userRepo.getProfile();
-  //       appCubit.updateProfile(myProfile);
-  //       authRepo.saveToken(result);
-  //       emit(state.copyWith(signInStatus: LoadStatus.success));
-  //       Get.offNamed(RouteConfig.main);
-  //     } else {
-  //       emit(state.copyWith(signInStatus: LoadStatus.failure));
-  //     }
-  //   } catch (error) {
-  //     logger.e(error);
-  //     emit(state.copyWith(signInStatus: LoadStatus.failure));
-  //   }
-  // }
   
   Future<void> signInWithGoogle() async {
     emit(state.copyWith(signInWithGoogleStatus: LoadStatus.loading));

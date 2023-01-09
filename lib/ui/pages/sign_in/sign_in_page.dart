@@ -54,11 +54,14 @@ class _SignInChildPageState extends State<SignInChildPage> {
 
   late SignInCubit _cubit;
 
+  late bool showingKeyboard = false;
+  late double keyboardHeight = 0;
+
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: 'test@gmail.com');
-    passwordTextController = TextEditingController(text: "test123456");
+    usernameTextController = TextEditingController(text: '');
+    passwordTextController = TextEditingController(text: "");
     obscurePasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignInCubit>(context);
     _cubit.changeUsername(username: usernameTextController.text);
@@ -68,13 +71,14 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBodyWidget(),
+      body: SingleChildScrollView(child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }
 
   Widget buildBodyWidget() {
-    final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
+    keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
@@ -89,57 +93,59 @@ class _SignInChildPageState extends State<SignInChildPage> {
           const AspectRatio(
             aspectRatio: 5 / 1,
             child: SizedBox(
-                child: Image(
-              fit: BoxFit.contain,
-              image: AssetImage(AppImages.imageDecorate),
-            )),
+              child: Image(
+                fit: BoxFit.contain,
+                image: AssetImage(AppImages.imageDecorate),
+              ),
+            ),
           ),
           SizedBox(
             height: showingKeyboard ? 0 : 200,
             width: 150,
             child: Image.asset(AppImages.icLogoTransparentNoBackGround),
           ),
-          _buildExpanded()
+          _buildCardScroll(),
         ],
       ),
     );
   }
 
-  Widget _buildExpanded() {
-    return Expanded(
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 50,
+  Widget _buildCardScroll() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            child: AppEmailInput(
+              textEditingController: usernameTextController,
+              onChanged: (text) {
+                _cubit.changeUsername(username: text);
+              },
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: AppEmailInput(
-                textEditingController: usernameTextController,
-                onChanged: (text) {
-                  _cubit.changeUsername(username: text);
-                },
-              ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            child: AppPasswordInput(
+              obscureTextController: obscurePasswordController,
+              textEditingController: passwordTextController,
+              onChanged: (text) {
+                _cubit.changePassword(password: text);
+              },
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: AppPasswordInput(
-                obscureTextController: obscurePasswordController,
-                textEditingController: passwordTextController,
-                onChanged: (text) {
-                  _cubit.changePassword(password: text);
-                },
-              ),
-            ),
-            _buildButton(),
-          ],
-        ),
+          ),
+          _buildButton(),
+          SizedBox(
+            height: showingKeyboard ? (keyboardHeight) + 20 : 150,
+          ),
+        ],
       ),
     );
   }
