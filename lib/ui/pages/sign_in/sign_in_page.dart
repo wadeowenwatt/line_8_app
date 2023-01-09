@@ -57,8 +57,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: 'test@gmail.com');
-    passwordTextController = TextEditingController(text: "test123456");
+    usernameTextController = TextEditingController(text: '');
+    passwordTextController = TextEditingController(text: "");
     obscurePasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignInCubit>(context);
     _cubit.changeUsername(username: usernameTextController.text);
@@ -99,47 +99,45 @@ class _SignInChildPageState extends State<SignInChildPage> {
             width: 150,
             child: Image.asset(AppImages.icLogoTransparentNoBackGround),
           ),
-          _buildExpanded()
+          SingleChildScrollView(child: _buildExpanded())
         ],
       ),
     );
   }
 
   Widget _buildExpanded() {
-    return Expanded(
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 50,
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+      ),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            child: AppEmailInput(
+              textEditingController: usernameTextController,
+              onChanged: (text) {
+                _cubit.changeUsername(username: text);
+              },
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: AppEmailInput(
-                textEditingController: usernameTextController,
-                onChanged: (text) {
-                  _cubit.changeUsername(username: text);
-                },
-              ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+            child: AppPasswordInput(
+              obscureTextController: obscurePasswordController,
+              textEditingController: passwordTextController,
+              onChanged: (text) {
+                _cubit.changePassword(password: text);
+              },
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              child: AppPasswordInput(
-                obscureTextController: obscurePasswordController,
-                textEditingController: passwordTextController,
-                onChanged: (text) {
-                  _cubit.changePassword(password: text);
-                },
-              ),
-            ),
-            _buildButton(),
-          ],
-        ),
+          ),
+          _buildButton(),
+        ],
       ),
     );
   }

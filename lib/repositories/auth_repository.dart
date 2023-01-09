@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base/database/secure_storage_helper.dart';
 import 'package:flutter_base/network/api_client.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/entities/token_entity.dart';
+import '../ui/commons/app_snackbar.dart';
+
 
 abstract class AuthRepository {
 
@@ -15,7 +15,7 @@ abstract class AuthRepository {
 
   Future signOutWithEmail();
 
-  Future registerEmail(String email, String password);
+  Future registerEmail(String email, String passwordConfirm);
 
   Future<User?> getUser();
 
@@ -53,7 +53,7 @@ class AuthRepositoryImpl extends AuthRepository {
         await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        print(user!.providerData);
+        return user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
@@ -65,7 +65,7 @@ class AuthRepositoryImpl extends AuthRepository {
         print(e);
       }
     }
-    return user;
+    return null;
   }
 
   @override
@@ -79,23 +79,26 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future registerEmail(String email, String password) async {
+  Future registerEmail(String email, String passwordConfirm) async {
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
-        password: password,
+        password: passwordConfirm,
       );
       user = credential.user;
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        AppSnackbar.showError(message: 'The password provided is too weak.');
+        return null;
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        AppSnackbar.showError(message: 'The account already exists for that email.');
+        return null;
       }
     } catch (e) {
       print(e);
     }
-    return user;
+    return null;
   }
 
   @override
@@ -106,14 +109,15 @@ class AuthRepositoryImpl extends AuthRepository {
           password: password
       );
       user = credential.user;
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        /// Todo
+        AppSnackbar.showError(message: 'User not found');
       } else if (e.code == 'wrong-password') {
-        /// Todo
+        AppSnackbar.showError(message: 'Wrong password');
       }
     }
-    return user;
+    return null;
   }
 
   @override

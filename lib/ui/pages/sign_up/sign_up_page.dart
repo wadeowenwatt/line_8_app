@@ -4,10 +4,12 @@ import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
+import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/app_images.dart';
+import '../../../repositories/auth_repository.dart';
+import '../../../repositories/user_repository.dart';
 import '../../widgets/input/app_email_input.dart';
 import '../../widgets/input/app_password_input.dart';
 
@@ -17,8 +19,15 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) {
-        return SignUpCubit();
+      create: (con) {
+        final authRepo = RepositoryProvider.of<AuthRepository>(context);
+        final userRepo = RepositoryProvider.of<UserRepository>(context);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return SignUpCubit(
+          authRepo: authRepo,
+          userRepo: userRepo,
+          appCubit: appCubit,
+        );
       },
       child: const SignUpChildPage(),
     );
@@ -42,11 +51,21 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   late ObscureTextController obscurePasswordController;
   late ObscureTextController obscureConfirmPasswordController;
 
+  late SignUpCubit _cubit;
+
   @override
   void initState() {
     super.initState();
+    usernameTextController = TextEditingController(text: "");
+    passwordTextController = TextEditingController(text: "");
+    confirmPasswordTextController = TextEditingController(text: "");
     obscurePasswordController = ObscureTextController(obscureText: true);
     obscureConfirmPasswordController = ObscureTextController(obscureText: true);
+    _cubit = BlocProvider.of<SignUpCubit>(context);
+    _cubit.changeEmail(email: usernameTextController.text);
+    _cubit.changePassword(password: passwordTextController.text);
+    _cubit.changeConfirmPassword(
+        confirmPassword: confirmPasswordTextController.text);
   }
 
   @override
@@ -108,7 +127,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       margin:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppEmailInput(
-                        onChanged: (text) {},
+                        onChanged: (text) {
+                          _cubit.changeEmail(email: text);
+                        },
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -117,7 +138,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppPasswordInput(
                         obscureTextController: obscurePasswordController,
-                        onChanged: (text) {},
+                        onChanged: (text) {
+                          _cubit.changePassword(password: text);
+                        },
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -127,7 +150,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       child: AppPasswordInput(
                         labelText: "Confirm Password",
                         obscureTextController: obscureConfirmPasswordController,
-                        onChanged: (text) {},
+                        onChanged: (text) {
+                          _cubit.changeConfirmPassword(confirmPassword: text);
+                        },
                       ),
                     ),
                     const SizedBox(
@@ -138,7 +163,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                             horizontal: widthOfScreen / 15),
                         child: AppTintButton(
                           title: "Sign Up",
-                          onPressed: () {},
+                          onPressed: _signUpWithEmail,
                         )),
                     SizedBox(
                         height: showingKeyboard ? (keyboardHeight) + 20 : 200)
@@ -149,7 +174,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
           ),
           Column(
             children: [
-              SizedBox(height: heightOfScreen / 12,),
+              SizedBox(
+                height: heightOfScreen / 12,
+              ),
               IconButton(
                 padding: const EdgeInsets.all(20),
                 onPressed: () => _backSignIn(),
@@ -160,7 +187,6 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 ),
               ),
             ],
-
           )
         ],
       ),
@@ -169,5 +195,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
 
   void _backSignIn() {
     Get.offNamed(RouteConfig.signIn);
+  }
+
+  void _signUpWithEmail() {
+    _cubit.signUpWithEmail();
   }
 }
