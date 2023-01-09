@@ -4,6 +4,7 @@ import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/generated/l10n.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
@@ -27,10 +28,13 @@ class SignInPage extends StatelessWidget {
       create: (con) {
         final authRepo = RepositoryProvider.of<AuthRepository>(context);
         final userRepo = RepositoryProvider.of<UserRepository>(context);
+        final firestoreRepo =
+            RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
         return SignInCubit(
           authRepo: authRepo,
           userRepo: userRepo,
+          firestoreRepo: firestoreRepo,
           appCubit: appCubit,
         );
       },
@@ -72,8 +76,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-           child: buildBodyWidget()),
+          physics: const ClampingScrollPhysics(), child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }

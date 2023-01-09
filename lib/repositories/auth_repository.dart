@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +19,6 @@ abstract class AuthRepository {
 
   Future signOutWithEmail();
 
-
   Future registerEmail(String email, String passwordConfirm);
 
   Future<User?> getUser();
@@ -30,33 +31,12 @@ class AuthRepositoryImpl extends AuthRepository {
 
   AuthRepositoryImpl({required this.apiClient});
 
-  @override
-  Future<TokenEntity?> getToken() async {
-    return await SecureStorageHelper.instance.getToken();
-  }
-
-  @override
-  Future<void> removeToken() async {
-    return SecureStorageHelper.instance.removeToken();
-  }
-
-  @override
-  Future<void> saveToken(TokenEntity token) async {
-    return SecureStorageHelper.instance.saveToken(token);
-  }
-
-  @override
-  Future<TokenEntity?> signIn(String username, String password) async {
-    await Future.delayed(const Duration(seconds: 2));
-    return TokenEntity(
-        accessToken: 'app_access_token', refreshToken: 'app_refresh_token');
-  }
-
   Future<String> getBirthday(GoogleSignInAccount googleUser) async {
     final headers = await googleUser.authHeaders;
+
     final r = await http.get(
         Uri.parse(
-            "https://people.googleapis.com/v1/people/me?personFields=birthdays&key="),
+            "https://people.googleapis.com/v1/people/me?personFields=birthday&key="),
         headers: {"Authorization": headers["Authorization"] ?? ""});
     final response = jsonDecode(r.body);
     String birthDay = '${response["birthdays"][1]["date"]["day"]}/${response["birthdays"][1]["date"]["month"]}/${response["birthdays"][1]["date"]["year"]}';
@@ -88,8 +68,8 @@ class AuthRepositoryImpl extends AuthRepository {
             await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        var birthDay = await getBirthday(googleUser);
-        print(user!.providerData);
+        // var birthDay = await getBirthday(googleUser);
+        // print(birthDay);
         return user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {

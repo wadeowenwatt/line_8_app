@@ -3,6 +3,7 @@ import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/models/entities/user/user_entity.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/commons/app_snackbar.dart';
 import 'package:flutter_base/utils/logger.dart';
@@ -16,12 +17,14 @@ part 'sign_in_state.dart';
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepo;
   final UserRepository userRepo;
+  final FirestoreRepository firestoreRepo;
   final AppCubit appCubit;
 
   SignInCubit({
     required this.authRepo,
     required this.userRepo,
     required this.appCubit,
+    required this.firestoreRepo,
   }) : super(const SignInState());
 
   void changeUsername({required String username}) {
@@ -38,8 +41,8 @@ class SignInCubit extends Cubit<SignInState> {
       final result = await authRepo.signInWithGoogle();
       if (result != null) {
         // UserEntity? myProfile = await userRepo.getProfile();
-        appCubit.updateProfile(UserEntity.mockData());
-
+        // appCubit.updateProfile(UserEntity.mockData());
+        firestoreRepo.updateUserData(result.uid, result.displayName, result.email, "999");
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {
@@ -68,7 +71,6 @@ class SignInCubit extends Cubit<SignInState> {
     try {
       final result = await authRepo.signInWithEmail(username, password);
       if (result != null) {
-        /// call app cubit fetch data user.
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {
