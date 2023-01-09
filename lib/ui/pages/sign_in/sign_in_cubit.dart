@@ -31,33 +31,82 @@ class SignInCubit extends Cubit<SignInState> {
   void changePassword({required String password}) {
     emit(state.copyWith(password: password));
   }
+  //
+  // void signIn() async {
+  //   final username = state.username ?? '';
+  //   final password = state.password ?? '';
+  //   if (username.isEmpty) {
+  //     AppSnackbar.showError(message: 'Username is empty');
+  //     return;
+  //   }
+  //   if (password.isEmpty) {
+  //     AppSnackbar.showError(message: 'Password is empty');
+  //     return;
+  //   }
+  //   emit(state.copyWith(signInStatus: LoadStatus.loading));
+  //   try {
+  //     final result = await authRepo.signIn(username, password);
+  //     if (result != null) {
+  //       UserEntity? myProfile = await userRepo.getProfile();
+  //       appCubit.updateProfile(myProfile);
+  //       authRepo.saveToken(result);
+  //       emit(state.copyWith(signInStatus: LoadStatus.success));
+  //       Get.offNamed(RouteConfig.main);
+  //     } else {
+  //       emit(state.copyWith(signInStatus: LoadStatus.failure));
+  //     }
+  //   } catch (error) {
+  //     logger.e(error);
+  //     emit(state.copyWith(signInStatus: LoadStatus.failure));
+  //   }
+  // }
+  
+  Future<void> signInWithGoogle() async {
+    emit(state.copyWith(signInWithGoogleStatus: LoadStatus.loading));
+    try {
+      final result = await authRepo.signInWithGoogle();
+      if (result != null) {
+        // UserEntity? myProfile = await userRepo.getProfile();
+        appCubit.updateProfile(UserEntity.mockData());
 
-  void signIn() async {
+        emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
+        Get.offNamed(RouteConfig.main);
+      } else {
+        emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
+      }
+    } catch (error) {
+      logger.e(error);
+      emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
+    }
+
+  }
+
+  /// Don't need email,pwd because we handle it in sign_in_state
+  Future signInWithEmail() async {
     final username = state.username ?? '';
     final password = state.password ?? '';
     if (username.isEmpty) {
-      AppSnackbar.showError(message: 'Username is empty');
+      AppSnackbar.showError(message: 'Email is empty');
       return;
     }
     if (password.isEmpty) {
       AppSnackbar.showError(message: 'Password is empty');
       return;
     }
-    emit(state.copyWith(signInStatus: LoadStatus.loading));
+    emit(state.copyWith(signInWithEmailStatus: LoadStatus.loading));
     try {
-      final result = await authRepo.signIn(username, password);
+      final result = await authRepo.signInWithEmail(username, password);
       if (result != null) {
-        UserEntity? myProfile = await userRepo.getProfile();
-        appCubit.updateProfile(myProfile);
-        authRepo.saveToken(result);
-        emit(state.copyWith(signInStatus: LoadStatus.success));
+        /// call app cubit fetch data user.
+        emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {
-        emit(state.copyWith(signInStatus: LoadStatus.failure));
+        emit(state.copyWith(signInWithEmailStatus: LoadStatus.failure));
       }
     } catch (error) {
       logger.e(error);
-      emit(state.copyWith(signInStatus: LoadStatus.failure));
+      emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
     }
   }
+
 }

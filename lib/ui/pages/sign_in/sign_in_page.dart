@@ -9,6 +9,8 @@ import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
 import 'package:flutter_base/ui/widgets/input/app_password_input.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -55,8 +57,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: 'mobile@newwave.com');
-    passwordTextController = TextEditingController(text: "mobile");
+    usernameTextController = TextEditingController(text: 'test@gmail.com');
+    passwordTextController = TextEditingController(text: "test123456");
     obscurePasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignInCubit>(context);
     _cubit.changeUsername(username: usernameTextController.text);
@@ -85,7 +87,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
         children: [
           const SizedBox(height: 70),
           const AspectRatio(
-            aspectRatio: 5/1,
+            aspectRatio: 5 / 1,
             child: SizedBox(
                 child: Image(
               fit: BoxFit.contain,
@@ -151,9 +153,19 @@ class _SignInChildPageState extends State<SignInChildPage> {
             children: [
               AppTintButton(
                 title: S.of(context).button_signIn,
-                onPressed: _signIn,
-                isLoading: state.signInStatus == LoadStatus.loading,
+                onPressed: _signInWithEmail,
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              SignInButton(
+                Buttons.Google,
+                onPressed: _signInWithGoogle,
+              ),
+              (state.signInWithGoogleStatus == LoadStatus.loading ||
+                      state.signInWithEmailStatus == LoadStatus.loading)
+                  ? const Center(child: CircularProgressIndicator())
+                  : const SizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -175,7 +187,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         );
@@ -183,8 +195,12 @@ class _SignInChildPageState extends State<SignInChildPage> {
     );
   }
 
-  void _signIn() {
-    _cubit.signIn();
+  void _signInWithEmail() {
+    _cubit.signInWithEmail();
+  }
+
+  void _signInWithGoogle() {
+    _cubit.signInWithGoogle();
   }
 
   void _signUp() {
