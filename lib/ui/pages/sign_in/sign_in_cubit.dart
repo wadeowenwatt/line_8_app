@@ -24,13 +24,13 @@ class SignInCubit extends Cubit<SignInState> {
     required this.appCubit,
   }) : super(const SignInState());
 
-  // void changeUsername({required String username}) {
-  //   emit(state.copyWith(username: username));
-  // }
-  //
-  // void changePassword({required String password}) {
-  //   emit(state.copyWith(password: password));
-  // }
+  void changeUsername({required String username}) {
+    emit(state.copyWith(username: username));
+  }
+
+  void changePassword({required String password}) {
+    emit(state.copyWith(password: password));
+  }
   //
   // void signIn() async {
   //   final username = state.username ?? '';
