@@ -67,7 +67,7 @@ class SignInCubit extends Cubit<SignInState> {
       final result = await authRepo.signInWithGoogle();
       if (result != null) {
         // UserEntity? myProfile = await userRepo.getProfile();
-        appCubit.updateProfile();
+        appCubit.updateProfile(UserEntity.mockData());
 
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);

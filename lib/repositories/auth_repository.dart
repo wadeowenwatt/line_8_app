@@ -51,16 +51,17 @@ class AuthRepositoryImpl extends AuthRepository {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    // final GoogleAuthProvider provider = GoogleAuthProvider();
-    // provider..addScope(
-    //   "https://www.googleapis.com/auth/user.birthday.read",
-    // )..addScope("https://www.googleapis.com/auth/userinfo.profile");
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: [
+        "https://www.googleapis.com/auth/user.birthday.read",
+        "https://www.googleapis.com/auth/userinfo.profile",
+      ],
+    );
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleUser.authentication;
+          await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -69,10 +70,10 @@ class AuthRepositoryImpl extends AuthRepository {
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithCredential(credential);
+            await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        print(user);
+        print(user!.uid);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
