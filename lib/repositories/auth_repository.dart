@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,10 +8,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/network/api_client.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../common/app_images.dart';
 import '../ui/commons/app_snackbar.dart';
 
 abstract class AuthRepository {
-
   Future<User?> signInWithGoogle();
 
   Future<void> signOutGoogle();
@@ -31,6 +32,17 @@ class AuthRepositoryImpl extends AuthRepository {
 
   AuthRepositoryImpl({required this.apiClient});
 
+  MyUserEntity? _userFromFirebaseUser(User? user) {
+    return user != null
+        ? MyUserEntity(
+            uid: user.uid,
+            name: user.displayName ?? "",
+            email: user.email ?? "",
+            phoneNumber: user.phoneNumber ?? "",
+            urlAvatar: user.photoURL ?? AppImages.bgUserPlaceholder)
+        : null;
+  }
+
   Future<String> getBirthday(GoogleSignInAccount googleUser) async {
     final headers = await googleUser.authHeaders;
 
@@ -39,7 +51,8 @@ class AuthRepositoryImpl extends AuthRepository {
             "https://people.googleapis.com/v1/people/me?personFields=birthday&key="),
         headers: {"Authorization": headers["Authorization"] ?? ""});
     final response = jsonDecode(r.body);
-    String birthDay = '${response["birthdays"][1]["date"]["day"]}/${response["birthdays"][1]["date"]["month"]}/${response["birthdays"][1]["date"]["year"]}';
+    String birthDay =
+        '${response["birthdays"][1]["date"]["day"]}/${response["birthdays"][1]["date"]["month"]}/${response["birthdays"][1]["date"]["year"]}';
     return birthDay;
   }
 
@@ -110,7 +123,8 @@ class AuthRepositoryImpl extends AuthRepository {
         AppSnackbar.showError(message: 'The password provided is too weak.');
         return null;
       } else if (e.code == 'email-already-in-use') {
-        AppSnackbar.showError(message: 'The account already exists for that email.');
+        AppSnackbar.showError(
+            message: 'The account already exists for that email.');
         return null;
       }
     } catch (e) {

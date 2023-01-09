@@ -21,5 +21,6 @@ class AppImages {
 
   /// Profile
   static const icLock = 'assets/images/ic_lock.svg';
+  static const bgUserPlaceholder = 'assets/images/bg_user_placeholder.png';
 
 }
