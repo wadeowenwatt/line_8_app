@@ -50,4 +50,14 @@ class AppCubit extends Cubit<AppState> {
       emit(state.copyWith(signOutStatus: LoadStatus.failure));
     }
   }
+
+  void signOutEmail() async {
+    emit(state.copyWith(signOutStatus: LoadStatus.loading));
+    try {
+      await authRepo.signOutWithEmail();
+      emit(state.removeUser().copyWith(signOutStatus: LoadStatus.success),);
+    } catch (e) {
+      emit(state.copyWith(signOutStatus: LoadStatus.failure));
+    }
+  }
 }

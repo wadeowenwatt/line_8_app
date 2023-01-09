@@ -17,10 +17,19 @@ abstract class AuthRepository {
   Future<User?> signInWithGoogle();
 
   Future<void> signOutGoogle();
+
+  Future<User?> signInWithEmail(String email, String password);
+
+  Future signOutWithEmail();
+
+  Future registerEmail(String email, String password);
+
 }
 
 class AuthRepositoryImpl extends AuthRepository {
   ApiClient apiClient;
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user;
 
   AuthRepositoryImpl({required this.apiClient});
 
@@ -48,20 +57,18 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<User?> signInWithGoogle() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-
     final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         "https://www.googleapis.com/auth/user.birthday.read",
         "https://www.googleapis.com/auth/userinfo.profile",
       ],
     );
+
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     if (googleUser != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
@@ -70,10 +77,10 @@ class AuthRepositoryImpl extends AuthRepository {
 
       try {
         final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
+        await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        print(user!.uid);
+        print(user!.providerData);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here
@@ -88,7 +95,60 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signOutGoogle() {
-    return GoogleSignIn().signOut();
+  Future<void> signOutGoogle() async {
+    try {
+      await auth.signOut();
+      await GoogleSignIn().signOut();
+    } catch(error) {
+      print("$error sign out Google error!");
+    }
   }
+
+  @override
+  Future registerEmail(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      user = credential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return user;
+  }
+
+  @override
+  Future<User?> signInWithEmail(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+      user = credential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        /// Todo
+      } else if (e.code == 'wrong-password') {
+        /// Todo
+      }
+    }
+    return user;
+  }
+
+  @override
+  Future signOutWithEmail() async {
+    try {
+      await auth.signOut();
+    } catch(error) {
+      print("$error signout Email error");
+    }
+  }
+
 }

@@ -57,8 +57,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: 'mobile@newwave.com');
-    passwordTextController = TextEditingController(text: "mobile");
+    usernameTextController = TextEditingController(text: 'test@gmail.com');
+    passwordTextController = TextEditingController(text: "test123456");
     obscurePasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignInCubit>(context);
     _cubit.changeUsername(username: usernameTextController.text);
@@ -74,10 +74,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
   }
 
   Widget buildBodyWidget() {
-    final showingKeyboard = MediaQuery
-        .of(context)
-        .viewInsets
-        .bottom != 0;
+    final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
@@ -93,9 +90,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
             aspectRatio: 5 / 1,
             child: SizedBox(
                 child: Image(
-                  fit: BoxFit.contain,
-                  image: AssetImage(AppImages.imageDecorate),
-                )),
+              fit: BoxFit.contain,
+              image: AssetImage(AppImages.imageDecorate),
+            )),
           ),
           SizedBox(
             height: showingKeyboard ? 0 : 200,
@@ -155,23 +152,20 @@ class _SignInChildPageState extends State<SignInChildPage> {
           child: Column(
             children: [
               AppTintButton(
-                title: S
-                    .of(context)
-                    .button_signIn,
-                onPressed: () {},
+                title: S.of(context).button_signIn,
+                onPressed: _signInWithEmail,
               ),
               const SizedBox(
                 height: 10,
               ),
-              SignInButton(Buttons.Google, onPressed: _signInWithGoogle,),
-              state.signInWithGoogleStatus == LoadStatus.loading
+              SignInButton(
+                Buttons.Google,
+                onPressed: _signInWithGoogle,
+              ),
+              (state.signInWithGoogleStatus == LoadStatus.loading ||
+                      state.signInWithEmailStatus == LoadStatus.loading)
                   ? const Center(child: CircularProgressIndicator())
                   : const SizedBox(),
-              // AppTintButton(
-              //   title: "Sign In With Google",
-              //   onPressed: _signInWithGoogle,
-              //   isLoading: state.signInWithGoogleStatus == LoadStatus.loading,
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -201,11 +195,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
     );
   }
 
-  void _signIn() {
-    _cubit.signIn();
+  void _signInWithEmail() {
+    _cubit.signInWithEmail();
   }
-
-  void _signInWithEmail() {}
 
   void _signInWithGoogle() {
     _cubit.signInWithGoogle();

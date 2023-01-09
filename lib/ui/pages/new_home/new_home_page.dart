@@ -194,6 +194,7 @@ class _NewHomePageState extends State<_NewHomePage> {
 
   void _handleSignOut() {
     _appCubit.signOutGoogle();
+    _appCubit.signOutEmail();
   }
 
   void _moveToProfile() {
