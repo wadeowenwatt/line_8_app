@@ -6,13 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/entities/token_entity.dart';
 
 abstract class AuthRepository {
-  Future<TokenEntity?> getToken();
-
-  Future<void> saveToken(TokenEntity token);
-
-  Future<void> removeToken();
-
-  Future<TokenEntity?> signIn(String username, String password);
 
   Future<User?> signInWithGoogle();
 
@@ -24,6 +17,8 @@ abstract class AuthRepository {
 
   Future registerEmail(String email, String password);
 
+  Future<User?> getUser();
+
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -32,28 +27,6 @@ class AuthRepositoryImpl extends AuthRepository {
   User? user;
 
   AuthRepositoryImpl({required this.apiClient});
-
-  @override
-  Future<TokenEntity?> getToken() async {
-    return await SecureStorageHelper.instance.getToken();
-  }
-
-  @override
-  Future<void> removeToken() async {
-    return SecureStorageHelper.instance.removeToken();
-  }
-
-  @override
-  Future<void> saveToken(TokenEntity token) async {
-    return SecureStorageHelper.instance.saveToken(token);
-  }
-
-  @override
-  Future<TokenEntity?> signIn(String username, String password) async {
-    await Future.delayed(const Duration(seconds: 2));
-    return TokenEntity(
-        accessToken: 'app_access_token', refreshToken: 'app_refresh_token');
-  }
 
   @override
   Future<User?> signInWithGoogle() async {
@@ -150,6 +123,11 @@ class AuthRepositoryImpl extends AuthRepository {
     } catch(error) {
       print("$error signout Email error");
     }
+  }
+
+  @override
+  Future<User?> getUser() async {
+    return auth.currentUser;
   }
 
 }
