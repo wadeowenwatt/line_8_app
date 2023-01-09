@@ -53,10 +53,6 @@ List choices = [
       pathImage: "assets/images/img_2.png",
       pathScreen: RouteConfig.feedback),
   Choice(
-      title: "Feedback",
-      pathImage: "assets/images/img_2.png",
-      pathScreen: RouteConfig.feedback),
-  Choice(
     title: "Log out",
     pathImage: "assets/images/ic_logout.png",
     pathScreen: "",
@@ -149,7 +145,7 @@ class _NewHomePageState extends State<_NewHomePage> {
                               onClick2: () {
                                 (index * 2 + 1) >= choices.length
                                     ? {}
-                                    : (choices[index * 2] as Choice)
+                                    : (choices[index * 2 + 1] as Choice)
                                             .isLogoutButton
                                         ? _handleSignOut()
                                         : _onClick(

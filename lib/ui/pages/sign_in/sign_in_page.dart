@@ -71,7 +71,9 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(child: buildBodyWidget()),
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+           child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
     );
   }

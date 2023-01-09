@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/app_images.dart';
+import '../../../models/enums/load_status.dart';
 import '../../../repositories/auth_repository.dart';
 import '../../../repositories/user_repository.dart';
 import '../../widgets/input/app_email_input.dart';
@@ -158,13 +159,18 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: widthOfScreen / 15),
-                        child: AppTintButton(
-                          title: "Sign Up",
-                          onPressed: _signUpWithEmail,
-                        )),
+                    BlocBuilder<SignUpCubit, SignUpState>(
+                      builder: (context, state) {
+                        return Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: widthOfScreen / 15),
+                            child: AppTintButton(
+                              title: "Sign Up",
+                              onPressed: _signUpWithEmail,
+                              isLoading: state.signUpStatus == LoadStatus.loading,
+                            ));
+                      },
+                    ),
                     SizedBox(
                         height: showingKeyboard ? (keyboardHeight) + 20 : 200)
                   ],
