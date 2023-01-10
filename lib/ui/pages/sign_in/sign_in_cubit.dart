@@ -84,6 +84,7 @@ class SignInCubit extends Cubit<SignInState> {
     try {
       final result = await authRepo.signInWithEmail(username, password);
       if (result != null) {
+        appCubit.fetchProfile(result.uid);
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

@@ -22,7 +22,8 @@ class AppCubit extends Cubit<AppState> {
   void fetchProfile(String uid) async {
     emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
     try {
-      MyUserEntity? myUserEntity = await firestoreRepo.fetchUserData(uid);
+      final myUserEntity = await firestoreRepo.fetchUserData(uid);
+      // print(myUserEntity?.uid);
       if (myUserEntity != null) {
         emit(state.copyWith(fetchProfileStatus: LoadStatus.success, user: myUserEntity));
       } else {

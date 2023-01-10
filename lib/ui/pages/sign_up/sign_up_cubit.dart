@@ -61,8 +61,6 @@ class SignUpCubit extends Cubit<SignUpState> {
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
       if (resultSignUp != null) {
-        appCubit.fetchProfile(resultSignUp.uid);
-
         firestoreRepo.createUserData(
           resultSignUp.uid,
           resultSignUp.displayName,
@@ -70,6 +68,8 @@ class SignUpCubit extends Cubit<SignUpState> {
           resultSignUp.photoURL,
           resultSignUp.phoneNumber,
         );
+
+        appCubit.fetchProfile(resultSignUp.uid);
 
         emit(state.copyWith(signUpStatus: LoadStatus.success));
         Get.offAllNamed(RouteConfig.main);

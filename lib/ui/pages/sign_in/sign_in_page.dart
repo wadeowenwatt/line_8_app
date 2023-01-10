@@ -62,8 +62,8 @@ class _SignInChildPageState extends State<SignInChildPage> {
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: '');
-    passwordTextController = TextEditingController(text: "");
+    usernameTextController = TextEditingController(text: 'abc@gmail.com');
+    passwordTextController = TextEditingController(text: "test123456");
     obscurePasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignInCubit>(context);
     _cubit.changeUsername(username: usernameTextController.text);

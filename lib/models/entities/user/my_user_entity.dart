@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyUserEntity {
   String uid;
-  String name;
-  String urlAvatar;
-  int employeeNumber;
+  String? name;
+  String? urlAvatar;
+  int? employeeNumber;
   Timestamp dateOfBirth;
-  String position;
-  String phoneNumber;
-  String email;
+  String? position;
+  String? phoneNumber;
+  String? email;
 
   MyUserEntity({
     required this.uid,

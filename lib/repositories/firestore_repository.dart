@@ -47,13 +47,14 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
 
   @override
   Future<MyUserEntity?> fetchUserData(String uid) async {
+    MyUserEntity? myUserEntity;
     try {
-      membersCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
-        return MyUserEntity.fromJson(snapshot.data() as Map<String, dynamic>);
+      await membersCollection.doc(uid).get().then((DocumentSnapshot snapshot) {
+        myUserEntity = MyUserEntity.fromJson(snapshot.data() as Map<String, dynamic>);
       });
     } catch(error) {
       print('$error fetch user data failed');
     }
-    return null;
+    return myUserEntity;
   }
 }
