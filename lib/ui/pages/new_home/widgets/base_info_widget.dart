@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../../common/app_colors.dart';
 
-class InformationWidget extends StatelessWidget {
-  const InformationWidget({Key? key, required this.onClick})
+class InformationWidget extends StatefulWidget {
+  const InformationWidget({Key? key, required this.onClick, this.name = "",})
       : super(key: key);
 
   final VoidCallback onClick;
+  final String name;
 
+  @override
+  State<InformationWidget> createState() => _InformationWidgetState();
+}
+
+class _InformationWidgetState extends State<InformationWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,8 +23,8 @@ class InformationWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Linh Tran",
-                  style: TextStyle(
+              Text(widget.name,
+                  style: const TextStyle(
                     fontSize: 30,
                   )),
               Row(
@@ -44,7 +50,7 @@ class InformationWidget extends StatelessWidget {
           ),
           const Expanded(child: SizedBox()),
           GestureDetector(
-            onTap: onClick,
+            onTap: widget.onClick,
             child: const CircleAvatar(
               radius: 30,
               backgroundImage:

@@ -89,9 +89,9 @@ class _NewHomePageState extends State<_NewHomePage> {
       body: Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-          AppColors.primaryDarkColorLeft,
-          AppColors.primaryLightColorRight
-        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+              AppColors.primaryDarkColorLeft,
+              AppColors.primaryLightColorRight
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: BlocBuilder<AppCubit, AppState>(
           builder: (context, state) {
             if (state.signOutStatus == LoadStatus.loading) {
@@ -101,8 +101,14 @@ class _NewHomePageState extends State<_NewHomePage> {
             } else {
               return Column(
                 children: [
-                  InformationWidget(
-                    onClick: () => _moveToProfile(),
+                  BlocBuilder<AppCubit, AppState>(
+                    bloc: _appCubit,
+                    builder: (context, state) {
+                      return InformationWidget(
+                        onClick: () => _moveToProfile(),
+                        name: state.user?.name ?? "Unknown",
+                      );
+                    },
                   ),
                   Expanded(
                     child: Stack(
@@ -131,17 +137,17 @@ class _NewHomePageState extends State<_NewHomePage> {
                                 (choices[index * 2] as Choice).isLogoutButton
                                     ? _handleSignOut()
                                     : _onClick((choices[index * 2] as Choice)
-                                        .pathScreen);
+                                    .pathScreen);
                               },
                               onClick2: () {
                                 (index * 2 + 1) >= choices.length
                                     ? {}
                                     : (choices[index * 2 + 1] as Choice)
-                                            .isLogoutButton
-                                        ? _handleSignOut()
-                                        : _onClick(
-                                            (choices[index * 2 + 1] as Choice)
-                                                .pathScreen);
+                                    .isLogoutButton
+                                    ? _handleSignOut()
+                                    : _onClick(
+                                    (choices[index * 2 + 1] as Choice)
+                                        .pathScreen);
                               },
                             );
                           },
