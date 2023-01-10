@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/ui/commons/app_dialog.dart';
 import 'package:flutter_base/ui/pages/main/main_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
@@ -12,22 +13,23 @@ import 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   final AuthRepository authRepo;
-  final UserRepository userRepo;
+  final FirestoreRepository firestoreRepo;
 
   SplashCubit({
     required this.authRepo,
-    required this.userRepo,
+    required this.firestoreRepo,
   }) : super(const SplashState());
 
   void checkLogin() async {
     await Future.delayed(const Duration(seconds: 3));
     final user = await authRepo.getUser();
+
     if (user == null) {
       Get.offAll(() => const SignInPage());
     } else {
       try {
         //Profile
-        await userRepo.getProfile();
+        await firestoreRepo.fetchUserData(user.uid);
         //Todo
         // authService.updateUser(myProfile);
       } catch (error, s) {

@@ -16,13 +16,11 @@ part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   final AuthRepository authRepo;
-  final UserRepository userRepo;
   final FirestoreRepository firestoreRepo;
   final AppCubit appCubit;
 
   SignInCubit({
     required this.authRepo,
-    required this.userRepo,
     required this.appCubit,
     required this.firestoreRepo,
   }) : super(const SignInState());
@@ -34,15 +32,31 @@ class SignInCubit extends Cubit<SignInState> {
   void changePassword({required String password}) {
     emit(state.copyWith(password: password));
   }
-  
+
   Future<void> signInWithGoogle() async {
     emit(state.copyWith(signInWithGoogleStatus: LoadStatus.loading));
     try {
       final result = await authRepo.signInWithGoogle();
+
       if (result != null) {
-        // UserEntity? myProfile = await userRepo.getProfile();
-        // appCubit.updateProfile(UserEntity.mockData());
-        firestoreRepo.updateUserData(result.uid, result.displayName, result.email, "999");
+        appCubit.fetchProfile(result.uid);
+
+        final creationTime = result.metadata.creationTime;
+        final lastSignInTime = result.metadata.lastSignInTime;
+        if (creationTime!.year.compareTo(lastSignInTime!.year) == 0 &&
+            creationTime.month.compareTo(lastSignInTime.month) == 0 &&
+            creationTime.day.compareTo(lastSignInTime.day) == 0 &&
+            creationTime.hour.compareTo(lastSignInTime.hour) == 0 &&
+            creationTime.minute.compareTo(lastSignInTime.minute) == 0 &&
+            creationTime.second.compareTo(lastSignInTime.second) == 0) {
+          firestoreRepo.createUserData(
+            result.uid,
+            result.displayName,
+            result.email,
+            result.photoURL,
+            result.phoneNumber,
+          );
+        }
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {
@@ -52,7 +66,6 @@ class SignInCubit extends Cubit<SignInState> {
       logger.e(error);
       emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
     }
-
   }
 
   /// Don't need email,pwd because we handle it in sign_in_state
@@ -81,5 +94,4 @@ class SignInCubit extends Cubit<SignInState> {
       emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
     }
   }
-
 }

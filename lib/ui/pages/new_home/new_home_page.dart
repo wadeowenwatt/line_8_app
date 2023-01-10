@@ -39,15 +39,6 @@ List choices = [
       title: "Request Seminal",
       pathImage: "assets/images/img_6.png",
       pathScreen: RouteConfig.requestSeminal),
-  // Choice(
-  //     title: "Wiki",
-  //     pathImage: "assets/images/img.png",
-  //     pathScreen: RouteConfig.wiki),
-  // Choice(
-  //   title: "Member Skill",
-  //   pathImage: "assets/images/img_4.png",
-  //   pathScreen: RouteConfig.memberSkills,
-  // ),
   Choice(
       title: "Feedback",
       pathImage: "assets/images/img_2.png",

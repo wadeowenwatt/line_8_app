@@ -1,29 +1,52 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/models/entities/user/user_entity.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/enums/load_status.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/user_repository.dart';
-import '../utils/logger.dart';
 
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
-  UserRepository userRepo;
+  FirestoreRepository firestoreRepo;
   AuthRepository authRepo;
 
   AppCubit({
-    required this.userRepo,
+    required this.firestoreRepo,
     required this.authRepo,
   }) : super(const AppState());
 
-  void fetchProfile() {
+  void fetchProfile(String uid) async {
     emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
+    try {
+      MyUserEntity? myUserEntity = await firestoreRepo.fetchUserData(uid);
+      if (myUserEntity != null) {
+        emit(state.copyWith(fetchProfileStatus: LoadStatus.success, user: myUserEntity));
+      } else {
+        emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+      }
+    } catch(error) {
+      print("$error fetch user data failed!");
+      emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+    }
   }
 
-  void updateProfile(UserEntity user) {
-    emit(state.copyWith(user: user));
+  void updateProfile(MyUserEntity user) async {
+    emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
+    // try {
+    //   /// TODO
+    //   if (myUserEntity != null) {
+    //     emit(state.copyWith(fetchProfileStatus: LoadStatus.success));
+    //   } else {
+    //     emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+    //   }
+    // } catch(error) {
+    //   print("$error fetch user data failed!");
+    //   emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+    // }
   }
 
   void signOutGoogle() async {

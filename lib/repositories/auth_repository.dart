@@ -14,32 +14,35 @@ import '../ui/commons/app_snackbar.dart';
 abstract class AuthRepository {
   Future<User?> signInWithGoogle();
 
-  Future<void> signOutGoogle();
-
   Future<User?> signInWithEmail(String email, String password);
+
+  Future<void> signOutGoogle();
 
   Future signOutWithEmail();
 
-  Future registerEmail(String email, String passwordConfirm);
+  Future<User?> registerEmail(String email, String passwordConfirm);
 
   Future<User?> getUser();
+
+  MyUserEntity? convertUserFromFirebaseUser(User? user);
+
 }
 
 class AuthRepositoryImpl extends AuthRepository {
   ApiClient apiClient;
   FirebaseAuth auth = FirebaseAuth.instance;
-  User? user;
 
   AuthRepositoryImpl({required this.apiClient});
 
-  MyUserEntity? _userFromFirebaseUser(User? user) {
+  @override
+  MyUserEntity? convertUserFromFirebaseUser(User? user) {
     return user != null
         ? MyUserEntity(
-            uid: user.uid,
-            name: user.displayName ?? "",
-            email: user.email ?? "",
-            phoneNumber: user.phoneNumber ?? "",
-            urlAvatar: user.photoURL ?? AppImages.bgUserPlaceholder)
+        uid: user.uid,
+        name: user.displayName ?? "",
+        email: user.email ?? "",
+        phoneNumber: user.phoneNumber ?? "",
+        urlAvatar: user.photoURL ?? AppImages.bgUserPlaceholder)
         : null;
   }
 
@@ -80,9 +83,7 @@ class AuthRepositoryImpl extends AuthRepository {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
 
-        user = userCredential.user;
-        // var birthDay = await getBirthday(googleUser);
-        // print(birthDay);
+        User? user = userCredential.user;
         return user;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
@@ -109,14 +110,14 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future registerEmail(String email, String passwordConfirm) async {
+  Future<User?> registerEmail(String email, String passwordConfirm) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: passwordConfirm,
       );
-      user = credential.user;
+      User? user = credential.user;
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -138,7 +139,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      user = credential.user;
+      User? user = credential.user;
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

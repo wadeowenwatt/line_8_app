@@ -4,6 +4,7 @@ import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../repositories/firestore_repository.dart';
 import '../../../repositories/user_repository.dart';
 import 'splash_cubit.dart';
 
@@ -16,7 +17,7 @@ class SplashPage extends StatelessWidget {
       create: (context) {
         return SplashCubit(
           authRepo: RepositoryProvider.of<AuthRepository>(context),
-          userRepo: RepositoryProvider.of<UserRepository>(context),
+          firestoreRepo: RepositoryProvider.of<FirestoreRepository>(context),
         );
       },
       child: const SplashChildPage(),

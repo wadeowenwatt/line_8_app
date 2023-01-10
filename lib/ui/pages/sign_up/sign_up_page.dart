@@ -23,13 +23,11 @@ class SignUpPage extends StatelessWidget {
     return BlocProvider(
       create: (con) {
         final authRepo = RepositoryProvider.of<AuthRepository>(context);
-        final userRepo = RepositoryProvider.of<UserRepository>(context);
         final firestoreRepo =
         RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
         return SignUpCubit(
           authRepo: authRepo,
-          userRepo: userRepo,
           firestoreRepo: firestoreRepo,
           appCubit: appCubit,
         );

@@ -70,9 +70,10 @@ class _MyAppState extends State<MyApp> {
         providers: [
           BlocProvider<AppCubit>(create: (context) {
             final userRepo = RepositoryProvider.of<UserRepository>(context);
+            final firestoreRepo = RepositoryProvider.of<FirestoreRepository>(context);
             final authRepo = RepositoryProvider.of<AuthRepository>(context);
             return AppCubit(
-              userRepo: userRepo,
+              firestoreRepo: firestoreRepo,
               authRepo: authRepo,
             );
           }),

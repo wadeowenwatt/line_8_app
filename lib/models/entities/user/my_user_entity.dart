@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyUserEntity {
-  final String uid;
-  final String name;
-  final String urlAvatar;
-  final int employeeNumber;
-  final Timestamp dateOfBirth;
-  final String position;
-  final String phoneNumber;
-  final String email;
+  String uid;
+  String name;
+  String urlAvatar;
+  int employeeNumber;
+  Timestamp dateOfBirth;
+  String position;
+  String phoneNumber;
+  String email;
 
   MyUserEntity({
     required this.uid,
@@ -40,6 +40,19 @@ class MyUserEntity {
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       position: position ?? this.position,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
+
+  static MyUserEntity fromJson(Map<String, dynamic> json) {
+    return MyUserEntity(
+      uid: json["uid"],
+      name: json["name"],
+      email: json["email"],
+      urlAvatar: json["url_avatar"],
+      phoneNumber: json["phone_number"],
+      dateOfBirth: json["date_of_birth"],
+      employeeNumber: json["employee_number"],
+      position: json["position"],
     );
   }
 }

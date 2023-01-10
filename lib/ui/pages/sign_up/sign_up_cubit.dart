@@ -15,13 +15,11 @@ part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepo;
-  final UserRepository userRepo;
   final FirestoreRepository firestoreRepo;
   final AppCubit appCubit;
 
   SignUpCubit({
     required this.authRepo,
-    required this.userRepo,
     required this.appCubit,
     required this.firestoreRepo,
   }) : super(const SignUpState());
@@ -63,12 +61,16 @@ class SignUpCubit extends Cubit<SignUpState> {
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
       if (resultSignUp != null) {
-        firestoreRepo.updateUserData(
+        appCubit.fetchProfile(resultSignUp.uid);
+
+        firestoreRepo.createUserData(
           resultSignUp.uid,
-          resultSignUp.displayName ?? "Unknown",
+          resultSignUp.displayName,
           resultSignUp.email,
-          "999",
+          resultSignUp.photoURL,
+          resultSignUp.phoneNumber,
         );
+
         emit(state.copyWith(signUpStatus: LoadStatus.success));
         Get.offAllNamed(RouteConfig.main);
       } else {
