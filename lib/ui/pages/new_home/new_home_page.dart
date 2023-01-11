@@ -93,6 +93,7 @@ class _NewHomePageState extends State<_NewHomePage> {
               AppColors.primaryLightColorRight
             ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: BlocBuilder<AppCubit, AppState>(
+          bloc: _appCubit,
           builder: (context, state) {
             if (state.signOutStatus == LoadStatus.loading) {
               return const Center(
@@ -101,17 +102,12 @@ class _NewHomePageState extends State<_NewHomePage> {
             } else {
               return Column(
                 children: [
-                  BlocBuilder<AppCubit, AppState>(
-                    bloc: _appCubit,
-                    builder: (context, state) {
-                      return InformationWidget(
-                        onClick: () => _moveToProfile(),
-                        name: state.user?.name ?? "Unknown",
-                        department: state.user?.department ?? "Line X",
-                        employeeNumber: state.user?.employeeNumber ?? "000",
-                        position: state.user?.position ?? "Unknown",
-                      );
-                    },
+                  InformationWidget(
+                    onClick: () => _moveToProfile(),
+                    name: state.user?.name ?? "Unknown",
+                    department: state.user?.department ?? "Line X",
+                    employeeNumber: state.user?.employeeNumber ?? "000",
+                    position: state.user?.position ?? "Unknown",
                   ),
                   Expanded(
                     child: Stack(

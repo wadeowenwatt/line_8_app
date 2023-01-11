@@ -44,6 +44,13 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(phoneNumber: phoneNumber));
   }
 
+  void changePosition({required String? position}) {
+    emit(state.copyWith(position: position));
+  }
+
+  void changeDepartment({required String? department}) {
+    emit(state.copyWith(department: department));
+  }
 
   Future signUpWithEmail() async {
     final email = state.email ?? '';

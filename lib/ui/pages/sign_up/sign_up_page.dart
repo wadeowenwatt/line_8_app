@@ -211,11 +211,14 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Position", style: AppTextStyle.blackS12),
-                          const DropdownWidget(
-                            nameList: [
+                          DropdownWidget(
+                            nameList: const [
                               "Developer",
                               "Line Manager",
                             ],
+                            onChanged: (String? text) {
+                              _cubit.changePosition(position: text);
+                            },
                           ),
                         ],
                       ),
@@ -230,12 +233,33 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Department", style: AppTextStyle.blackS12),
-                          const DropdownWidget(
+                          DropdownWidget(
                             nameList: ["Line 8", "Line 1", "Line 2"],
+                            onChanged: (text) {
+                              _cubit.changeDepartment(department: text);
+                            },
                           ),
                         ],
                       ),
                     ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: widthOfScreen / 15),
+                        child: AppLabelTextField(
+                          labelText: "Employee Number",
+                          highlightText: "*",
+                          textInputType: TextInputType.number,
+                          onChanged: (text) {
+                            _cubit.changePhoneNumber(phoneNumber: text);
+                          },
+                        )),
+                    const SizedBox(
+                      height: 12,
+                    ),
+
                     BlocBuilder<SignUpCubit, SignUpState>(
                       builder: (context, state) {
                         return Container(

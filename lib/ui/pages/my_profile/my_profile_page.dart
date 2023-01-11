@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
+import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/list_member/member_profile/widgets/label_text_widget.dart';
 import 'package:get/get.dart';
@@ -55,6 +56,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   const CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 50,
+                    backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
                   ),
                   const SizedBox(
                     height: 10,

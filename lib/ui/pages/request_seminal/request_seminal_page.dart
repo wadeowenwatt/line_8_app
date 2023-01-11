@@ -64,8 +64,8 @@ class RequestSeminalPage extends StatelessWidget {
             "Name:",
             style: TextStyle(color: Colors.grey),
           ),
-          const DropdownWidget(
-            nameList: ["", "linhtn1", "asdasd", "asdasdasd"],
+          DropdownWidget(
+            nameList: const ["", "linhtn1", "asdasd", "asdasdasd"],
           ),
           const SizedBox(
             height: 20,
