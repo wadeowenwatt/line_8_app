@@ -7,7 +7,7 @@ class LabelText extends StatelessWidget {
   });
 
   final String nameLabel;
-  final String text;
+  final String? text;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class LabelText extends StatelessWidget {
         ),
         const SizedBox(height: 5,),
         Text(
-          text,
+          text ?? "",
           style: const TextStyle(
             color: Colors.black,
             fontSize: 14

@@ -41,6 +41,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
@@ -51,14 +52,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
               (context, index) {
                 return Container(
                   decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primaryLightColorLeft,
-                        AppColors.primaryLightColorRight,
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: AppColors.primaryLightColorRight
                   ),
                   child: Container(
                     decoration: const BoxDecoration(
@@ -88,6 +82,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
     return SliverAppBar(
       snap: true,
       floating: true,
+      pinned: true,
       title: const Text("My Profile"),
       elevation: 0,
       actions: [
@@ -131,7 +126,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
           ),
         ],
       ),
-      backgroundColor: AppColors.primaryLightColorLeft,
+      backgroundColor: AppColors.primaryLightColorRight,
     );
   }
 
