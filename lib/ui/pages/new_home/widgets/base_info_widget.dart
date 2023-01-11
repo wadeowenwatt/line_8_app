@@ -7,6 +7,7 @@ class InformationWidget extends StatefulWidget {
     Key? key,
     required this.onClick,
     this.name = "",
+    this.urlAvatar = "",
     this.department = "",
     this.employeeNumber = "000",
     this.position = "Unknown",
@@ -14,6 +15,7 @@ class InformationWidget extends StatefulWidget {
 
   final VoidCallback onClick;
   final String name;
+  final String urlAvatar;
   final String department;
   final String employeeNumber;
   final String position;
@@ -54,7 +56,8 @@ class _InformationWidgetState extends State<InformationWidget> {
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                     child: Text(
                       widget.position,
-                      style: const TextStyle(color: AppColors.primaryLightColorLeft),
+                      style: const TextStyle(
+                          color: AppColors.primaryLightColorLeft),
                     )),
               ),
             ],
@@ -62,9 +65,12 @@ class _InformationWidgetState extends State<InformationWidget> {
           const Expanded(child: SizedBox()),
           GestureDetector(
             onTap: widget.onClick,
-            child: const CircleAvatar(
+            child: CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
+              backgroundImage: widget.urlAvatar.isEmpty
+                  ? const AssetImage(AppImages.bgUserPlaceholder)
+                  : NetworkImage(widget.urlAvatar)
+                      as ImageProvider,
             ),
           ),
         ],
