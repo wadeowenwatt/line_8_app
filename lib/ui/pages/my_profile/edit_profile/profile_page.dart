@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
+import 'package:flutter_base/repositories/auth_repository.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
+import 'package:flutter_base/ui/pages/my_profile/widgets/row_dropdown_widget.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
+import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
+import 'package:flutter_base/ui/widgets/input/app_label_text_field.dart';
+import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import '../../../../common/app_colors.dart';
+import '../../../../common/app_images.dart';
 import 'profile_cubit.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -13,7 +21,15 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return ProfileCubit();
+        final firestoreRepo =
+            RepositoryProvider.of<FirestoreRepository>(context);
+        final authRepo = RepositoryProvider.of<AuthRepository>(context);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return ProfileCubit(
+          appCubit: appCubit,
+          authRepo: authRepo,
+          firestoreRepo: firestoreRepo,
+        );
       },
       child: const _ProfileTabPage(),
     );
@@ -27,19 +43,24 @@ class _ProfileTabPage extends StatefulWidget {
   State<_ProfileTabPage> createState() => _ProfileTabPageState();
 }
 
-class _ProfileTabPageState extends State<_ProfileTabPage>
-    with AutomaticKeepAliveClientMixin {
-  late AppCubit _appCubit;
+class _ProfileTabPageState extends State<_ProfileTabPage> {
+  late TextEditingController usernameTextController;
+  late TextEditingController displayNameTextController;
+  late TextEditingController phoneNumberTextController;
+
+  late ProfileCubit _cubit;
 
   @override
   void initState() {
-    _appCubit = BlocProvider.of<AppCubit>(context);
     super.initState();
+    usernameTextController = TextEditingController(text: "");
+    displayNameTextController = TextEditingController(text: "");
+    phoneNumberTextController = TextEditingController(text: "");
+    _cubit = BlocProvider.of<ProfileCubit>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: CustomScrollView(
@@ -52,9 +73,9 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
               (context, index) {
                 return Container(
                   decoration: const BoxDecoration(
-                    color: AppColors.primaryLightColorRight
-                  ),
+                      color: AppColors.primaryLightColorRight),
                   child: Container(
+                    height: Get.size.height,
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -89,7 +110,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 10, 15, 10),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: _updateEditData,
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -131,112 +152,138 @@ class _ProfileTabPageState extends State<_ProfileTabPage>
   }
 
   Widget buildInfoCard() {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 1, color: AppColors.primaryLightColorRight),
-        ),
-        child: Row(
-          children: [
-            Card(
-              margin: const EdgeInsets.all(12),
-              child: Image.asset(
-                "assets/images/bg_image_placeholder.png",
-                width: 100,
-                height: 100,
-              ),
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border:
+                  Border.all(width: 1, color: AppColors.primaryLightColorRight),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Linh Tran",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: CircleAvatar(
+                    radius: 45,
+                    backgroundImage: state.user?.urlAvatar == null
+                        ? const AssetImage(AppImages.bgUserPlaceholder)
+                        : NetworkImage(state.user?.urlAvatar as String)
+                            as ImageProvider,
+                  ),
                 ),
-                SizedBox(
-                  height: 12,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      state.user?.name ?? "",
+                      style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      "${state.user?.department ?? "line X"} | E.Number: ${state.user?.employeeNumber ?? "000"}",
+                      style: const TextStyle(color: Colors.grey),
+                    )
+                  ],
                 ),
-                Text(
-                  "Class XI-B | Roll no: 04",
-                  style: TextStyle(color: Colors.grey),
-                )
+                Expanded(
+                  child: Align(
+                    alignment: AlignmentDirectional.topEnd,
+                    child: IconButton(
+                      icon: Image.asset(
+                        "assets/images/ic_camera.png",
+                        width: 30,
+                        height: 25,
+                        fit: BoxFit.fitHeight,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
               ],
             ),
-            Expanded(
-              child: Align(
-                alignment: AlignmentDirectional.topEnd,
-                child: IconButton(
-                  icon: Image.asset(
-                    "assets/images/ic_camera.png",
-                    width: 30,
-                    height: 25,
-                    fit: BoxFit.fitHeight,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget buildInputField() {
     return Column(
-      children: const [
+      children: [
         RowTextField(
-          textField1:
-              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: false),
-          textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: false),
+          textField1: AppLabelTextField(
+            labelText: "Name",
+            highlightText: "",
+            onChanged: (text) {
+              _cubit.changeDisplayName(displayName: text);
+            },
+          ),
+          textField2: AppLabelTextField(
+            labelText: "Employee Number",
+            highlightText: "",
+            textInputType: TextInputType.number,
+            onChanged: (text) {
+              _cubit.changeEmployeeNumber(employeeNumber: text);
+            },
+          ),
+        ),
+        RowDropdownWidget(
+          labelText1: "Position",
+          dropdownWidget1: DropdownWidget(
+            nameList: const [
+              "Developer",
+              "Line Manager",
+            ],
+            onChanged: (text) {
+              _cubit.changePosition(position: text);
+            },
+          ),
+          labelText2: "Department",
+          dropdownWidget2: DropdownWidget(
+            nameList: const ["Line 8", "Line 1", "Line 2"],
+            onChanged: (text) {
+              _cubit.changeDepartment(department: text);
+            },
+          ),
         ),
         RowTextField(
-          textField1:
-              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
-          textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
-        ),
-        RowTextField(
-          textField1:
-              TextFieldCustom(labelText: "Phone Number", haveSuffixIcon: true),
-          textField2: TextFieldCustom(labelText: "Name", haveSuffixIcon: true),
-        ),
-        Padding(
-          padding: EdgeInsets.all(17),
-          child: TextFieldCustom(
-            labelText: "Email",
-            haveSuffixIcon: true,
+          textField1: AppLabelTextField(
+            labelText: "Date of birth",
+            highlightText: "",
+            onChanged: (text) {
+              // _cubit.changeDoB(dateOfBirth: text);
+            },
+          ),
+          textField2: AppLabelTextField(
+            labelText: "Phone Number",
+            highlightText: "",
+            textInputType: TextInputType.phone,
+            onChanged: (text) {
+              _cubit.changePhoneNumber(phoneNumber: text);
+            },
           ),
         ),
         Padding(
-          padding: EdgeInsets.all(17),
-          child: TextFieldCustom(
-            labelText: "Email",
-            haveSuffixIcon: true,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(17),
-          child: TextFieldCustom(
-            labelText: "Email",
-            haveSuffixIcon: true,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(17),
-          child: TextFieldCustom(
-            labelText: "Email",
-            haveSuffixIcon: true,
-          ),
-        ),
+            padding: const EdgeInsets.all(17),
+            child: AppEmailInput(
+              highlightText: "",
+              onChanged: (text) {
+                _cubit.changeEmail(email: text);
+              },
+            )),
       ],
     );
   }
 
-  @override
-  bool get wantKeepAlive => true;
+  void _updateEditData() {
+    _cubit.updateDataUserToFirestore();
+  }
 }

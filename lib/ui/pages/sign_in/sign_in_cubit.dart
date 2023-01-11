@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/models/entities/user/user_entity.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
@@ -25,6 +26,25 @@ class SignInCubit extends Cubit<SignInState> {
     required this.firestoreRepo,
   }) : super(const SignInState());
 
+  void _createDataFirstTimeLoginGoogle(User user) {
+    final creationTime = user.metadata.creationTime;
+    final lastSignInTime = user.metadata.lastSignInTime;
+    if (creationTime!.year.compareTo(lastSignInTime!.year) == 0 &&
+        creationTime.month.compareTo(lastSignInTime.month) == 0 &&
+        creationTime.day.compareTo(lastSignInTime.day) == 0 &&
+        creationTime.hour.compareTo(lastSignInTime.hour) == 0 &&
+        creationTime.minute.compareTo(lastSignInTime.minute) == 0 &&
+        creationTime.second.compareTo(lastSignInTime.second) == 0) {
+      firestoreRepo.createUserData(
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        urlAvatar: user.photoURL,
+        phoneNumber: user.phoneNumber,
+      );
+    }
+  }
+
   void changeUsername({required String username}) {
     emit(state.copyWith(username: username));
   }
@@ -40,23 +60,7 @@ class SignInCubit extends Cubit<SignInState> {
 
       if (result != null) {
         appCubit.fetchProfile(result.uid);
-
-        final creationTime = result.metadata.creationTime;
-        final lastSignInTime = result.metadata.lastSignInTime;
-        if (creationTime!.year.compareTo(lastSignInTime!.year) == 0 &&
-            creationTime.month.compareTo(lastSignInTime.month) == 0 &&
-            creationTime.day.compareTo(lastSignInTime.day) == 0 &&
-            creationTime.hour.compareTo(lastSignInTime.hour) == 0 &&
-            creationTime.minute.compareTo(lastSignInTime.minute) == 0 &&
-            creationTime.second.compareTo(lastSignInTime.second) == 0) {
-          firestoreRepo.createUserData(
-            uid: result.uid,
-            name: result.displayName,
-            email: result.email,
-            urlAvatar: result.photoURL,
-            phoneNumber: result.phoneNumber,
-          );
-        }
+        _createDataFirstTimeLoginGoogle(result);
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

@@ -37,17 +37,14 @@ class AppCubit extends Cubit<AppState> {
 
   void updateProfile(MyUserEntity user) async {
     emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
-    // try {
-    //   /// TODO
-    //   if (myUserEntity != null) {
-    //     emit(state.copyWith(fetchProfileStatus: LoadStatus.success));
-    //   } else {
-    //     emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
-    //   }
-    // } catch(error) {
-    //   print("$error fetch user data failed!");
-    //   emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
-    // }
+    try {
+      await firestoreRepo.updateDataUser(uid: user.uid);
+      final myUserEntity = await firestoreRepo.fetchUserData(user.uid);
+      emit(state.copyWith(fetchProfileStatus: LoadStatus.success, user: myUserEntity));
+    } catch(error) {
+      print("$error fetch user data failed!");
+      emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+    }
   }
 
   void signOutGoogle() async {
