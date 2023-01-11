@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
+import 'package:flutter_base/ui/widgets/input/date_field_input.dart';
 import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -87,12 +88,14 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(), child: buildBodyWidget()),
+        physics: const ClampingScrollPhysics(),
+        child: buildBody(),
+      ),
       resizeToAvoidBottomInset: false,
     );
   }
 
-  Widget buildBodyWidget() {
+  Widget buildBody() {
     final showingKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final heightOfScreen = MediaQuery.of(context).size.height;
@@ -141,8 +144,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
                     ),
                     const SizedBox(height: 12),
-                    Container(
-                      margin:
+                    Padding(
+                      padding:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppEmailInput(
                         onChanged: (text) {
@@ -151,8 +154,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Container(
-                      margin:
+                    Padding(
+                      padding:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppPasswordInput(
                         obscureTextController: obscurePasswordController,
@@ -162,8 +165,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Container(
-                      margin:
+                    Padding(
+                      padding:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppPasswordInput(
                         labelText: "Confirm Password",
@@ -176,8 +179,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    Container(
-                      margin:
+                    Padding(
+                      padding:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: AppLabelTextField(
                         labelText: "Display Name",
@@ -190,8 +193,39 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                     const SizedBox(
                       height: 12,
                     ),
-                    Container(
-                        margin: EdgeInsets.symmetric(
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Date of birth",
+                                  style: AppTextStyle.blackS12,
+                                ),
+                                const TextSpan(
+                                  text: "*",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              ],
+                            ),
+                          ),
+                          DateField(
+                            onChanged: (date) {
+                              _cubit.changeDoB(dateOfBirth: date);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
                             horizontal: widthOfScreen / 15),
                         child: AppLabelTextField(
                           labelText: "Phone Number",
@@ -234,7 +268,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                         children: [
                           Text("Department", style: AppTextStyle.blackS12),
                           DropdownWidget(
-                            nameList: ["Line 8", "Line 1", "Line 2"],
+                            nameList: const ["Line 8", "Line 1", "Line 2"],
                             onChanged: (text) {
                               _cubit.changeDepartment(department: text);
                             },
@@ -253,13 +287,12 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                           highlightText: "*",
                           textInputType: TextInputType.number,
                           onChanged: (text) {
-                            _cubit.changePhoneNumber(phoneNumber: text);
+                            _cubit.changeEmployeeNumber(employeeNumber: text);
                           },
                         )),
                     const SizedBox(
                       height: 12,
                     ),
-
                     BlocBuilder<SignUpCubit, SignUpState>(
                       builder: (context, state) {
                         return Container(

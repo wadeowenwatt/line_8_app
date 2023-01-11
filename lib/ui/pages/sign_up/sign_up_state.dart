@@ -6,6 +6,7 @@ class SignUpState extends Equatable {
   final String? password;
   final String? passwordConfirm;
   final String? displayName;
+  final DateTime? dateOfBirth;
   final String? phoneNumber;
   final String? employeeNumber;
   final String? position;
@@ -17,6 +18,7 @@ class SignUpState extends Equatable {
     this.password,
     this.passwordConfirm,
     this.displayName,
+    this.dateOfBirth,
     this.phoneNumber,
     this.employeeNumber,
     this.position,
@@ -30,6 +32,7 @@ class SignUpState extends Equatable {
         password,
         passwordConfirm,
         displayName,
+        dateOfBirth,
         phoneNumber,
         employeeNumber,
         position,
@@ -42,6 +45,7 @@ class SignUpState extends Equatable {
     String? password,
     String? passwordConfirm,
     String? displayName,
+    DateTime? dateOfBirth,
     String? phoneNumber,
     String? employeeNumber,
     String? position,
@@ -53,6 +57,7 @@ class SignUpState extends Equatable {
       password: password ?? this.password,
       passwordConfirm: passwordConfirm ?? this.passwordConfirm,
       displayName: displayName ?? this.displayName,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       employeeNumber: employeeNumber ?? this.employeeNumber,
       position: position ?? this.position,

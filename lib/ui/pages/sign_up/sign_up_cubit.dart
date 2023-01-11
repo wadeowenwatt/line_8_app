@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_base/utils/app_date_utils.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -40,6 +42,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(displayName: displayName));
   }
 
+  void changeDoB({required DateTime dateOfBirth}) {
+    emit(state.copyWith(dateOfBirth: dateOfBirth));
+  }
+
   void changePhoneNumber({required String phoneNumber}) {
     emit(state.copyWith(phoneNumber: phoneNumber));
   }
@@ -52,12 +58,17 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(department: department));
   }
 
+  void changeEmployeeNumber({required String employeeNumber}) {
+    emit(state.copyWith(employeeNumber: employeeNumber));
+  }
+
   Future signUpWithEmail() async {
     final email = state.email ?? '';
     final password = state.password ?? '';
     final passwordConfirm = state.passwordConfirm ?? '';
     final displayName = state.displayName ?? '';
     final phoneNumber = state.phoneNumber ?? '';
+    final employeeNumber = state.employeeNumber ?? '';
 
     if (email.isEmpty) {
       AppSnackbar.showError(message: 'Email is empty');
@@ -85,6 +96,11 @@ class SignUpCubit extends Cubit<SignUpState> {
       return;
     }
 
+    if (employeeNumber.isEmpty) {
+      AppSnackbar.showError(message: 'Employee number is empty');
+      return;
+    }
+
     emit(state.copyWith(signUpStatus: LoadStatus.loading));
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
@@ -97,6 +113,8 @@ class SignUpCubit extends Cubit<SignUpState> {
           phoneNumber: state.phoneNumber,
           position: state.position,
           department: state.department,
+          employeeNumber: state.employeeNumber,
+          dateOfBirth: state.dateOfBirth,
         );
 
         appCubit.fetchProfile(resultSignUp.uid);

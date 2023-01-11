@@ -6,6 +6,7 @@ import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../common/app_colors.dart';
+import '../../widgets/input/date_field_input.dart';
 
 class RequestSeminalPage extends StatelessWidget {
   const RequestSeminalPage({Key? key}) : super(key: key);
@@ -84,7 +85,7 @@ class RequestSeminalPage extends StatelessWidget {
             "Time:",
             style: TextStyle(color: Colors.grey),
           ),
-          const DateField(),
+          DateField(),
           const SizedBox(
             height: 30,
           ),
@@ -96,44 +97,5 @@ class RequestSeminalPage extends StatelessWidget {
 
   void _sendRequest() {
     /// Todo
-  }
-}
-
-class DateField extends StatefulWidget {
-  const DateField({Key? key}) : super(key: key);
-
-  @override
-  State<DateField> createState() => _DateFieldState();
-}
-
-class _DateFieldState extends State<DateField> {
-  var selectedDate = DateTime.now();
-  var textEditingController = TextEditingController();
-
-  _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        textEditingController.text = picked.toDateString();
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      readOnly: true,
-      controller: textEditingController,
-      style: const TextStyle(color: Colors.black),
-      onTap: () {
-        _selectDate(context);
-      },
-    );
   }
 }
