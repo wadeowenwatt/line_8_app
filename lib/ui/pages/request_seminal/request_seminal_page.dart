@@ -1,6 +1,6 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/ui/pages/request_seminal/widgets/dropdown_widget.dart';
+import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';

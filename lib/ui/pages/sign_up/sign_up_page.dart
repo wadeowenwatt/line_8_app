@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
+import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
 import '../../../common/app_images.dart';
+import '../../../common/app_text_styles.dart';
 import '../../../models/enums/load_status.dart';
 import '../../../repositories/auth_repository.dart';
 import '../../../repositories/firestore_repository.dart';
 import '../../../repositories/user_repository.dart';
 import '../../widgets/input/app_email_input.dart';
+import '../../widgets/input/app_label_text_field.dart';
 import '../../widgets/input/app_password_input.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -24,7 +27,7 @@ class SignUpPage extends StatelessWidget {
       create: (con) {
         final authRepo = RepositoryProvider.of<AuthRepository>(context);
         final firestoreRepo =
-        RepositoryProvider.of<FirestoreRepository>(context);
+            RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
         return SignUpCubit(
           authRepo: authRepo,
@@ -50,6 +53,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   late TextEditingController usernameTextController;
   late TextEditingController passwordTextController;
   late TextEditingController confirmPasswordTextController;
+  late TextEditingController displayNameTextController;
+  late TextEditingController phoneNumberTextController;
 
   late ObscureTextController obscurePasswordController;
   late ObscureTextController obscureConfirmPasswordController;
@@ -62,6 +67,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
     usernameTextController = TextEditingController(text: "");
     passwordTextController = TextEditingController(text: "");
     confirmPasswordTextController = TextEditingController(text: "");
+    displayNameTextController = TextEditingController(text: "");
+    phoneNumberTextController = TextEditingController(text: "");
     obscurePasswordController = ObscureTextController(obscureText: true);
     obscureConfirmPasswordController = ObscureTextController(obscureText: true);
     _cubit = BlocProvider.of<SignUpCubit>(context);
@@ -74,6 +81,11 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(), child: buildBodyWidget()),
       resizeToAvoidBottomInset: false,
@@ -123,9 +135,12 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: heightOfScreen / 15,
+                    const SizedBox(height: 20),
+                    const CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
                     ),
+                    const SizedBox(height: 12),
                     Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
@@ -161,16 +176,77 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                     const SizedBox(
                       height: 12,
                     ),
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
+                      child: AppLabelTextField(
+                        labelText: "Display Name",
+                        highlightText: "*",
+                        onChanged: (text) {
+                          _cubit.changeDisplayName(displayName: text);
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: widthOfScreen / 15),
+                        child: AppLabelTextField(
+                          labelText: "Phone Number",
+                          highlightText: "*",
+                          textInputType: TextInputType.phone,
+                          onChanged: (text) {
+                            _cubit.changePhoneNumber(phoneNumber: text);
+                          },
+                        )),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Position", style: AppTextStyle.blackS12),
+                          const DropdownWidget(
+                            nameList: [
+                              "Developer",
+                              "Line Manager",
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: widthOfScreen / 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Department", style: AppTextStyle.blackS12),
+                          const DropdownWidget(
+                            nameList: ["Line 8", "Line 1", "Line 2"],
+                          ),
+                        ],
+                      ),
+                    ),
                     BlocBuilder<SignUpCubit, SignUpState>(
                       builder: (context, state) {
                         return Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: widthOfScreen / 15),
-                            child: AppTintButton(
-                              title: "Sign Up",
-                              onPressed: _signUpWithEmail,
-                              isLoading: state.signUpStatus == LoadStatus.loading,
-                            ));
+                          margin: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 15),
+                          child: AppTintButton(
+                            title: "Sign Up",
+                            onPressed: _signUpWithEmail,
+                            isLoading: state.signUpStatus == LoadStatus.loading,
+                          ),
+                        );
                       },
                     ),
                     SizedBox(
@@ -180,29 +256,9 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
               )
             ],
           ),
-          Column(
-            children: [
-              SizedBox(
-                height: heightOfScreen / 12,
-              ),
-              IconButton(
-                padding: const EdgeInsets.all(20),
-                onPressed: () => _backSignIn(),
-                icon: Image.asset(
-                  'assets/images/ic_back_arrow.png',
-                  fit: BoxFit.fitHeight,
-                  height: 25,
-                ),
-              ),
-            ],
-          )
         ],
       ),
     );
-  }
-
-  void _backSignIn() {
-    Get.offNamed(RouteConfig.signIn);
   }
 
   void _signUpWithEmail() {

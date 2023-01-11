@@ -107,6 +107,9 @@ class _NewHomePageState extends State<_NewHomePage> {
                       return InformationWidget(
                         onClick: () => _moveToProfile(),
                         name: state.user?.name ?? "Unknown",
+                        department: state.user?.department ?? "Line X",
+                        employeeNumber: state.user?.employeeNumber ?? "000",
+                        position: state.user?.position ?? "Unknown",
                       );
                     },
                   ),

@@ -8,16 +8,17 @@ import 'package:flutter_base/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../blocs/app_cubit.dart';
 import '../../../repositories/user_repository.dart';
 import 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
   final AuthRepository authRepo;
-  final FirestoreRepository firestoreRepo;
+  final AppCubit appCubit;
 
   SplashCubit({
     required this.authRepo,
-    required this.firestoreRepo,
+    required this.appCubit,
   }) : super(const SplashState());
 
   void checkLogin() async {
@@ -29,9 +30,7 @@ class SplashCubit extends Cubit<SplashState> {
     } else {
       try {
         //Profile
-        await firestoreRepo.fetchUserData(user.uid);
-        //Todo
-        // authService.updateUser(myProfile);
+        appCubit.fetchProfile(user.uid);
       } catch (error, s) {
         logger.log(error, stackTrace: s);
         //Check 401

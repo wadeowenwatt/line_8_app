@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
@@ -17,7 +18,7 @@ class SplashPage extends StatelessWidget {
       create: (context) {
         return SplashCubit(
           authRepo: RepositoryProvider.of<AuthRepository>(context),
-          firestoreRepo: RepositoryProvider.of<FirestoreRepository>(context),
+          appCubit: RepositoryProvider.of<AppCubit>(context),
         );
       },
       child: const SplashChildPage(),

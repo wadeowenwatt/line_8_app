@@ -4,11 +4,12 @@ class MyUserEntity {
   String uid;
   String? name;
   String? urlAvatar;
-  int? employeeNumber;
+  String? employeeNumber;
   Timestamp dateOfBirth;
   String? position;
   String? phoneNumber;
   String? email;
+  String? department;
 
   MyUserEntity({
     required this.uid,
@@ -16,20 +17,22 @@ class MyUserEntity {
     required this.email,
     required this.urlAvatar,
     required this.phoneNumber,
-    this.employeeNumber = 000,
+    this.employeeNumber = "000",
     Timestamp? dateOfBirth,
     this.position = "Developer",
+    this.department = "Line 8",
   }) : dateOfBirth = Timestamp.now();
 
   MyUserEntity copyWith({
     String? uid,
     String? name,
     String? urlAvatar,
-    int? employeeNumber,
+    String? employeeNumber,
     Timestamp? dateOfBirth,
     String? position,
     String? phoneNumber,
     String? email,
+    String? department,
   }) {
     return MyUserEntity(
       uid: uid ?? this.uid,
@@ -40,6 +43,7 @@ class MyUserEntity {
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       position: position ?? this.position,
       phoneNumber: phoneNumber ?? this.phoneNumber,
+      department: department ?? this.department,
     );
   }
 
@@ -53,6 +57,7 @@ class MyUserEntity {
       dateOfBirth: json["date_of_birth"],
       employeeNumber: json["employee_number"],
       position: json["position"],
+      department: json["department"],
     );
   }
 }

@@ -50,11 +50,11 @@ class SignInCubit extends Cubit<SignInState> {
             creationTime.minute.compareTo(lastSignInTime.minute) == 0 &&
             creationTime.second.compareTo(lastSignInTime.second) == 0) {
           firestoreRepo.createUserData(
-            result.uid,
-            result.displayName,
-            result.email,
-            result.photoURL,
-            result.phoneNumber,
+            uid: result.uid,
+            name: result.displayName,
+            email: result.email,
+            urlAvatar: result.photoURL,
+            phoneNumber: result.phoneNumber,
           );
         }
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));

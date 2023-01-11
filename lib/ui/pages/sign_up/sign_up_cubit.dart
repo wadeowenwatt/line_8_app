@@ -36,10 +36,21 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(passwordConfirm: confirmPassword));
   }
 
+  void changeDisplayName({required String displayName}) {
+    emit(state.copyWith(displayName: displayName));
+  }
+
+  void changePhoneNumber({required String phoneNumber}) {
+    emit(state.copyWith(phoneNumber: phoneNumber));
+  }
+
+
   Future signUpWithEmail() async {
     final email = state.email ?? '';
     final password = state.password ?? '';
     final passwordConfirm = state.passwordConfirm ?? '';
+    final displayName = state.displayName ?? '';
+    final phoneNumber = state.phoneNumber ?? '';
 
     if (email.isEmpty) {
       AppSnackbar.showError(message: 'Email is empty');
@@ -57,16 +68,28 @@ class SignUpCubit extends Cubit<SignUpState> {
       return;
     }
 
+    if (displayName.isEmpty) {
+      AppSnackbar.showError(message: 'Display name is empty');
+      return;
+    }
+
+    if (phoneNumber.isEmpty) {
+      AppSnackbar.showError(message: 'Phone number is empty');
+      return;
+    }
+
     emit(state.copyWith(signUpStatus: LoadStatus.loading));
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
       if (resultSignUp != null) {
         firestoreRepo.createUserData(
-          resultSignUp.uid,
-          resultSignUp.displayName,
-          resultSignUp.email,
-          resultSignUp.photoURL,
-          resultSignUp.phoneNumber,
+          uid: resultSignUp.uid,
+          name: state.displayName,
+          email: resultSignUp.email,
+          urlAvatar: resultSignUp.photoURL,
+          phoneNumber: state.phoneNumber,
+          position: state.position,
+          department: state.department,
         );
 
         appCubit.fetchProfile(resultSignUp.uid);

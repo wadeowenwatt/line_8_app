@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import '../../../../common/app_colors.dart';
+import '../../../../common/app_images.dart';
 
 class InformationWidget extends StatefulWidget {
-  const InformationWidget({Key? key, required this.onClick, this.name = "",})
-      : super(key: key);
+  const InformationWidget({
+    Key? key,
+    required this.onClick,
+    this.name = "",
+    this.department = "",
+    this.employeeNumber = "000",
+    this.position = "Unknown",
+  }) : super(key: key);
 
   final VoidCallback onClick;
   final String name;
+  final String department;
+  final String employeeNumber;
+  final String position;
 
   @override
   State<InformationWidget> createState() => _InformationWidgetState();
@@ -25,25 +35,26 @@ class _InformationWidgetState extends State<InformationWidget> {
             children: [
               Text(widget.name,
                   style: const TextStyle(
-                    fontSize: 30,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   )),
               Row(
-                children: const [
-                  Text("Class XI B"),
-                  Text(" | "),
-                  Text("Rolls no: 04"),
+                children: [
+                  Text(widget.department),
+                  const Text(" | "),
+                  Text("Employee Number: ${widget.employeeNumber}"),
                 ],
               ),
-              const Card(
+              Card(
                 color: Colors.white,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
                     child: Text(
-                      "2022 - 2023",
-                      style: TextStyle(color: AppColors.primaryLightColorLeft),
+                      widget.position,
+                      style: const TextStyle(color: AppColors.primaryLightColorLeft),
                     )),
               ),
             ],
@@ -53,8 +64,7 @@ class _InformationWidgetState extends State<InformationWidget> {
             onTap: widget.onClick,
             child: const CircleAvatar(
               radius: 30,
-              backgroundImage:
-                  AssetImage("assets/images/bg_image_placeholder.png"),
+              backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
             ),
           ),
         ],

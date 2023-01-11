@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 
 class SplashState extends Equatable {
