@@ -50,6 +50,7 @@ class SignInCubit extends Cubit<SignInState> {
           );
           appCubit.fetchProfile(result.uid);
           appCubit.changedStateFirstLogin(true);
+          appCubit.fetchListUser();
           Get.offNamed(RouteConfig.editProfile);
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         } else {

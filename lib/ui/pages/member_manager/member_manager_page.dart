@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/models/entities/request/request_entity.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
+import 'package:flutter_base/ui/pages/member_manager/member_manager_cubit.dart';
 import 'package:flutter_base/ui/pages/member_manager/widgets/tab_noti_badge.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_colors.dart';
@@ -12,7 +16,14 @@ class MemberManagerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _MemberManagerPage();
+    return BlocProvider(
+      create: (context) {
+        final firestoreRepo =
+            RepositoryProvider.of<FirestoreRepository>(context);
+        return MemberManagerCubit(firestoreRepository: firestoreRepo);
+      },
+      child: const _MemberManagerPage(),
+    );
   }
 }
 
@@ -31,11 +42,6 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   late int _counterWeeklyReport;
 
   final controller = TextEditingController();
-  List listUser = [
-    // User(firstName: "Linh", lastName: "abc"),
-    // User(firstName: "Thong", lastName: "Nguyen"),
-    // User(firstName: "Yen", lastName: "Bon"),
-  ];
 
   List<Request> listRequest = [
     Request(
@@ -124,64 +130,78 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   }
 
   Widget _buildMemberManage() {
-    return Column(
-      children: [
-        _searchBar(),
-        const SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final item = listUser[index];
-              return ListTile(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Delete"),
-                        content: const Text(
-                          "Are u sure about that?",
-                          style: TextStyle(color: Colors.black),
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            _searchBar(),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  var item = state.listMember![index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Delete"),
+                                content: const Text(
+                                  "Delete this user?",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        // listUser.removeAt(index);
+                                        Get.back();
+                                      });
+                                    },
+                                    child: const Text(
+                                      "Delete",
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    child: const Text(
+                                      "Cancel",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        textColor: Colors.black,
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: item.urlAvatar.isNull
+                              ? const AssetImage(AppImages.bgUserPlaceholder)
+                              : NetworkImage(item.urlAvatar as String)
+                                  as ImageProvider,
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                listUser.removeAt(index);
-                                Get.back();
-                              });
-                            },
-                            child: const Text(
-                              "Delete",
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          )
-                        ],
-                      );
-                    },
+                        title: Text("${item.name} - ${item.position}"),
+                      ),
+                      const Divider(),
+                    ],
                   );
                 },
-                textColor: Colors.black,
-                leading: Image.asset(AppImages.bgImagePlaceholder),
-                title: item.firstName == null && item.lastName == null
-                    ? const Text("")
-                    : Text("${item.firstName} ${item.lastName}"),
-              );
-            },
-            itemCount: listUser.length,
-          ),
-        )
-      ],
+                itemCount:
+                    state.listMember == null ? 0 : state.listMember?.length,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -211,7 +231,9 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     return ListView.builder(
       itemBuilder: (context, index) {
         final item = listRequest[index];
-        return EventCardWidget(item: item,);
+        return EventCardWidget(
+          item: item,
+        );
       },
       itemCount: listRequest.length,
     );

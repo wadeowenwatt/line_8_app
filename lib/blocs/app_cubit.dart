@@ -39,6 +39,7 @@ class AppCubit extends Cubit<AppState> {
     try {
       final List<MyUserEntity> listUser = await firestoreRepo.fetchListUserData();
       emit(state.copyWith(fetchListUserStatus: LoadStatus.success, listMember: listUser));
+      print(state.listMember?[0]);
     } catch(error) {
       emit(state.copyWith(fetchListUserStatus: LoadStatus.failure));
     }

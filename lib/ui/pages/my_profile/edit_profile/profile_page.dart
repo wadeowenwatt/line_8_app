@@ -337,8 +337,10 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
   void _updateEditData() {
     _cubit.updateDataUserToFirestore();
     if (_appCubit.isFirstLogin()) {
-      Get.offNamed(RouteConfig.main);
+      _appCubit.fetchListUser();
       _appCubit.changedStateFirstLogin(false);
+      Get.offNamed(RouteConfig.main);
+
     }
   }
 }
