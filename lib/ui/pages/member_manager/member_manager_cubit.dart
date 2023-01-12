@@ -15,6 +15,6 @@ class MemberManagerCubit extends Cubit<MemberManagerState> {
   }) : super(MemberManagerInitial());
 
   Future<void> deleteUser() async {
-
+    /// Todo
   }
 }

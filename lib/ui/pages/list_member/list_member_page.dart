@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_images.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
+import 'package:flutter_base/ui/pages/list_member/list_member_cubit.dart';
+import 'package:flutter_base/ui/pages/list_member/widgets/item_member.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_colors.dart';
 
-
-class ListMemberPage extends StatefulWidget {
+class ListMemberPage extends StatelessWidget {
   const ListMemberPage({Key? key}) : super(key: key);
 
   @override
-  State<ListMemberPage> createState() => _ListMemberPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        final firestoreRepo =
+            RepositoryProvider.of<FirestoreRepository>(context);
+        return ListMemberCubit(firestoreRepository: firestoreRepo);
+      },
+      child: const _ListMemberPage(),
+    );
+  }
 }
 
-class _ListMemberPageState extends State<ListMemberPage> {
+class _ListMemberPage extends StatefulWidget {
+  const _ListMemberPage({Key? key}) : super(key: key);
+
+  @override
+  State<_ListMemberPage> createState() => _ListMemberPageState();
+}
+
+class _ListMemberPageState extends State<_ListMemberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,73 +50,46 @@ class _ListMemberPageState extends State<ListMemberPage> {
       body: buildBody(),
     );
   }
-}
 
-Widget buildBody() {
-  return Container(
-    decoration: const BoxDecoration(
-      color: AppColors.primaryLightColorLeft,
-    ),
-    child: Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 10),
-            child: ItemMember(getMemberInfo: _getMemberInfo),
-          );
-        },
-        itemCount: 12,
-      ),
-    ),
-  );
-}
-
-void _getMemberInfo() {
-  Get.toNamed(RouteConfig.memberProfile);
-}
-
-class ItemMember extends StatelessWidget {
-  const ItemMember({Key? key, required this.getMemberInfo}) : super(key: key);
-  final VoidCallback getMemberInfo;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: getMemberInfo,
-      child: Card(
-        color: AppColors.selectCardColor,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              CircleAvatar(
-                child: Image.asset(AppImages.bgImagePlaceholder),
-              ),
-              const SizedBox(width: 30,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    "Name Member",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  Text(
-                    "Admin",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              )
-            ],
+  Widget buildBody() {
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppColors.primaryLightColorLeft,
           ),
-        ),
-      ),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                var item = state.listMember![index];
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: ItemMember(
+                    getMemberInfo: _getMemberInfo,
+                    name: item.name,
+                    position: item.position,
+                    urlAvatar: item.urlAvatar,
+                  ),
+                );
+              },
+              itemCount:
+                  state.listMember == null ? 0 : state.listMember?.length,
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  void _getMemberInfo() {
+
+    Get.toNamed(RouteConfig.memberProfile);
   }
 }
