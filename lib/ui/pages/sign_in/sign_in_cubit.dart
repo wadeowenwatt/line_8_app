@@ -54,6 +54,7 @@ class SignInCubit extends Cubit<SignInState> {
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         } else {
           appCubit.fetchProfile(result.uid);
+          appCubit.fetchListUser();
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
           Get.offNamed(RouteConfig.main);
         }
@@ -83,6 +84,7 @@ class SignInCubit extends Cubit<SignInState> {
       final result = await authRepo.signInWithEmail(username, password);
       if (result != null) {
         appCubit.fetchProfile(result.uid);
+        appCubit.fetchListUser();
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

@@ -118,7 +118,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         );
 
         appCubit.fetchProfile(resultSignUp.uid);
-
+        appCubit.fetchListUser();
         emit(state.copyWith(signUpStatus: LoadStatus.success));
         Get.offAllNamed(RouteConfig.main);
       } else {

@@ -16,6 +16,8 @@ abstract class FirestoreRepository {
 
   Future<MyUserEntity?> fetchUserData(String uid);
 
+  Future<List<MyUserEntity>> fetchListUserData();
+
   Future<void> updateDataUser({required MyUserEntity userUpdate});
 }
 
@@ -81,5 +83,22 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
     } catch (error) {
       print("$error update user failed!");
     }
+  }
+
+  @override
+  Future<List<MyUserEntity>> fetchListUserData() async {
+    List<MyUserEntity> listUser = [];
+    try {
+      await membersCollection.get().then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          MyUserEntity myUserEntity = MyUserEntity.fromJson(
+              doc.data() as Map<String, dynamic>);
+          listUser.add(myUserEntity);
+        }
+      });
+    } catch(error) {
+      print("$error fetch List user failed!");
+    }
+    return listUser;
   }
 }

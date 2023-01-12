@@ -33,6 +33,16 @@ class AppCubit extends Cubit<AppState> {
       emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
     }
   }
+
+  void fetchListUser() async {
+    emit(state.copyWith(fetchListUserStatus: LoadStatus.loading));
+    try {
+      final List<MyUserEntity> listUser = await firestoreRepo.fetchListUserData();
+      emit(state.copyWith(fetchListUserStatus: LoadStatus.success, listMember: listUser));
+    } catch(error) {
+      emit(state.copyWith(fetchListUserStatus: LoadStatus.failure));
+    }
+  }
   
   void changedStateFirstLogin(bool isFirstLogin) {
     emit(state.copyWith(firstLogin: isFirstLogin));
