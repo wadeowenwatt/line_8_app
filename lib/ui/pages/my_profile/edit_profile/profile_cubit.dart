@@ -73,8 +73,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       return;
     }
 
-
-
     emit(state.copyWith(updateDataStatus: LoadStatus.loading));
     try {
       // final currentUser = authRepo.getUser();

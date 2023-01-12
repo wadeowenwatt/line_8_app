@@ -20,6 +20,7 @@ class AppLabelTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool enabled;
   final int? maxLength;
+  final bool enableValidate;
 
   const AppLabelTextField({
     Key? key,
@@ -39,6 +40,7 @@ class AppLabelTextField extends StatelessWidget {
     this.inputFormatters,
     this.enabled = true,
     this.maxLength,
+    this.enableValidate = true,
   }) : super(key: key);
 
   @override
@@ -99,16 +101,19 @@ class AppLabelTextField extends StatelessWidget {
                 valueListenable: textEditingController!,
                 builder: (context, TextEditingValue controller, child) {
                   final isValid = validator?.call(controller.text) ?? "";
-                  return Column(
-                    children: [
-                      const SizedBox(height: 2),
-                      Text(
-                        isValid,
-                        style:
-                            AppTextStyle.blackS12.copyWith(color: Colors.red),
-                      ),
-                      const SizedBox(height: 12),
-                    ],
+                  return Visibility(
+                    visible: enableValidate,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 2),
+                        Text(
+                          isValid,
+                          style:
+                              AppTextStyle.blackS12.copyWith(color: Colors.red),
+                        ),
+                        const SizedBox(height: 12),
+                      ],
+                    ),
                   );
                 },
               )

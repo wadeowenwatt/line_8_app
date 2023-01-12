@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 
 class DropdownWidget extends StatefulWidget {
   final List<String> nameList;
+  String? currentValue;
   ValueChanged<String?>? onChanged;
 
   DropdownWidget(
-      {Key? key, required this.nameList, this.onChanged})
+      {Key? key, required this.nameList, this.onChanged, this.currentValue})
       : super(key: key);
 
   @override
@@ -19,7 +20,11 @@ class _DropdownWidgetState extends State<DropdownWidget> {
   @override
   void initState() {
     super.initState();
-    dropdownValue = widget.nameList.first;
+    if (widget.currentValue != null && widget.nameList.contains(widget.currentValue)) {
+      dropdownValue = widget.currentValue as String;
+    } else {
+      dropdownValue = widget.nameList.first;
+    }
   }
 
   @override

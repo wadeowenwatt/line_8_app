@@ -196,29 +196,12 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Date of birth",
-                                  style: AppTextStyle.blackS12,
-                                ),
-                                const TextSpan(
-                                  text: "*",
-                                  style: TextStyle(color: Colors.red),
-                                )
-                              ],
-                            ),
-                          ),
-                          DateField(
-                            onChanged: (date) {
-                              _cubit.changeDoB(dateOfBirth: date);
-                            },
-                          ),
-                        ],
+                      child: DateField(
+                        labelText: "Date of birth",
+                        highlightText: "*",
+                        onChanged: (date) {
+                          _cubit.changeDoB(dateOfBirth: date);
+                        },
                       ),
                     ),
                     const SizedBox(

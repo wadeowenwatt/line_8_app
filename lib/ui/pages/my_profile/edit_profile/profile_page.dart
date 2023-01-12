@@ -7,7 +7,9 @@ import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
 import 'package:flutter_base/ui/widgets/input/app_email_input.dart';
 import 'package:flutter_base/ui/widgets/input/app_label_text_field.dart';
+import 'package:flutter_base/ui/widgets/input/date_field_input.dart';
 import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
+import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import '../../../../common/app_colors.dart';
@@ -44,7 +46,9 @@ class _ProfileTabPage extends StatefulWidget {
 }
 
 class _ProfileTabPageState extends State<_ProfileTabPage> {
-  late TextEditingController usernameTextController;
+  late TextEditingController emailTextController;
+  late TextEditingController employeeTextController;
+  late TextEditingController dateOfBirthTextController;
   late TextEditingController displayNameTextController;
   late TextEditingController phoneNumberTextController;
 
@@ -53,9 +57,11 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
   @override
   void initState() {
     super.initState();
-    usernameTextController = TextEditingController(text: "");
+    emailTextController = TextEditingController(text: "");
     displayNameTextController = TextEditingController(text: "");
     phoneNumberTextController = TextEditingController(text: "");
+    employeeTextController = TextEditingController(text: "");
+    dateOfBirthTextController = TextEditingController(text: "");
     _cubit = BlocProvider.of<ProfileCubit>(context);
   }
 
@@ -216,70 +222,101 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
   }
 
   Widget buildInputField() {
-    return Column(
-      children: [
-        RowTextField(
-          textField1: AppLabelTextField(
-            labelText: "Name",
-            highlightText: "",
-            onChanged: (text) {
-              _cubit.changeDisplayName(displayName: text);
-            },
-          ),
-          textField2: AppLabelTextField(
-            labelText: "Employee Number",
-            highlightText: "",
-            textInputType: TextInputType.number,
-            onChanged: (text) {
-              _cubit.changeEmployeeNumber(employeeNumber: text);
-            },
-          ),
-        ),
-        RowDropdownWidget(
-          labelText1: "Position",
-          dropdownWidget1: DropdownWidget(
-            nameList: const [
-              "Developer",
-              "Line Manager",
-            ],
-            onChanged: (text) {
-              _cubit.changePosition(position: text);
-            },
-          ),
-          labelText2: "Department",
-          dropdownWidget2: DropdownWidget(
-            nameList: const ["Line 8", "Line 1", "Line 2"],
-            onChanged: (text) {
-              _cubit.changeDepartment(department: text);
-            },
-          ),
-        ),
-        RowTextField(
-          textField1: AppLabelTextField(
-            labelText: "Date of birth",
-            highlightText: "",
-            onChanged: (text) {
-              // _cubit.changeDoB(dateOfBirth: text);
-            },
-          ),
-          textField2: AppLabelTextField(
-            labelText: "Phone Number",
-            highlightText: "",
-            textInputType: TextInputType.phone,
-            onChanged: (text) {
-              _cubit.changePhoneNumber(phoneNumber: text);
-            },
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.all(17),
-            child: AppEmailInput(
-              highlightText: "",
-              onChanged: (text) {
-                _cubit.changeEmail(email: text);
-              },
-            )),
-      ],
+    return BlocBuilder<AppCubit, AppState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            RowTextField(
+              textField1: AppLabelTextField(
+                labelText: "Name",
+                highlightText: "",
+                enableValidate: false,
+                textEditingController:
+                    TextEditingController(text: state.user?.name),
+                onChanged: (text) {
+                  _cubit.changeDisplayName(displayName: text);
+                },
+              ),
+              textField2: AppLabelTextField(
+                labelText: "Employee Number",
+                enableValidate: false,
+                highlightText: "",
+                textEditingController: TextEditingController(
+                    text: state.user?.employeeNumber ?? "000"),
+                textInputType: TextInputType.number,
+                onChanged: (text) {
+                  _cubit.changeEmployeeNumber(employeeNumber: text);
+                },
+              ),
+            ),
+            RowDropdownWidget(
+              labelText1: "Position",
+              dropdownWidget1: DropdownWidget(
+                nameList: const [
+                  "Developer",
+                  "Line Manager",
+                ],
+                currentValue: state.user?.position,
+                onChanged: (text) {
+                  _cubit.changePosition(position: text);
+                },
+              ),
+              labelText2: "Department",
+              dropdownWidget2: DropdownWidget(
+                nameList: const ["Line 8", "Line 1", "Line 2"],
+                currentValue: state.user?.department,
+                onChanged: (text) {
+                  _cubit.changeDepartment(department: text);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(17),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: DateField(
+                      labelText: "Date of birth",
+                      textEditingController: TextEditingController(
+                          text:
+                              state.user?.dateOfBirth.toDate().toDateString()),
+                      onChanged: (date) {
+                        _cubit.changeDoB(dateOfBirth: date);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: AppLabelTextField(
+                      labelText: "Phone Number",
+                      highlightText: "",
+                      enableValidate: false,
+                      textEditingController:
+                          TextEditingController(text: state.user?.phoneNumber),
+                      textInputType: TextInputType.phone,
+                      onChanged: (text) {
+                        _cubit.changePhoneNumber(phoneNumber: text);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+                padding: const EdgeInsets.all(17),
+                child: AppEmailInput(
+                  highlightText: "",
+                  textEditingController:
+                      TextEditingController(text: state.user?.email),
+                  onChanged: (text) {
+                    _cubit.changeEmail(email: text);
+                  },
+                )),
+          ],
+        );
+      },
     );
   }
 
