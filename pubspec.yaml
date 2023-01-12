@@ -84,6 +84,7 @@ dependencies:
   google_sign_in: ^5.4.2
   firebase_auth: ^4.2.0
   flutter_signin_button: ^2.0.0
+  image_picker: ^0.8.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

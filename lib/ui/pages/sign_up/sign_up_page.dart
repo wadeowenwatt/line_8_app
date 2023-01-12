@@ -6,6 +6,7 @@ import 'package:flutter_base/ui/widgets/input/date_field_input.dart';
 import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
@@ -61,6 +62,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   late ObscureTextController obscureConfirmPasswordController;
 
   late SignUpCubit _cubit;
+
+  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   void initState() {
@@ -139,9 +142,11 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
+                    GestureDetector(
+                      child: const CircleAvatar(
+                        radius: 50,
+                        backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     Padding(
