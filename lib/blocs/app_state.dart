@@ -5,12 +5,14 @@ class AppState extends Equatable {
   final LoadStatus signOutStatus;
   final MyUserEntity? user;
   final List<MyUserEntity>? listMember;
+  final bool firstLogin;
 
   const AppState({
     this.fetchProfileStatus = LoadStatus.initial,
     this.signOutStatus = LoadStatus.initial,
     this.user,
     this.listMember,
+    this.firstLogin = false,
   });
 
   AppState copyWith({
@@ -18,12 +20,14 @@ class AppState extends Equatable {
     LoadStatus? signOutStatus,
     MyUserEntity? user,
     List<MyUserEntity>? listMember,
+    bool? firstLogin,
   }) {
     return AppState(
       fetchProfileStatus: fetchProfileStatus ?? this.fetchProfileStatus,
       signOutStatus: signOutStatus ?? this.signOutStatus,
       user: user ?? this.user,
       listMember: listMember ?? this.listMember,
+      firstLogin: firstLogin ?? this.firstLogin,
     );
   }
 
@@ -33,6 +37,7 @@ class AppState extends Equatable {
       signOutStatus: signOutStatus,
       user: user,
       listMember: listMember,
+      firstLogin: firstLogin,
     );
   }
 
@@ -42,5 +47,6 @@ class AppState extends Equatable {
         signOutStatus,
         user,
         listMember,
+        firstLogin,
       ];
 }

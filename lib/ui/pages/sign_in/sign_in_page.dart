@@ -163,6 +163,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
               AppTintButton(
                 title: S.of(context).button_signIn,
                 onPressed: _signInWithEmail,
+                isLoading: state.signInWithEmailStatus == LoadStatus.loading,
               ),
               const SizedBox(
                 height: 10,
@@ -171,8 +172,7 @@ class _SignInChildPageState extends State<SignInChildPage> {
                 Buttons.Google,
                 onPressed: _signInWithGoogle,
               ),
-              (state.signInWithGoogleStatus == LoadStatus.loading ||
-                      state.signInWithEmailStatus == LoadStatus.loading)
+              state.signInWithGoogleStatus == LoadStatus.loading
                   ? const Center(child: CircularProgressIndicator())
                   : const SizedBox(),
               Row(

@@ -26,25 +26,6 @@ class SignInCubit extends Cubit<SignInState> {
     required this.firestoreRepo,
   }) : super(const SignInState());
 
-  void _createDataFirstTimeLoginGoogle(User user) {
-    final creationTime = user.metadata.creationTime;
-    final lastSignInTime = user.metadata.lastSignInTime;
-    if (creationTime!.year.compareTo(lastSignInTime!.year) == 0 &&
-        creationTime.month.compareTo(lastSignInTime.month) == 0 &&
-        creationTime.day.compareTo(lastSignInTime.day) == 0 &&
-        creationTime.hour.compareTo(lastSignInTime.hour) == 0 &&
-        creationTime.minute.compareTo(lastSignInTime.minute) == 0 &&
-        creationTime.second.compareTo(lastSignInTime.second) == 0) {
-      firestoreRepo.createUserData(
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-        urlAvatar: user.photoURL,
-        phoneNumber: user.phoneNumber,
-      );
-    }
-  }
-
   void changeUsername({required String username}) {
     emit(state.copyWith(username: username));
   }
@@ -56,13 +37,26 @@ class SignInCubit extends Cubit<SignInState> {
   Future<void> signInWithGoogle() async {
     emit(state.copyWith(signInWithGoogleStatus: LoadStatus.loading));
     try {
-      final result = await authRepo.signInWithGoogle();
-
-      if (result != null) {
-        appCubit.fetchProfile(result.uid);
-        _createDataFirstTimeLoginGoogle(result);
-        emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
-        Get.offNamed(RouteConfig.main);
+      final userCredential = await authRepo.signInWithGoogle();
+      final User? result = userCredential?.user;
+      if (result != null && userCredential != null) {
+        if (userCredential.additionalUserInfo?.isNewUser ?? appCubit.isFirstLogin()) {
+          await firestoreRepo.createUserData(
+            uid: result.uid,
+            name: result.displayName,
+            email: result.email,
+            urlAvatar: result.photoURL,
+            phoneNumber: result.phoneNumber,
+          );
+          appCubit.fetchProfile(result.uid);
+          appCubit.changedStateFirstLogin(true);
+          Get.offNamed(RouteConfig.editProfile);
+          emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
+        } else {
+          appCubit.fetchProfile(result.uid);
+          emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
+          Get.offNamed(RouteConfig.main);
+        }
       } else {
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
       }

@@ -33,7 +33,15 @@ class AppCubit extends Cubit<AppState> {
       emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
     }
   }
+  
+  void changedStateFirstLogin(bool isFirstLogin) {
+    emit(state.copyWith(firstLogin: isFirstLogin));
+  }
 
+  bool isFirstLogin() {
+    return state.firstLogin;
+  }
+  
   void updateProfile(MyUserEntity user) async {
     emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
     try {

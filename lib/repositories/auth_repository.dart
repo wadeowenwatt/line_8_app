@@ -12,7 +12,7 @@ import '../common/app_images.dart';
 import '../ui/commons/app_snackbar.dart';
 
 abstract class AuthRepository {
-  Future<User?> signInWithGoogle();
+  Future<UserCredential?> signInWithGoogle();
 
   Future<User?> signInWithEmail(String email, String password);
 
@@ -60,7 +60,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<User?> signInWithGoogle() async {
+  Future<UserCredential?> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         "https://www.googleapis.com/auth/user.birthday.read",
@@ -83,8 +83,7 @@ class AuthRepositoryImpl extends AuthRepository {
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
 
-        User? user = userCredential.user;
-        return user;
+        return userCredential;
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {
           // handle the error here

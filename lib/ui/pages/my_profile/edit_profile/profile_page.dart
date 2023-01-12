@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
+import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_dropdown_widget.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
@@ -53,6 +55,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
   late TextEditingController phoneNumberTextController;
 
   late ProfileCubit _cubit;
+  late AppCubit _appCubit;
 
   @override
   void initState() {
@@ -63,6 +66,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
     employeeTextController = TextEditingController(text: "");
     dateOfBirthTextController = TextEditingController(text: "");
     _cubit = BlocProvider.of<ProfileCubit>(context);
+    _appCubit = BlocProvider.of<AppCubit>(context);
   }
 
   @override
@@ -228,7 +232,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
         _cubit.changeEmployeeNumber(
             employeeNumber: state.user?.employeeNumber ?? "000");
         _cubit.changeDoB(
-            dateOfBirth: state.user?.dateOfBirth?.toDate() as DateTime);
+            dateOfBirth: state.user?.dateOfBirth == null ? Timestamp.fromDate(DateTime(1900)).toDate() : state.user?.dateOfBirth?.toDate() as DateTime);
         _cubit.changePhoneNumber(phoneNumber: state.user?.phoneNumber ?? "");
         _cubit.changeEmail(email: state.user?.email ?? "");
         _cubit.changePosition(position: state.user?.position);
@@ -332,5 +336,9 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
 
   void _updateEditData() {
     _cubit.updateDataUserToFirestore();
+    if (_appCubit.isFirstLogin()) {
+      Get.offNamed(RouteConfig.main);
+      _appCubit.changedStateFirstLogin(false);
+    }
   }
 }
