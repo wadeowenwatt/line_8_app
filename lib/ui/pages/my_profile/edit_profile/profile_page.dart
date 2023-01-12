@@ -224,6 +224,15 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
   Widget buildInputField() {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
+        _cubit.changeDisplayName(displayName: state.user?.name ?? "");
+        _cubit.changeEmployeeNumber(
+            employeeNumber: state.user?.employeeNumber ?? "000");
+        _cubit.changeDoB(
+            dateOfBirth: state.user?.dateOfBirth?.toDate() as DateTime);
+        _cubit.changePhoneNumber(phoneNumber: state.user?.phoneNumber ?? "");
+        _cubit.changeEmail(email: state.user?.email ?? "");
+        _cubit.changePosition(position: state.user?.position);
+        _cubit.changeDepartment(department: state.user?.department);
         return Column(
           children: [
             RowTextField(
@@ -277,9 +286,10 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                   Expanded(
                     child: DateField(
                       labelText: "Date of birth",
+                      currentValue: state.user?.dateOfBirth?.toDate().toDateString(),
                       textEditingController: TextEditingController(
                           text:
-                              state.user?.dateOfBirth.toDate().toDateString()),
+                              state.user?.dateOfBirth?.toDate().toDateString()),
                       onChanged: (date) {
                         _cubit.changeDoB(dateOfBirth: date);
                       },

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
@@ -74,9 +75,23 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
 
     emit(state.copyWith(updateDataStatus: LoadStatus.loading));
+    Future.delayed(const Duration(seconds: 2));
     try {
-      // final currentUser = authRepo.getUser();
-      // appCubit.updateProfile(user);
+      final currentUser = await authRepo.getUser();
+      if (currentUser != null) {
+        final uidCurrentUser = currentUser.uid;
+        final MyUserEntity userUpdate = MyUserEntity(
+            uid: uidCurrentUser,
+            name: state.displayName,
+            email: state.email,
+            urlAvatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu_fpPmbK-bebEeX036y7frmW06amtCkG1ew&usqp=CAU",
+            phoneNumber: state.phoneNumber,
+            employeeNumber: state.employeeNumber,
+            dateOfBirth: Timestamp.fromDate(state.dateOfBirth as DateTime),
+            department: state.department,
+            position: state.position);
+        appCubit.updateProfile(userUpdate);
+      }
     } catch (error) {
       return;
     }

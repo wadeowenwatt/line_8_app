@@ -5,7 +5,7 @@ class MyUserEntity {
   String? name;
   String? urlAvatar;
   String? employeeNumber;
-  Timestamp dateOfBirth;
+  Timestamp? dateOfBirth;
   String? position;
   String? phoneNumber;
   String? email;
@@ -18,10 +18,10 @@ class MyUserEntity {
     required this.urlAvatar,
     required this.phoneNumber,
     this.employeeNumber = "000",
-    Timestamp? dateOfBirth,
+    this.dateOfBirth,
     this.position = "Developer",
     this.department = "Line 8",
-  }) : dateOfBirth = Timestamp.now();
+  });
 
   MyUserEntity copyWith({
     String? uid,

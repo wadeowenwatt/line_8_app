@@ -152,7 +152,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ),
           LabelText(
               nameLabel: "Date of birth",
-              text: state.user?.dateOfBirth.toDate().toDateString()),
+              text: state.user?.dateOfBirth?.toDate().toDateString()),
           const Divider(thickness: 1),
           LabelText(nameLabel: "Position", text: state.user?.position),
           const Divider(thickness: 1),
