@@ -53,7 +53,7 @@ class AppCubit extends Cubit<AppState> {
     return state.firstLogin;
   }
   
-  void updateProfile(MyUserEntity user) async {
+  Future updateProfile(MyUserEntity user) async {
     emit(state.copyWith(fetchProfileStatus: LoadStatus.loading));
     try {
       await firestoreRepo.updateDataUser(userUpdate: user);

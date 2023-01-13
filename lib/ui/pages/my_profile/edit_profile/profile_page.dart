@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_base/repositories/firestorage_repository.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
+import 'package:flutter_base/ui/pages/my_profile/edit_profile/profile_state.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_dropdown_widget.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_text_field.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/text_field_custom_widget.dart';
@@ -167,7 +170,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
 
   Widget buildInfoCard() {
     return BlocBuilder<AppCubit, AppState>(
-      builder: (context, state) {
+      builder: (context, appState) {
         return Padding(
           padding: const EdgeInsets.all(20),
           child: Container(
@@ -178,21 +181,28 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
             ),
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundImage: state.user?.urlAvatar == null
-                        ? const AssetImage(AppImages.bgUserPlaceholder)
-                        : NetworkImage(state.user?.urlAvatar as String)
-                            as ImageProvider,
-                  ),
+                BlocBuilder<ProfileCubit, ProfileState>(
+                  builder: (context, state) {
+                    return Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: CircleAvatar(
+                        radius: 45,
+                        backgroundImage: state.tempAvatar.isNull
+                            ? appState.user?.urlAvatar == null
+                                ? const AssetImage(AppImages.bgUserPlaceholder)
+                                : NetworkImage(
+                                        appState.user?.urlAvatar as String)
+                                    as ImageProvider
+                            : FileImage(File(state.tempAvatar!.path)),
+                      ),
+                    );
+                  },
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.user?.name ?? "",
+                      appState.user?.name ?? "",
                       style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -202,7 +212,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                       height: 12,
                     ),
                     Text(
-                      "${state.user?.department ?? "line X"} | E.Number: ${state.user?.employeeNumber ?? "000"}",
+                      "${appState.user?.department ?? "line X"} | E.Number: ${appState.user?.employeeNumber ?? "000"}",
                       style: const TextStyle(color: Colors.grey),
                     )
                   ],
@@ -217,7 +227,9 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                         height: 25,
                         fit: BoxFit.fitHeight,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        _pickImage(context);
+                      },
                     ),
                   ),
                 ),
@@ -350,4 +362,27 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
     }
   }
 
+  void _pickImage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title:
+                  const Text("Camera", style: TextStyle(color: Colors.black)),
+              onTap: () => _cubit.pickImageCamera(),
+            ),
+            ListTile(
+              leading: const Icon(Icons.image),
+              title:
+                  const Text("Gallery", style: TextStyle(color: Colors.black)),
+              onTap: () => _cubit.pickImageGallery(),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

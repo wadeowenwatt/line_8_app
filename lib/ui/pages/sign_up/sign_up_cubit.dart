@@ -139,9 +139,19 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
   }
 
-  void pickImage() async {
+  void pickImageGallery() async {
     final image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 75,
+    );
+    emit(state.copyWith(tempAvatar: image));
+  }
+
+  void pickImageCamera() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
       maxWidth: 512,
       maxHeight: 512,
       imageQuality: 75,

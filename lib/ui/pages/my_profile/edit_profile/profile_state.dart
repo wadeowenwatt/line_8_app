@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileState extends Equatable {
   final LoadStatus updateDataStatus;
@@ -11,6 +13,7 @@ class ProfileState extends Equatable {
   final String? position;
   final String? department;
   final String? urlAvatar;
+  final XFile? tempAvatar;
 
   const ProfileState({
     this.updateDataStatus = LoadStatus.initial,
@@ -22,19 +25,20 @@ class ProfileState extends Equatable {
     this.position,
     this.department,
     this.urlAvatar,
+    this.tempAvatar,
   });
 
-  ProfileState copyWith({
-    LoadStatus? updateDataStatus,
-    String? email,
-    String? displayName,
-    DateTime? dateOfBirth,
-    String? phoneNumber,
-    String? employeeNumber,
-    String? position,
-    String? department,
-    String? urlAvatar,
-  }) {
+  ProfileState copyWith(
+      {LoadStatus? updateDataStatus,
+      String? email,
+      String? displayName,
+      DateTime? dateOfBirth,
+      String? phoneNumber,
+      String? employeeNumber,
+      String? position,
+      String? department,
+      String? urlAvatar,
+      XFile? tempAvatar}) {
     return ProfileState(
       updateDataStatus: updateDataStatus ?? this.updateDataStatus,
       email: email ?? this.email,
@@ -45,6 +49,7 @@ class ProfileState extends Equatable {
       position: position ?? this.position,
       department: department ?? this.department,
       urlAvatar: urlAvatar ?? this.urlAvatar,
+      tempAvatar: tempAvatar ?? this.tempAvatar,
     );
   }
 
@@ -59,5 +64,6 @@ class ProfileState extends Equatable {
         position,
         department,
         urlAvatar,
+        tempAvatar,
       ];
 }

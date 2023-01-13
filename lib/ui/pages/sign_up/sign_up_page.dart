@@ -145,173 +145,180 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                       topRight: Radius.circular(30),
                       topLeft: Radius.circular(30)),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: BlocBuilder<SignUpCubit, SignUpState>(
-                        builder: (context, state) {
-                          return CircleAvatar(
+                child: BlocBuilder<SignUpCubit, SignUpState>(
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () => _pickImage(context),
+                          child: CircleAvatar(
                             radius: 50,
                             backgroundImage: state.tempAvatar.isNull
                                 ? const AssetImage(AppImages.bgUserPlaceholder)
                                 : FileImage(File(state.tempAvatar!.path))
                                     as ImageProvider,
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: AppEmailInput(
-                        onChanged: (text) {
-                          _cubit.changeEmail(email: text);
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: AppPasswordInput(
-                        obscureTextController: obscurePasswordController,
-                        onChanged: (text) {
-                          _cubit.changePassword(password: text);
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: AppPasswordInput(
-                        labelText: "Confirm Password",
-                        obscureTextController: obscureConfirmPasswordController,
-                        onChanged: (text) {
-                          _cubit.changeConfirmPassword(confirmPassword: text);
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: AppLabelTextField(
-                        labelText: "Display Name",
-                        highlightText: "*",
-                        onChanged: (text) {
-                          _cubit.changeDisplayName(displayName: text);
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
-                      child: DateField(
-                        labelText: "Date of birth",
-                        textEditingController: TextEditingController(text: DateTime.now().toDateString()),
-                        highlightText: "*",
-                        onChanged: (date) {
-                          _cubit.changeDoB(dateOfBirth: date);
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: widthOfScreen / 15),
-                        child: AppLabelTextField(
-                          labelText: "Phone Number",
-                          highlightText: "*",
-                          textInputType: TextInputType.phone,
-                          onChanged: (text) {
-                            _cubit.changePhoneNumber(phoneNumber: text);
-                          },
-                        )),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Position", style: AppTextStyle.blackS12),
-                          DropdownWidget(
-                            nameList: const [
-                              "Developer",
-                              "Line Manager",
-                            ],
-                            onChanged: (String? text) {
-                              _cubit.changePosition(position: text);
-                            },
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: widthOfScreen / 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Department", style: AppTextStyle.blackS12),
-                          DropdownWidget(
-                            nameList: const ["Line 8", "Line 1", "Line 2"],
-                            onChanged: (text) {
-                              _cubit.changeDepartment(department: text);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: widthOfScreen / 15),
-                        child: AppLabelTextField(
-                          labelText: "Employee Number",
-                          highlightText: "*",
-                          textInputType: TextInputType.number,
-                          onChanged: (text) {
-                            _cubit.changeEmployeeNumber(employeeNumber: text);
-                          },
-                        )),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    BlocBuilder<SignUpCubit, SignUpState>(
-                      builder: (context, state) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(
+                        ),
+                        const SizedBox(height: 12),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
                               horizontal: widthOfScreen / 15),
-                          child: AppTintButton(
-                            title: "Sign Up",
-                            onPressed: _signUpWithEmail,
-                            isLoading: state.signUpStatus == LoadStatus.loading,
+                          child: AppEmailInput(
+                            onChanged: (text) {
+                              _cubit.changeEmail(email: text);
+                            },
                           ),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                        height: showingKeyboard ? (keyboardHeight) + 20 : 200)
-                  ],
+                        ),
+                        const SizedBox(height: 12),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 15),
+                          child: AppPasswordInput(
+                            obscureTextController: obscurePasswordController,
+                            onChanged: (text) {
+                              _cubit.changePassword(password: text);
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 15),
+                          child: AppPasswordInput(
+                            labelText: "Confirm Password",
+                            obscureTextController:
+                                obscureConfirmPasswordController,
+                            onChanged: (text) {
+                              _cubit.changeConfirmPassword(
+                                  confirmPassword: text);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 15),
+                          child: AppLabelTextField(
+                            labelText: "Display Name",
+                            highlightText: "*",
+                            onChanged: (text) {
+                              _cubit.changeDisplayName(displayName: text);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 15),
+                          child: DateField(
+                            labelText: "Date of birth",
+                            currentValue: state.dateOfBirth?.toDateString(),
+                            textEditingController: TextEditingController(
+                                text: state.dateOfBirth?.toDateString()),
+                            highlightText: "*",
+                            onChanged: (date) {
+                              _cubit.changeDoB(dateOfBirth: date);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: widthOfScreen / 15),
+                            child: AppLabelTextField(
+                              labelText: "Phone Number",
+                              highlightText: "*",
+                              textInputType: TextInputType.phone,
+                              onChanged: (text) {
+                                _cubit.changePhoneNumber(phoneNumber: text);
+                              },
+                            )),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Position", style: AppTextStyle.blackS12),
+                              DropdownWidget(
+                                nameList: const [
+                                  "Developer",
+                                  "Line Manager",
+                                ],
+                                onChanged: (String? text) {
+                                  _cubit.changePosition(position: text);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: widthOfScreen / 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Department", style: AppTextStyle.blackS12),
+                              DropdownWidget(
+                                nameList: const ["Line 8", "Line 1", "Line 2"],
+                                onChanged: (text) {
+                                  _cubit.changeDepartment(department: text);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: widthOfScreen / 15),
+                            child: AppLabelTextField(
+                              labelText: "Employee Number",
+                              highlightText: "*",
+                              textInputType: TextInputType.number,
+                              onChanged: (text) {
+                                _cubit.changeEmployeeNumber(
+                                    employeeNumber: text);
+                              },
+                            )),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        BlocBuilder<SignUpCubit, SignUpState>(
+                          builder: (context, state) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: widthOfScreen / 15),
+                              child: AppTintButton(
+                                title: "Sign Up",
+                                onPressed: _signUpWithEmail,
+                                isLoading:
+                                    state.signUpStatus == LoadStatus.loading,
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                            height:
+                                showingKeyboard ? (keyboardHeight) + 20 : 200)
+                      ],
+                    );
+                  },
                 ),
               )
             ],
@@ -326,7 +333,25 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
     _cubit.signUpWithEmail();
   }
 
-  void _pickImage() {
-    _cubit.pickImage();
+  void _pickImage(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text("Camera", style: TextStyle(color: Colors.black)),
+              onTap: () => _cubit.pickImageCamera(),
+            ),
+            ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text("Gallery", style: TextStyle(color: Colors.black)),
+              onTap: () => _cubit.pickImageGallery(),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
