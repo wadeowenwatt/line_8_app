@@ -84,6 +84,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     emit(state.copyWith(updateDataStatus: LoadStatus.loading));
     try {
+      AppDialog.showLoadingDialog();
       final currentUser = await authRepo.getUser();
       if (currentUser != null) {
         if (state.tempAvatar != null) {
@@ -104,6 +105,7 @@ class ProfileCubit extends Cubit<ProfileState> {
             position: state.position);
         await appCubit.updateProfile(userUpdate);
         emit(state.copyWith(updateDataStatus: LoadStatus.success));
+        Get.back();
       }
     } catch (error) {
       return;
