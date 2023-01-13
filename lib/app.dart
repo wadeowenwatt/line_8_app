@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/configs/app_configs.dart';
 import 'package:flutter_base/repositories/chat_repository.dart';
+import 'package:flutter_base/repositories/firestorage_repository.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -64,7 +65,10 @@ class _MyAppState extends State<MyApp> {
         }),
         RepositoryProvider<FirestoreRepository>(create: (context) {
           return FirestoreRepositoryImpl();
-        },)
+        }),
+        RepositoryProvider<FireStorageRepository>(create: (context) {
+          return FireStorageRepositoryImpl();
+        })
       ],
       child: MultiBlocProvider(
         providers: [

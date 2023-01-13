@@ -11,6 +11,8 @@ class SignUpState extends Equatable {
   final String? employeeNumber;
   final String? position;
   final String? department;
+  final String? urlAvatar;
+  final XFile? tempAvatar;
 
   const SignUpState({
     this.signUpStatus = LoadStatus.initial,
@@ -23,6 +25,8 @@ class SignUpState extends Equatable {
     this.employeeNumber,
     this.position,
     this.department,
+    this.urlAvatar,
+    this.tempAvatar,
   });
 
   @override
@@ -37,6 +41,8 @@ class SignUpState extends Equatable {
         employeeNumber,
         position,
         department,
+        urlAvatar,
+        tempAvatar,
       ];
 
   SignUpState copyWith({
@@ -50,6 +56,8 @@ class SignUpState extends Equatable {
     String? employeeNumber,
     String? position,
     String? department,
+    String? urlAvatar,
+    XFile? tempAvatar,
   }) {
     return SignUpState(
       signUpStatus: signUpStatus ?? this.signUpStatus,
@@ -62,6 +70,8 @@ class SignUpState extends Equatable {
       employeeNumber: employeeNumber ?? this.employeeNumber,
       position: position ?? this.position,
       department: department ?? this.department,
+      urlAvatar: urlAvatar ?? this.urlAvatar,
+      tempAvatar: tempAvatar ?? this.tempAvatar,
     );
   }
 }

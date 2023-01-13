@@ -10,6 +10,7 @@ class ProfileState extends Equatable {
   final String? employeeNumber;
   final String? position;
   final String? department;
+  final String? urlAvatar;
 
   const ProfileState({
     this.updateDataStatus = LoadStatus.initial,
@@ -20,6 +21,7 @@ class ProfileState extends Equatable {
     this.employeeNumber,
     this.position,
     this.department,
+    this.urlAvatar,
   });
 
   ProfileState copyWith({
@@ -31,6 +33,7 @@ class ProfileState extends Equatable {
     String? employeeNumber,
     String? position,
     String? department,
+    String? urlAvatar,
   }) {
     return ProfileState(
       updateDataStatus: updateDataStatus ?? this.updateDataStatus,
@@ -41,6 +44,7 @@ class ProfileState extends Equatable {
       employeeNumber: employeeNumber ?? this.employeeNumber,
       position: position ?? this.position,
       department: department ?? this.department,
+      urlAvatar: urlAvatar ?? this.urlAvatar,
     );
   }
 
@@ -54,5 +58,6 @@ class ProfileState extends Equatable {
         employeeNumber,
         position,
         department,
+        urlAvatar,
       ];
 }

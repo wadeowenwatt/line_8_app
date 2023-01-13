@@ -5,6 +5,7 @@ import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../blocs/app_cubit.dart';
+import '../../../../repositories/firestorage_repository.dart';
 import '../../../../repositories/firestore_repository.dart';
 import '../../../commons/app_snackbar.dart';
 import 'profile_state.dart';
@@ -12,12 +13,14 @@ import 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final FirestoreRepository firestoreRepo;
   final AuthRepository authRepo;
+  final FireStorageRepository storageRepo;
   final AppCubit appCubit;
 
   ProfileCubit({
     required this.firestoreRepo,
     required this.authRepo,
     required this.appCubit,
+    required this.storageRepo,
   }) : super(const ProfileState());
 
   void changeEmail({required String email}) {
@@ -84,7 +87,7 @@ class ProfileCubit extends Cubit<ProfileState> {
             uid: uidCurrentUser,
             name: state.displayName,
             email: state.email,
-            urlAvatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu_fpPmbK-bebEeX036y7frmW06amtCkG1ew&usqp=CAU",
+            urlAvatar: state.urlAvatar,
             phoneNumber: state.phoneNumber,
             employeeNumber: state.employeeNumber,
             dateOfBirth: Timestamp.fromDate(state.dateOfBirth as DateTime),

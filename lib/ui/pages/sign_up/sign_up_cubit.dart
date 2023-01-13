@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_base/repositories/firestorage_repository.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../blocs/app_cubit.dart';
 import '../../../models/enums/load_status.dart';
@@ -18,12 +22,14 @@ part 'sign_up_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   final AuthRepository authRepo;
   final FirestoreRepository firestoreRepo;
+  final FireStorageRepository storageRepo;
   final AppCubit appCubit;
 
   SignUpCubit({
     required this.authRepo,
     required this.appCubit,
     required this.firestoreRepo,
+    required this.storageRepo,
   }) : super(const SignUpState());
 
   void changeEmail({required String email}) {
@@ -104,12 +110,15 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(signUpStatus: LoadStatus.loading));
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
+      await storageRepo
+          .uploadImage(state.tempAvatar)
+          .then((result) => emit(state.copyWith(urlAvatar: result)));
       if (resultSignUp != null) {
         firestoreRepo.createUserData(
           uid: resultSignUp.uid,
           name: state.displayName,
           email: resultSignUp.email,
-          urlAvatar: resultSignUp.photoURL,
+          urlAvatar: state.urlAvatar,
           phoneNumber: state.phoneNumber,
           position: state.position,
           department: state.department,
@@ -129,4 +138,15 @@ class SignUpCubit extends Cubit<SignUpState> {
       emit(state.copyWith(signUpStatus: LoadStatus.failure));
     }
   }
+
+  void pickImage() async {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 75,
+    );
+    emit(state.copyWith(tempAvatar: image));
+  }
+
 }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
+import 'package:flutter_base/repositories/firestorage_repository.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/my_profile/widgets/row_dropdown_widget.dart';
@@ -29,10 +30,13 @@ class ProfilePage extends StatelessWidget {
             RepositoryProvider.of<FirestoreRepository>(context);
         final authRepo = RepositoryProvider.of<AuthRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
+        final storageRepo =
+            RepositoryProvider.of<FireStorageRepository>(context);
         return ProfileCubit(
           appCubit: appCubit,
           authRepo: authRepo,
           firestoreRepo: firestoreRepo,
+          storageRepo: storageRepo,
         );
       },
       child: const _ProfileTabPage(),
@@ -232,7 +236,9 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
         _cubit.changeEmployeeNumber(
             employeeNumber: state.user?.employeeNumber ?? "000");
         _cubit.changeDoB(
-            dateOfBirth: state.user?.dateOfBirth == null ? Timestamp.fromDate(DateTime(1900)).toDate() : state.user?.dateOfBirth?.toDate() as DateTime);
+            dateOfBirth: state.user?.dateOfBirth == null
+                ? Timestamp.fromDate(DateTime(1900)).toDate()
+                : state.user?.dateOfBirth?.toDate() as DateTime);
         _cubit.changePhoneNumber(phoneNumber: state.user?.phoneNumber ?? "");
         _cubit.changeEmail(email: state.user?.email ?? "");
         _cubit.changePosition(position: state.user?.position);
@@ -290,7 +296,8 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                   Expanded(
                     child: DateField(
                       labelText: "Date of birth",
-                      currentValue: state.user?.dateOfBirth?.toDate().toDateString(),
+                      currentValue:
+                          state.user?.dateOfBirth?.toDate().toDateString(),
                       textEditingController: TextEditingController(
                           text:
                               state.user?.dateOfBirth?.toDate().toDateString()),
@@ -340,7 +347,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
       _appCubit.fetchListUser();
       _appCubit.changedStateFirstLogin(false);
       Get.offNamed(RouteConfig.main);
-
     }
   }
+
 }

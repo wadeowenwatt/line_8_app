@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_base/repositories/firestorage_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/sign_up/sign_up_cubit.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
+import 'package:flutter_base/ui/widgets/images/app_avatar_picker.dart';
 import 'package:flutter_base/ui/widgets/input/date_field_input.dart';
 import 'package:flutter_base/ui/widgets/input/dropdown_widget.dart';
+import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,10 +36,13 @@ class SignUpPage extends StatelessWidget {
         final firestoreRepo =
             RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
+        final storageRepo =
+            RepositoryProvider.of<FireStorageRepository>(context);
         return SignUpCubit(
           authRepo: authRepo,
           firestoreRepo: firestoreRepo,
           appCubit: appCubit,
+          storageRepo: storageRepo,
         );
       },
       child: const SignUpChildPage(),
@@ -62,8 +70,6 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   late ObscureTextController obscureConfirmPasswordController;
 
   late SignUpCubit _cubit;
-
-  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   void initState() {
@@ -143,9 +149,17 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                   children: [
                     const SizedBox(height: 20),
                     GestureDetector(
-                      child: const CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage(AppImages.bgUserPlaceholder),
+                      onTap: _pickImage,
+                      child: BlocBuilder<SignUpCubit, SignUpState>(
+                        builder: (context, state) {
+                          return CircleAvatar(
+                            radius: 50,
+                            backgroundImage: state.tempAvatar.isNull
+                                ? const AssetImage(AppImages.bgUserPlaceholder)
+                                : FileImage(File(state.tempAvatar!.path))
+                                    as ImageProvider,
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -203,6 +217,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                           EdgeInsets.symmetric(horizontal: widthOfScreen / 15),
                       child: DateField(
                         labelText: "Date of birth",
+                        textEditingController: TextEditingController(text: DateTime.now().toDateString()),
                         highlightText: "*",
                         onChanged: (date) {
                           _cubit.changeDoB(dateOfBirth: date);
@@ -306,7 +321,12 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
     );
   }
 
+  // Upload avatarImage when click sign up button
   void _signUpWithEmail() {
     _cubit.signUpWithEmail();
+  }
+
+  void _pickImage() {
+    _cubit.pickImage();
   }
 }
