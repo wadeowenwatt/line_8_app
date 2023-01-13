@@ -48,7 +48,7 @@ class RouteConfig {
     GetPage(name: wiki, page: () => const WikiPage()),
     GetPage(name: memberList, page: () => const ListMemberPage()),
     GetPage(name: feedback, page: () => const FeedbackPage()),
-    GetPage(name: memberProfile, page: () => const MemberProfilePage()),
+    GetPage(name: memberProfile, page: () => MemberProfilePage()),
     GetPage(name: editProfile, page: () => const ProfilePage()),
     GetPage(name: calendar, page: () => const CalendarPage()),
     GetPage(name: requestSeminal, page: () => const RequestSeminalPage()),

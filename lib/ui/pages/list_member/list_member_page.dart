@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import '../../../common/app_colors.dart';
+import 'member_profile/member_profile_cubit.dart';
 
 class ListMemberPage extends StatelessWidget {
   const ListMemberPage({Key? key}) : super(key: key);
@@ -72,7 +73,9 @@ class _ListMemberPageState extends State<_ListMemberPage> {
                 return Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                   child: ItemMember(
-                    getMemberInfo: _getMemberInfo,
+                    getMemberInfo: () {
+                      _getMemberInfo(item.uid);
+                    },
                     name: item.name,
                     position: item.position,
                     urlAvatar: item.urlAvatar,
@@ -88,8 +91,7 @@ class _ListMemberPageState extends State<_ListMemberPage> {
     );
   }
 
-  void _getMemberInfo() {
-
-    Get.toNamed(RouteConfig.memberProfile);
+  void _getMemberInfo(String uid) {
+    Get.toNamed(RouteConfig.memberProfile, arguments: uid);
   }
 }

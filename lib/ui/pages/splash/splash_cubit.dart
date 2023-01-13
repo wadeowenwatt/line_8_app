@@ -31,6 +31,7 @@ class SplashCubit extends Cubit<SplashState> {
       try {
         //Profile
         appCubit.fetchProfile(user.uid);
+        appCubit.fetchListUser();
       } catch (error, s) {
         logger.log(error, stackTrace: s);
         //Check 401

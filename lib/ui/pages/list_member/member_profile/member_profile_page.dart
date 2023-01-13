@@ -3,127 +3,159 @@ import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/ui/pages/list_member/member_profile/widgets/label_text_widget.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import '../../../../blocs/app_cubit.dart';
 import '../../../../common/app_images.dart';
+import '../../../../repositories/firestore_repository.dart';
+import 'member_profile_cubit.dart';
 
-class MemberProfilePage extends StatefulWidget {
-  const MemberProfilePage({Key? key}) : super(key: key);
+class MemberProfilePage extends StatelessWidget {
+  MemberProfilePage({Key? key,}) : super(key: key);
+
+  final String uid = Get.arguments;
 
   @override
-  State<MemberProfilePage> createState() => _MemberProfilePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        final firestoreRepo =
+            RepositoryProvider.of<FirestoreRepository>(context);
+        return MemberProfileCubit(firestoreRepo: firestoreRepo);
+      },
+      child: _MemberProfilePage(uid: uid),
+    );
+  }
 }
 
-class _MemberProfilePageState extends State<MemberProfilePage> {
+class _MemberProfilePage extends StatefulWidget {
+  const _MemberProfilePage({Key? key, required this.uid}) : super(key: key);
+
+  final String uid;
+
+  @override
+  State<_MemberProfilePage> createState() => _MemberProfilePageState();
+}
+
+class _MemberProfilePageState extends State<_MemberProfilePage> {
+  late MemberProfileCubit _cubit;
+
+  @override
+  void initState() {
+    _cubit = BlocProvider.of<MemberProfileCubit>(context);
+    _cubit.fetchProfile(widget.uid);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AppCubit, AppState>(
+      body: BlocBuilder<MemberProfileCubit, MemberProfileState>(
           builder: (context, state) {
-            return NestedScrollView(
-              floatHeaderSlivers: true,
-              headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                SliverAppBar(
-                  expandedHeight: 280,
-                  floating: true,
-                  snap: true,
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryLightColorLeft,
-                            AppColors.primaryLightColorRight
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          SizedBox(
-                              height: AppBar().preferredSize.height +
-                                  MediaQuery.of(context).padding.top),
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 50,
-                            backgroundImage: state.user?.urlAvatar == null
-                                ? const AssetImage(AppImages.bgUserPlaceholder)
-                                : NetworkImage(state.user?.urlAvatar as String)
-                            as ImageProvider,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              state.user?.name ?? "Unknown",
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(state.user?.employeeNumber ?? "000"),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
+        return NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              expandedHeight: 280,
+              floating: true,
+              snap: true,
+              pinned: true,
+              elevation: 0,
+              backgroundColor: Colors.white,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primaryLightColorLeft,
+                        AppColors.primaryLightColorRight
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
                     ),
                   ),
-                )
-              ],
-              body: Container(
-                decoration: const BoxDecoration(color: Colors.white10),
-                child: ListView(
-                  physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  shrinkWrap: true,
-                  children: [
-                    Card(
-                      elevation: 3,
-                      color: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                          height: AppBar().preferredSize.height +
+                              MediaQuery.of(context).padding.top),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50,
+                        backgroundImage: state.user?.urlAvatar == null
+                            ? const AssetImage(AppImages.bgUserPlaceholder)
+                            : NetworkImage(state.user?.urlAvatar as String)
+                                as ImageProvider,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          state.user?.name ?? "Unknown",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      child: _buildGeneral(state),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Card(
-                      elevation: 3,
-                      color: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
-                        ),
+                      Text(state.user?.employeeNumber ?? "000"),
+                      const SizedBox(
+                        height: 20,
                       ),
-                      child: _buildMore(state),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            );
-          }
-      ),
+            )
+          ],
+          body: Container(
+            decoration: const BoxDecoration(color: Colors.white10),
+            child: ListView(
+              physics: const ClampingScrollPhysics(),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+              shrinkWrap: true,
+              children: [
+                Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                  child: _buildGeneral(state),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                  child: _buildMore(state),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 
-  Widget _buildGeneral(AppState state) {
+  Widget _buildGeneral(MemberProfileState state) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -158,7 +190,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
     );
   }
 
-  Widget _buildMore(AppState state) {
+  Widget _buildMore(MemberProfileState state) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
