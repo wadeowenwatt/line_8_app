@@ -353,8 +353,8 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
     );
   }
 
-  void _updateEditData() {
-    _cubit.updateDataUserToFirestore();
+  void _updateEditData() async {
+    await _cubit.updateDataUserToFirestore();
     if (_appCubit.isFirstLogin()) {
       _appCubit.fetchListUser();
       _appCubit.changedStateFirstLogin(false);
@@ -367,6 +367,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
       context: context,
       builder: (context) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),

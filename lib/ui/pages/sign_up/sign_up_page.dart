@@ -338,6 +338,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
       context: context,
       builder: (context) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),
