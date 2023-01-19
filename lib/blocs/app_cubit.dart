@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../models/enums/load_status.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/user_repository.dart';
+import '../utils/logger.dart';
 
 part 'app_state.dart';
 
@@ -29,7 +30,7 @@ class AppCubit extends Cubit<AppState> {
         emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
       }
     } catch(error) {
-      print("$error fetch user data failed!");
+      print("Fetch User Data: $error");
       emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
     }
   }

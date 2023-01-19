@@ -91,6 +91,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
@@ -100,7 +101,6 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
         physics: const ClampingScrollPhysics(),
         child: buildBody(),
       ),
-      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -306,7 +306,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                                   horizontal: widthOfScreen / 15),
                               child: AppTintButton(
                                 title: "Sign Up",
-                                onPressed: _signUpWithEmail,
+                                onPressed: () => _signUpWithEmail(state),
                                 isLoading:
                                     state.signUpStatus == LoadStatus.loading,
                               ),
@@ -329,7 +329,8 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
   }
 
   // Upload avatarImage when click sign up button
-  void _signUpWithEmail() {
+  void _signUpWithEmail(SignUpState state) {
+    FocusManager.instance.primaryFocus?.unfocus();
     _cubit.signUpWithEmail();
   }
 
@@ -342,12 +343,14 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text("Camera", style: TextStyle(color: Colors.black)),
+              title:
+                  const Text("Camera", style: TextStyle(color: Colors.black)),
               onTap: () => _cubit.pickImageCamera(),
             ),
             ListTile(
               leading: const Icon(Icons.image),
-              title: const Text("Gallery", style: TextStyle(color: Colors.black)),
+              title:
+                  const Text("Gallery", style: TextStyle(color: Colors.black)),
               onTap: () => _cubit.pickImageGallery(),
             ),
           ],

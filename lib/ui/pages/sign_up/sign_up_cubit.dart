@@ -32,6 +32,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     required this.storageRepo,
   }) : super(const SignUpState());
 
+  /// Functions validate input field in sign-up screen
   void changeEmail({required String email}) {
     emit(state.copyWith(email: email));
   }
@@ -110,11 +111,15 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(signUpStatus: LoadStatus.loading));
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
-      await storageRepo
-          .uploadImage(state.tempAvatar)
-          .then((result) => emit(state.copyWith(urlAvatar: result)));
+
+      if (!state.tempAvatar.isNull) {
+        await storageRepo
+            .uploadImage(state.tempAvatar)
+            .then((result) => emit(state.copyWith(urlAvatar: result)));
+      }
+
       if (resultSignUp != null) {
-        firestoreRepo.createUserData(
+        await firestoreRepo.createUserData(
           uid: resultSignUp.uid,
           name: state.displayName,
           email: resultSignUp.email,
@@ -128,13 +133,14 @@ class SignUpCubit extends Cubit<SignUpState> {
 
         appCubit.fetchProfile(resultSignUp.uid);
         appCubit.fetchListUser();
+
         emit(state.copyWith(signUpStatus: LoadStatus.success));
         Get.offAllNamed(RouteConfig.main);
       } else {
         emit(state.copyWith(signUpStatus: LoadStatus.failure));
       }
     } catch (error) {
-      print("$error register failed!");
+      print("Register Error: $error");
       emit(state.copyWith(signUpStatus: LoadStatus.failure));
     }
   }
