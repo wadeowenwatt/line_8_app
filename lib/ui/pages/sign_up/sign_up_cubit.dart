@@ -112,7 +112,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     try {
       final resultSignUp = await authRepo.registerEmail(email, password);
 
-      if (!state.tempAvatar.isNull) {
+      if (state.tempAvatar != null) {
         await storageRepo
             .uploadImage(state.tempAvatar)
             .then((result) => emit(state.copyWith(urlAvatar: result)));
