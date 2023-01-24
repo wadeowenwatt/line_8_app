@@ -344,14 +344,20 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
             ListTile(
               leading: const Icon(Icons.camera_alt),
               title:
-                  const Text("Camera", style: TextStyle(color: Colors.black)),
-              onTap: () => _cubit.pickImageCamera(),
+              const Text("Camera", style: TextStyle(color: Colors.black)),
+              onTap: () {
+                Get.back();
+                _cubit.pickImageCamera();
+              },
             ),
             ListTile(
               leading: const Icon(Icons.image),
               title:
-                  const Text("Gallery", style: TextStyle(color: Colors.black)),
-              onTap: () => _cubit.pickImageGallery(),
+              const Text("Gallery", style: TextStyle(color: Colors.black)),
+              onTap: () {
+                Get.back();
+                _cubit.pickImageGallery();
+              },
             ),
           ],
         );

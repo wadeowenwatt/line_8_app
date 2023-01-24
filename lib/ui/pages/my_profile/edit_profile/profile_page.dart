@@ -84,31 +84,26 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
         physics: const ClampingScrollPhysics(),
         slivers: [
           buildSliverAppBar(),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              childCount: 1,
-              (context, index) {
-                return Container(
-                  decoration: const BoxDecoration(
-                      color: AppColors.primaryLightColorRight),
-                  child: Container(
-                    height: Get.size.height,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(30),
-                        topLeft: Radius.circular(30),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        buildInfoCard(),
-                        buildInputField(),
-                      ],
-                    ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration:
+                  const BoxDecoration(color: AppColors.primaryLightColorLeft),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(30),
                   ),
-                );
-              },
+                ),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    buildInfoCard(),
+                    buildInputField(),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -164,7 +159,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
           ),
         ],
       ),
-      backgroundColor: AppColors.primaryLightColorRight,
+      backgroundColor: AppColors.primaryLightColorLeft,
     );
   }
 
@@ -373,13 +368,19 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
               leading: const Icon(Icons.camera_alt),
               title:
                   const Text("Camera", style: TextStyle(color: Colors.black)),
-              onTap: () => _cubit.pickImageCamera(),
+              onTap: () {
+                Get.back();
+                _cubit.pickImageCamera();
+              },
             ),
             ListTile(
               leading: const Icon(Icons.image),
               title:
                   const Text("Gallery", style: TextStyle(color: Colors.black)),
-              onTap: () => _cubit.pickImageGallery(),
+              onTap: () {
+                Get.back();
+                _cubit.pickImageGallery();
+              },
             ),
           ],
         );
