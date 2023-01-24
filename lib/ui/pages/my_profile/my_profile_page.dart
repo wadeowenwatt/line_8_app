@@ -19,117 +19,109 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   var top = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AppCubit, AppState>(
-        builder: (context, state) {
-          return NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) => [
-              SliverAppBar(
-                expandedHeight: 280,
-                floating: true,
-                snap: true,
-                elevation: 0,
-                backgroundColor: Colors.white,
-                actions: [
-                  IconButton(
-                    onPressed: () => Get.toNamed(RouteConfig.editProfile),
-                    icon: const Icon(Icons.edit,),
-                  )
-                ],
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryLightColorLeft,
-                          AppColors.primaryLightColorRight
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        SizedBox(
-                            height: AppBar().preferredSize.height +
-                                MediaQuery.of(context).padding.top),
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 50,
-                          backgroundImage: state.user?.urlAvatar == null
-                              ? const AssetImage(AppImages.bgUserPlaceholder)
-                              : NetworkImage(state.user?.urlAvatar as String)
-                          as ImageProvider,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            state.user?.name ?? "Unknown",
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text(state.user?.employeeNumber ?? "000"),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
+      body: BlocBuilder<AppCubit, AppState>(builder: (context, state) {
+        return NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverAppBar(
+              expandedHeight: 230,
+              floating: true,
+              pinned: true,
+              snap: true,
+              elevation: 1,
+              backgroundColor: AppColors.primaryDarkColorLeft,
+              actions: [
+                IconButton(
+                  onPressed: () => Get.toNamed(RouteConfig.editProfile),
+                  icon: const Icon(
+                    Icons.edit,
                   ),
                 ),
-              )
-            ],
-            body: Container(
-              decoration: const BoxDecoration(color: Colors.white10),
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                shrinkWrap: true,
-                children: [
-                  Card(
-                    elevation: 3,
-                    color: Colors.white,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30),
-                      ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  state.user?.name ?? "Unknown",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                centerTitle: true,
+                background: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.primaryLightColorLeft,
+                        AppColors.primaryLightColorRight
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: _buildGeneral(state),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Card(
-                    elevation: 3,
-                    color: Colors.white,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                          height: AppBar().preferredSize.height +
+                              MediaQuery.of(context).padding.top),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50,
+                        backgroundImage: state.user?.urlAvatar == null
+                            ? const AssetImage(AppImages.bgUserPlaceholder)
+                            : NetworkImage(state.user?.urlAvatar as String)
+                                as ImageProvider,
                       ),
-                    ),
-                    child: _buildMore(state),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+                ),
               ),
+            )
+          ],
+          body: Container(
+            decoration: const BoxDecoration(color: Colors.white10),
+            child: ListView(
+              physics: const ClampingScrollPhysics(),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
+              shrinkWrap: true,
+              children: [
+                Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                  child: _buildGeneral(state),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 3,
+                  color: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30),
+                    ),
+                  ),
+                  child: _buildMore(state),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
-          );
-        }
-      ),
+          ),
+        );
+      }),
     );
   }
 
