@@ -24,9 +24,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AppCubit, AppState>(builder: (context, state) {
-        return NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        return CustomScrollView(
+          // floatHeaderSlivers: true,
+          slivers: [
             SliverAppBar(
               expandedHeight: 230,
               floating: true,
@@ -82,44 +82,46 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                 ),
               ),
-            )
-          ],
-          body: Container(
-            decoration: const BoxDecoration(color: Colors.white10),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 80),
-              shrinkWrap: true,
-              children: [
-                Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    ),
-                  ),
-                  child: _buildGeneral(state),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    ),
-                  ),
-                  child: _buildMore(state),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
             ),
-          ),
+            SliverToBoxAdapter(
+              child: Container(
+                decoration: const BoxDecoration(color: Colors.white10),
+                child: ListView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
+                  shrinkWrap: true,
+                  children: [
+                    Card(
+                      elevation: 3,
+                      color: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: _buildGeneral(state),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Card(
+                      elevation: 3,
+                      color: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: _buildMore(state),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         );
       }),
     );
