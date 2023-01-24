@@ -18,14 +18,12 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  var top = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<AppCubit, AppState>(builder: (context, state) {
         return CustomScrollView(
-          // floatHeaderSlivers: true,
           slivers: [
             SliverAppBar(
               expandedHeight: 230,

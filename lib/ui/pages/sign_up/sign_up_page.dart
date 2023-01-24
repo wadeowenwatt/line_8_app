@@ -315,7 +315,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                         ),
                         SizedBox(
                             height:
-                                showingKeyboard ? (keyboardHeight) + 20 : 200)
+                                showingKeyboard ? (keyboardHeight) + 20 : 100)
                       ],
                     );
                   },

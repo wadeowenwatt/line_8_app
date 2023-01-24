@@ -52,17 +52,23 @@ class _MemberProfilePageState extends State<_MemberProfilePage> {
     return Scaffold(
       body: BlocBuilder<MemberProfileCubit, MemberProfileState>(
           builder: (context, state) {
-        return NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        return CustomScrollView(
+          slivers: [
             SliverAppBar(
-              expandedHeight: 280,
+              expandedHeight: 230,
               floating: true,
               snap: true,
               pinned: true,
-              elevation: 0,
-              backgroundColor: Colors.white,
+              elevation: 1,
+              backgroundColor: AppColors.primaryDarkColorLeft,
               flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  state.user?.name ?? "Unknown",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                centerTitle: true,
                 background: Container(
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
@@ -72,10 +78,6 @@ class _MemberProfilePageState extends State<_MemberProfilePage> {
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
                     ),
                   ),
                   child: Column(
@@ -95,61 +97,50 @@ class _MemberProfilePageState extends State<_MemberProfilePage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          state.user?.name ?? "Unknown",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text(state.user?.employeeNumber ?? "000"),
-                      const SizedBox(
-                        height: 20,
-                      ),
                     ],
                   ),
                 ),
               ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                decoration: const BoxDecoration(color: Colors.white10),
+                child: ListView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 100),
+                  shrinkWrap: true,
+                  children: [
+                    Card(
+                      elevation: 3,
+                      color: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: _buildGeneral(state),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Card(
+                      elevation: 3,
+                      color: Colors.white,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: _buildMore(state),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
+              ),
             )
           ],
-          body: Container(
-            decoration: const BoxDecoration(color: Colors.white10),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-              shrinkWrap: true,
-              children: [
-                Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    ),
-                  ),
-                  child: _buildGeneral(state),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30),
-                    ),
-                  ),
-                  child: _buildMore(state),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ),
         );
       }),
     );

@@ -101,6 +101,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                   children: [
                     buildInfoCard(),
                     buildInputField(),
+                    const SizedBox(height: 100,),
                   ],
                 ),
               ),
@@ -355,6 +356,8 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
       _appCubit.changedStateFirstLogin(false);
       Get.offNamed(RouteConfig.main);
     }
+    _appCubit.fetchListUser();
+    Get.back();
   }
 
   void _pickImage(BuildContext context) {
