@@ -5,14 +5,14 @@ import '../../team_fund/widgets/currency_textfield.dart';
 
 class BigChoice {
   final String pathImage;
-  final String bigText;
-  final String smallText;
+  String bigText;
+  String smallText;
   String pathScreen;
 
   BigChoice({
     required this.pathImage,
-    required this.bigText,
-    required this.smallText,
+    this.bigText = "",
+    this.smallText = "",
     this.pathScreen = "",
   });
 }

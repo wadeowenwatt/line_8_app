@@ -15,17 +15,14 @@ import '../main/main_cubit.dart';
 List choices = [
   BigChoice(
       pathImage: "assets/images/ic_fake_1.png",
-      bigText: "89.69%",
-      smallText: "Attendance"),
+      bigText: "Members",
+      pathScreen: RouteConfig.memberList,
+  ),
   BigChoice(
       pathImage: "assets/images/ic_fake_2.png",
       bigText: "Team Fund",
       smallText: "23.000.000",
       pathScreen: RouteConfig.teamFund),
-  Choice(
-      title: "Member",
-      pathImage: "assets/images/img_1.png",
-      pathScreen: RouteConfig.memberList),
   Choice(
       title: "Calendar",
       pathImage: "assets/images/img_3.png",
@@ -121,7 +118,10 @@ class _NewHomePageState extends State<_NewHomePage> {
                               return RowTwoBigCardSelection(
                                 choice1: choices[index],
                                 choice2: choices[index + 1],
-                                onClick1: () {},
+                                onClick1: () {
+                                  _onClick((choices[index] as BigChoice)
+                                      .pathScreen);
+                                },
                                 onClick2: () {
                                   _onClick((choices[index + 1] as BigChoice)
                                       .pathScreen);
