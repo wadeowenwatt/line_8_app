@@ -35,6 +35,9 @@ class _ListMemberPage extends StatefulWidget {
 }
 
 class _ListMemberPageState extends State<_ListMemberPage> {
+
+  final controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,5 +96,27 @@ class _ListMemberPageState extends State<_ListMemberPage> {
 
   void _getMemberInfo(String uid) {
     Get.toNamed(RouteConfig.memberProfile, arguments: uid);
+  }
+
+  Widget _searchBar() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
+      child: TextField(
+        controller: controller,
+        style: const TextStyle(color: Colors.black),
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
+          ),
+          hintText: "Search...",
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
+          ),
+        ),
+      ),
+    );
   }
 }

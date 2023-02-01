@@ -62,7 +62,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   void initState() {
     _counterMember = 0;
     _counterRequest = 3;
-    _counterWeeklyReport = 4;
+    _counterWeeklyReport = 0;
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
