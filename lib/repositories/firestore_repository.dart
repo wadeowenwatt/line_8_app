@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_base/models/entities/event/event_entity.dart';
 import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 
 abstract class FirestoreRepository {
@@ -27,14 +28,23 @@ abstract class FirestoreRepository {
     String? details,
     bool requested,
   });
+
+  Future<List<Event>> fetchEventNotAccepted();
+
+  Future<List<Event>> fetchEventAccepted();
+
+  Future<void> acceptEventRequest(String docId);
+
+  Future<void> rejectEventRequest(String docId);
+
 }
 
 class FirestoreRepositoryImpl extends FirestoreRepository {
   CollectionReference membersCollection =
-      FirebaseFirestore.instance.collection("members");
+  FirebaseFirestore.instance.collection("members");
 
   CollectionReference eventsCollection =
-      FirebaseFirestore.instance.collection("event_requests");
+  FirebaseFirestore.instance.collection("event_requests");
 
   @override
   Future<void> createUserData({
@@ -103,7 +113,7 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
       await membersCollection.get().then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
           MyUserEntity myUserEntity =
-              MyUserEntity.fromJson(doc.data() as Map<String, dynamic>);
+          MyUserEntity.fromJson(doc.data() as Map<String, dynamic>);
           listUser.add(myUserEntity);
         }
       });
@@ -122,15 +132,75 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
     bool requested = false,
   }) async {
     try {
-      await eventsCollection.add({
+      String id = eventsCollection.doc().id;
+      await eventsCollection.doc(id).set({
+        'id': id,
         'title': title,
         'time_start': Timestamp.fromDate(timeStart),
         'time_stop': Timestamp.fromDate(timeStop ?? timeStart),
         'details': details,
         'requested': requested,
-      });
+      }).then((value) => null);
     } catch (e) {
       print("ADD EVENT ERROR: $e");
     }
   }
+
+  @override
+  Future<List<Event>> fetchEventNotAccepted() async {
+    List<Event> listEvent = [];
+    try {
+      await eventsCollection.get().then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          Event eventEntity =
+          Event.fromJson(doc.data() as Map<String, dynamic>);
+          if (!eventEntity.requested) {
+            listEvent.add(eventEntity);
+          }
+        }
+      });
+    } catch (error) {
+      print("$error fetch List event failed!");
+    }
+    return listEvent;
+  }
+
+  @override
+  Future<List<Event>> fetchEventAccepted() async {
+    List<Event> listEvent = [];
+    try {
+      await eventsCollection.get().then((QuerySnapshot querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          Event eventEntity = Event.fromJson(
+              doc.data() as Map<String, dynamic>);
+          if (eventEntity.requested) {
+            listEvent.add(eventEntity);
+          }
+        }
+      });
+    } catch (error) {
+      print("$error fetch List event accepted failed!");
+    }
+    return listEvent;
+  }
+
+  @override
+  Future<void> acceptEventRequest(String docId) async {
+    try {
+      eventsCollection.doc(docId).update({
+        'requested' : true,
+      });
+    } catch(error) {
+      print(error);
+    }
+  }
+
+  @override
+  Future<void> rejectEventRequest(String docId) {
+    return eventsCollection
+        .doc(docId)
+        .delete()
+        .catchError((error) => print("Failed to reject event: $error"));
+  }
+
 }
