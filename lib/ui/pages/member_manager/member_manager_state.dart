@@ -1,6 +1,9 @@
 part of 'member_manager_cubit.dart';
 
-@immutable
-abstract class MemberManagerState {}
+class MemberManagerState extends Equatable {
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
 
-class MemberManagerInitial extends MemberManagerState {}
+
+}

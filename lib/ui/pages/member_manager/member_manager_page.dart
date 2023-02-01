@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_images.dart';
@@ -7,8 +8,10 @@ import 'package:flutter_base/ui/pages/member_manager/member_manager_cubit.dart';
 import 'package:flutter_base/ui/pages/member_manager/widgets/tab_noti_badge.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/app_colors.dart';
+import '../../../models/entities/event/event_entity.dart';
 import 'widgets/event_card_widgets.dart';
 
 class MemberManagerPage extends StatelessWidget {
@@ -20,7 +23,9 @@ class MemberManagerPage extends StatelessWidget {
       create: (context) {
         final firestoreRepo =
             RepositoryProvider.of<FirestoreRepository>(context);
-        return MemberManagerCubit(firestoreRepository: firestoreRepo);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return MemberManagerCubit(
+            firestoreRepository: firestoreRepo, appCubit: appCubit);
       },
       child: const _MemberManagerPage(),
     );
@@ -38,30 +43,42 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late int _counterMember;
-  late int _counterRequest;
+  late int _counterEvent;
   late int _counterWeeklyReport;
 
   final controller = TextEditingController();
 
-  List<Request> listRequest = [
-    Request(
-        title: "Event 1",
-        content: "This is Event 1 and more more more.",
-        time: DateTime.now()),
-    Request(
-        title: "Event 2",
-        content: "This is Event 1 and more more more.",
-        time: DateTime.now().add(const Duration(days: 3))),
-    Request(
-        title: "Event 3",
-        content: "This is Event 1 and more more more.",
-        time: DateTime.now().add(const Duration(days: 5))),
+  List<Event> listEvent = [
+    Event(
+      id: 'cyclic_event',
+      title: "Tech-Talk",
+      timeStart: Timestamp.fromDate(DateTime.now()),
+      timeStop: Timestamp.fromDate(DateTime.now()),
+      details: "Tech-Talk hằng tuần",
+      requested: true,
+    ),
+    Event(
+      id: 'cyclic_event',
+      title: "Tech-Talk",
+      timeStart: Timestamp.fromDate(DateTime.now()),
+      timeStop: Timestamp.fromDate(DateTime.now()),
+      details: "Tech-Talk hằng tuần",
+      requested: true,
+    ),
+    Event(
+      id: 'cyclic_event',
+      title: "Tech-Talk",
+      timeStart: Timestamp.fromDate(DateTime.now()),
+      timeStop: Timestamp.fromDate(DateTime.now()),
+      details: "Tech-Talk hằng tuần",
+      requested: true,
+    ),
   ];
 
   @override
   void initState() {
     _counterMember = 0;
-    _counterRequest = 3;
+    _counterEvent = 3;
     _counterWeeklyReport = 0;
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
@@ -84,8 +101,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
               ),
             ),
             TabNotiBadgeWidget(
-              labelTab: "Requests",
-              counter: _counterRequest,
+              labelTab: "Events",
+              counter: _counterEvent,
               icon: const Icon(
                 Icons.receipt_long,
                 size: 30,
@@ -121,7 +138,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
           controller: _tabController,
           children: [
             _buildMemberManage(),
-            _buildRequestManage(),
+            _buildEventManage(),
             Container(),
           ],
         ),
@@ -227,15 +244,62 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     );
   }
 
-  Widget _buildRequestManage() {
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        final item = listRequest[index];
-        return EventCardWidget(
-          item: item,
+  Widget _buildEventManage() {
+    RefreshController refreshController =
+        RefreshController(initialRefresh: false);
+    return BlocBuilder<MemberManagerCubit, MemberManagerState>(
+      builder: (context, state) {
+        return SmartRefresher(
+          controller: refreshController,
+          child: ListView.builder(
+            itemBuilder: (context, index) {
+              final item = listEvent[index];
+              return InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Approval"),
+                        content: const Text(
+                          "Request Approval",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                // listUser.removeAt(index);
+                                Get.back();
+                              });
+                            },
+                            child: const Text(
+                              "Accept",
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              "Reject",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: EventCardWidget(
+                  item: item,
+                ),
+              );
+            },
+            itemCount: listEvent.length,
+          ),
         );
       },
-      itemCount: listRequest.length,
     );
   }
 }

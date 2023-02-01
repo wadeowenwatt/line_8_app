@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/models/entities/event/event_entity.dart';
 import 'package:flutter_base/models/entities/request/request_entity.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 
@@ -8,7 +9,7 @@ class EventCardWidget extends StatelessWidget {
     required this.item,
   });
 
-  final Request item;
+  final Event item;
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +57,14 @@ class EventCardWidget extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: item.time!.toDateTimeString(),
+                              text: item.timeStart!.toDate().toDateTimeString(),
                               style: const TextStyle(color: Colors.blue),
                             ),
                           ],
                         ),
                       ),
                       Text(
-                        item.content!,
+                        item.details!,
                         style: const TextStyle(color: Colors.black),
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,

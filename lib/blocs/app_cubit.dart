@@ -4,6 +4,7 @@ import 'package:flutter_base/models/entities/user/user_entity.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../models/entities/event/event_entity.dart';
 import '../models/enums/load_status.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/user_repository.dart';
@@ -32,6 +33,17 @@ class AppCubit extends Cubit<AppState> {
     } catch(error) {
       print("Fetch User Data: $error");
       emit(state.copyWith(fetchProfileStatus: LoadStatus.failure));
+    }
+  }
+
+  void fetchEventNotAccepted() async {
+    try {
+      final listEventNotAccepted = await firestoreRepo.fetchEventNotAccepted();
+      if (listEventNotAccepted != null) {
+        emit(state.copyWith(listEventNotAccepted: listEventNotAccepted));
+      }
+    } catch (error) {
+
     }
   }
 
