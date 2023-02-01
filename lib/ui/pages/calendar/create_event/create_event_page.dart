@@ -54,7 +54,7 @@ class _CreateEventPageState extends State<_CreateEventPage> {
         slivers: [
           const SliverAppBar(
             pinned: true,
-            title: Text("Create Event"),
+            title: Text("Request Seminal"),
             backgroundColor: AppColors.primaryLightColorLeft,
             actions: [
               // IconButton(

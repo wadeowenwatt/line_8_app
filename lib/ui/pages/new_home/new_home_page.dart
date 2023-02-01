@@ -34,7 +34,7 @@ List choices = [
   Choice(
       title: "Request Seminal",
       pathImage: "assets/images/img_6.png",
-      pathScreen: RouteConfig.requestSeminal),
+      pathScreen: RouteConfig.createEvent),
   Choice(
       title: "Feedback",
       pathImage: "assets/images/img_2.png",

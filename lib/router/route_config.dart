@@ -32,7 +32,8 @@ class RouteConfig {
   static const String memberProfile = "/memberProfile";
   static const String editProfile = "/editProfile";
   static const String calendar = "/calendar";
-  static const String requestSeminal = "/requestSeminal";
+  // static const String requestSeminal = "/requestSeminal";
+  /// Change request seminal to create event
   static const String createEvent = "/createEvent";
   static const String memberSkills = "/memberSkills";
   static const String teamFund = "/teamFund";
@@ -51,7 +52,7 @@ class RouteConfig {
     GetPage(name: memberProfile, page: () => MemberProfilePage()),
     GetPage(name: editProfile, page: () => const ProfilePage()),
     GetPage(name: calendar, page: () => const CalendarPage()),
-    GetPage(name: requestSeminal, page: () => const RequestSeminalPage()),
+    // GetPage(name: requestSeminal, page: () => const RequestSeminalPage()),
     GetPage(name: createEvent, page: () => const CreateEventPage()),
     GetPage(name: memberSkills, page: () => const MemberSkillsPage()),
     GetPage(name: teamFund, page: () => const TeamFundPage()),
