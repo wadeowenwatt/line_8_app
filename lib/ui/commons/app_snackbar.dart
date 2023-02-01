@@ -6,8 +6,8 @@ class AppSnackbar {
     Get.snackbar(
       title ?? "Info",
       message ?? "Empty message",
-      backgroundColor: Colors.white,
-      colorText: Colors.black,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
     );
   }
 

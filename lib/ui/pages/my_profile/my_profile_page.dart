@@ -18,7 +18,6 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +28,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
               expandedHeight: 230,
               floating: true,
               pinned: true,
-              snap: true,
               elevation: 1,
               backgroundColor: AppColors.primaryDarkColorLeft,
               actions: [
@@ -86,7 +84,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 decoration: const BoxDecoration(color: Colors.white10),
                 child: ListView(
                   physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 40),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 30,
+                    bottom: 95,
+                  ),
                   shrinkWrap: true,
                   children: [
                     Card(
@@ -111,9 +114,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
                         ),
                       ),
                       child: _buildMore(state),
-                    ),
-                    const SizedBox(
-                      height: 10,
                     ),
                   ],
                 ),

@@ -7,11 +7,15 @@ class IconDoubleTextField extends StatefulWidget {
     required this.icon,
     required this.topLabelText,
     required this.bottomLabelText,
+    this.onChangedTimeStart,
+    this.onChangedTimeStop,
   });
 
   final Icon icon;
   final String topLabelText;
   final String bottomLabelText;
+  final ValueChanged<DateTime>? onChangedTimeStart;
+  final ValueChanged<DateTime>? onChangedTimeStop;
 
   @override
   State<IconDoubleTextField> createState() => _IconDoubleTextFieldState();
@@ -64,6 +68,9 @@ class _IconDoubleTextFieldState extends State<IconDoubleTextField> {
           textEditingControllerTopField.text =
               selectedDateTime.toDateTimeString();
         }
+
+        widget.onChangedTimeStart!(selectedDateTime);
+        widget.onChangedTimeStop!(selectedDateTime);
       });
     }
   }
@@ -82,15 +89,15 @@ class _IconDoubleTextFieldState extends State<IconDoubleTextField> {
           decoration: InputDecoration(
               icon: widget.icon,
               labelText: widget.topLabelText,
-              labelStyle: const TextStyle(color: Colors.white70),
+              labelStyle: const TextStyle(color: Colors.grey),
               enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: Colors.black),
               ),
               focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color: Colors.black),
               ),
-              iconColor: Colors.white),
-          style: const TextStyle(color: Colors.white),
+              iconColor: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 40),
@@ -101,15 +108,15 @@ class _IconDoubleTextFieldState extends State<IconDoubleTextField> {
                 _selectDateTime(context, textEditingControllerBottomField),
             decoration: InputDecoration(
                 labelText: widget.bottomLabelText,
-                labelStyle: const TextStyle(color: Colors.white70),
+                labelStyle: const TextStyle(color: Colors.grey),
                 enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
                 focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Colors.black),
                 ),
-                iconColor: Colors.white),
-            style: const TextStyle(color: Colors.white),
+                iconColor: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
         )
       ],

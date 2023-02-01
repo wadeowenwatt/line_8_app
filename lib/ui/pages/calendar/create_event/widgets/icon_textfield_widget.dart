@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
 class IconTextField extends StatelessWidget {
-
   IconTextField({
     super.key,
     required this.icon,
     required this.labelText,
     this.isEmailInput = false,
+    this.onChanged,
   });
 
   final Icon icon;
   final String labelText;
+  final ValueChanged<String>? onChanged;
   bool isEmailInput = false;
 
   @override
@@ -21,15 +22,16 @@ class IconTextField extends StatelessWidget {
       decoration: InputDecoration(
           icon: icon,
           labelText: labelText,
-          labelStyle: const TextStyle(color: Colors.white70),
+          labelStyle: const TextStyle(color: Colors.grey),
           enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.black),
           ),
           focusedBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.black),
           ),
-          iconColor: Colors.white),
-      style: const TextStyle(color: Colors.white),
+          iconColor: Colors.black),
+      style: const TextStyle(color: Colors.black),
+      onChanged: onChanged,
     );
   }
 }

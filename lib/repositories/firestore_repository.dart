@@ -19,11 +19,22 @@ abstract class FirestoreRepository {
   Future<List<MyUserEntity>> fetchListUserData();
 
   Future<void> updateDataUser({required MyUserEntity userUpdate});
+
+  Future<void> createEventRequest({
+    String? title,
+    required DateTime timeStart,
+    DateTime? timeStop,
+    String? details,
+    bool requested,
+  });
 }
 
 class FirestoreRepositoryImpl extends FirestoreRepository {
   CollectionReference membersCollection =
       FirebaseFirestore.instance.collection("members");
+
+  CollectionReference eventsCollection =
+      FirebaseFirestore.instance.collection("event_requests");
 
   @override
   Future<void> createUserData({
@@ -91,14 +102,35 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
     try {
       await membersCollection.get().then((QuerySnapshot querySnapshot) {
         for (var doc in querySnapshot.docs) {
-          MyUserEntity myUserEntity = MyUserEntity.fromJson(
-              doc.data() as Map<String, dynamic>);
+          MyUserEntity myUserEntity =
+              MyUserEntity.fromJson(doc.data() as Map<String, dynamic>);
           listUser.add(myUserEntity);
         }
       });
-    } catch(error) {
+    } catch (error) {
       print("$error fetch List user failed!");
     }
     return listUser;
+  }
+
+  @override
+  Future<void> createEventRequest({
+    String? title,
+    required DateTime timeStart,
+    DateTime? timeStop,
+    String? details,
+    bool requested = false,
+  }) async {
+    try {
+      await eventsCollection.add({
+        'title': title,
+        'time_start': Timestamp.fromDate(timeStart),
+        'time_stop': Timestamp.fromDate(timeStop ?? timeStart),
+        'details': details,
+        'requested': requested,
+      });
+    } catch (e) {
+      print("ADD EVENT ERROR: $e");
+    }
   }
 }

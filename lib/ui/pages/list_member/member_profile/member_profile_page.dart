@@ -57,7 +57,6 @@ class _MemberProfilePageState extends State<_MemberProfilePage> {
             SliverAppBar(
               expandedHeight: 230,
               floating: true,
-              snap: true,
               pinned: true,
               elevation: 1,
               backgroundColor: AppColors.primaryDarkColorLeft,
@@ -107,7 +106,7 @@ class _MemberProfilePageState extends State<_MemberProfilePage> {
                 decoration: const BoxDecoration(color: Colors.white10),
                 child: ListView(
                   physics: const ClampingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 100),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 170),
                   shrinkWrap: true,
                   children: [
                     Card(

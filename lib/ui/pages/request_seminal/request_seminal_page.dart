@@ -62,16 +62,6 @@ class RequestSeminalPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Name:",
-            style: TextStyle(color: Colors.grey),
-          ),
-          DropdownWidget(
-            nameList: const ["", "linhtn1", "asdasd", "asdasdasd"],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
             "Title:",
             style: TextStyle(color: Colors.grey),
           ),
@@ -86,6 +76,16 @@ class RequestSeminalPage extends StatelessWidget {
             style: TextStyle(color: Colors.grey),
           ),
           DateField(),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "Details:",
+            style: TextStyle(color: Colors.grey),
+          ),
+          const TextField(
+            style: TextStyle(color: Colors.black),
+          ),
           const SizedBox(
             height: 30,
           ),
