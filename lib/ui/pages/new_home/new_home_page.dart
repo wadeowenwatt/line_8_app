@@ -21,7 +21,6 @@ List choices = [
   BigChoice(
       pathImage: "assets/images/ic_fake_2.png",
       bigText: "Team Fund",
-      smallText: "23.000.000",
       pathScreen: RouteConfig.teamFund),
   Choice(
       title: "Calendar",

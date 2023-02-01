@@ -7,8 +7,8 @@ class AppDateUtils {
   AppDateUtils._();
 
   static DateTime kToday = DateTime.now();
-  static DateTime kFirstDay = DateTime(DateTime.now().year - 3);
-  static DateTime kLastDay = DateTime(DateTime.now().year + 3);
+  static DateTime kFirstDay = DateTime(DateTime.now().year - 1);
+  static DateTime kLastDay = DateTime(DateTime.now().year + 1);
 
   static DateTime? fromString(String date, {String? format}) {
     return DateTimeExtension.fromString(date, format: format);
