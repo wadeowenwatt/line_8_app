@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_images.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
 import 'package:flutter_base/ui/pages/list_member/list_member_cubit.dart';
@@ -20,7 +21,11 @@ class ListMemberPage extends StatelessWidget {
       create: (context) {
         final firestoreRepo =
             RepositoryProvider.of<FirestoreRepository>(context);
-        return ListMemberCubit(firestoreRepository: firestoreRepo);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return ListMemberCubit(
+          firestoreRepository: firestoreRepo,
+          appCubit: appCubit,
+        );
       },
       child: const _ListMemberPage(),
     );
@@ -35,8 +40,17 @@ class _ListMemberPage extends StatefulWidget {
 }
 
 class _ListMemberPageState extends State<_ListMemberPage> {
-
   final controller = TextEditingController();
+  late List<MyUserEntity> _listMemberForSearching;
+
+  late AppCubit _appCubit;
+
+  @override
+  void initState() {
+    _appCubit = BlocProvider.of<AppCubit>(context);
+    _listMemberForSearching = _appCubit.state.listMember ?? [];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,23 +84,32 @@ class _ListMemberPageState extends State<_ListMemberPage> {
                 topRight: Radius.circular(30),
               ),
             ),
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                var item = state.listMember![index];
-                return Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: ItemMember(
-                    getMemberInfo: () {
-                      _getMemberInfo(item.uid);
+            child: Column(
+              children: [
+                _searchBar(state),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      var item = _listMemberForSearching[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                        child: ItemMember(
+                          getMemberInfo: () {
+                            _getMemberInfo(item.uid);
+                          },
+                          name: item.name,
+                          position: item.position,
+                          urlAvatar: item.urlAvatar,
+                        ),
+                      );
                     },
-                    name: item.name,
-                    position: item.position,
-                    urlAvatar: item.urlAvatar,
+                    itemCount: _listMemberForSearching.length,
                   ),
-                );
-              },
-              itemCount:
-                  state.listMember == null ? 0 : state.listMember?.length,
+                ),
+              ],
             ),
           ),
         );
@@ -98,7 +121,7 @@ class _ListMemberPageState extends State<_ListMemberPage> {
     Get.toNamed(RouteConfig.memberProfile, arguments: uid);
   }
 
-  Widget _searchBar() {
+  Widget _searchBar(AppState state) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
       child: TextField(
@@ -116,7 +139,21 @@ class _ListMemberPageState extends State<_ListMemberPage> {
             borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
           ),
         ),
+        onChanged: (query) => _searchMember(query, state),
       ),
     );
+  }
+
+  void _searchMember(String query, AppState state) {
+    final resultList = state.listMember!.where((member) {
+      final name = member.name?.toLowerCase() ?? "";
+      final lowCaseQuery = query.toLowerCase();
+
+      return name.contains(lowCaseQuery);
+    }).toList();
+
+    setState(() {
+      _listMemberForSearching = resultList;
+    });
   }
 }
