@@ -32,8 +32,12 @@ List choices = [
     pathScreen: RouteConfig.weeklyReport,
   ),
   Choice(
-      title: "Request Seminal",
+      title: "Chat",
       pathImage: "assets/images/img_6.png",
+      pathScreen: RouteConfig.chat),
+  Choice(
+      title: "Request Seminal",
+      pathImage: "assets/images/img_8.png",
       pathScreen: RouteConfig.createEvent),
   Choice(
       title: "Feedback",

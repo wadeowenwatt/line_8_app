@@ -28,12 +28,12 @@ class ChatChildPage extends StatefulWidget {
 }
 
 class _ChatChildPageState extends State<ChatChildPage> {
-  late final ChatCubit _cubit;
+  late final ChatCubit _chatCubit;
 
   @override
   void initState() {
-    _cubit = context.read<ChatCubit>();
-    _cubit.fetchInitData();
+    _chatCubit = BlocProvider.of<ChatCubit>(context);
+    _chatCubit.fetchInitData();
     super.initState();
   }
 
@@ -42,14 +42,14 @@ class _ChatChildPageState extends State<ChatChildPage> {
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<ChatCubit, ChatState>(
-          bloc: _cubit,
+          bloc: _chatCubit,
           builder: (context, state) {
             return ChatUI(
               messages: List.from(state.messages.reversed),
-              onSend: _cubit.onSend,
+              onSend: _chatCubit.onSend,
               currentUser: ChatUserEntity(
                 chatUserId: "123",
-                firstName: "User 1",
+                firstName: "ABC",
               ),
             );
           },

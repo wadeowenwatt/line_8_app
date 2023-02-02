@@ -46,6 +46,7 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
   CollectionReference eventsCollection =
   FirebaseFirestore.instance.collection("event_requests");
 
+  /// USER REPO
   @override
   Future<void> createUserData({
     required String uid,
@@ -123,6 +124,7 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
     return listUser;
   }
 
+  /// EVENT REPO
   @override
   Future<void> createEventRequest({
     String? title,
