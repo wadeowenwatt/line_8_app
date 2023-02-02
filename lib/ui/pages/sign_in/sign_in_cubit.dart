@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
-import 'package:flutter_base/models/entities/user/user_entity.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_base/utils/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../../../repositories/user_repository.dart';
 
 part 'sign_in_state.dart';
 
@@ -51,6 +49,8 @@ class SignInCubit extends Cubit<SignInState> {
           appCubit.fetchProfile(result.uid);
           appCubit.changedStateFirstLogin(true);
           appCubit.fetchListUser();
+          appCubit.fetchEventNotAccepted();
+          appCubit.fetchEventAccepted();
           Get.offNamed(RouteConfig.editProfile);
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         } else {
@@ -86,6 +86,8 @@ class SignInCubit extends Cubit<SignInState> {
       if (result != null) {
         appCubit.fetchProfile(result.uid);
         appCubit.fetchListUser();
+        appCubit.fetchEventNotAccepted();
+        appCubit.fetchEventAccepted();
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

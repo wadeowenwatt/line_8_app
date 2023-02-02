@@ -39,9 +39,16 @@ class AppCubit extends Cubit<AppState> {
   void fetchEventNotAccepted() async {
     try {
       final listEventNotAccepted = await firestoreRepo.fetchEventNotAccepted();
-      if (listEventNotAccepted != null) {
-        emit(state.copyWith(listEventNotAccepted: listEventNotAccepted));
-      }
+      emit(state.copyWith(listEventNotAccepted: listEventNotAccepted));
+    } catch (error) {
+
+    }
+  }
+
+  void fetchEventAccepted() async {
+    try {
+      final listEventAccepted = await firestoreRepo.fetchEventAccepted();
+      emit(state.copyWith(listEventAccepted: listEventAccepted));
     } catch (error) {
 
     }
@@ -96,5 +103,21 @@ class AppCubit extends Cubit<AppState> {
     } catch (e) {
       emit(state.copyWith(signOutStatus: LoadStatus.failure));
     }
+  }
+
+  void acceptEvent(String? id) async {
+    try {
+      await firestoreRepo.acceptEventRequest(id!);
+      fetchEventAccepted();
+      fetchEventNotAccepted();
+    } catch(error) {}
+  }
+
+  void rejectEvent(String? id) async {
+    try {
+      await firestoreRepo.rejectEventRequest(id!);
+      fetchEventNotAccepted();
+      fetchEventAccepted();
+    } catch(error) {}
   }
 }

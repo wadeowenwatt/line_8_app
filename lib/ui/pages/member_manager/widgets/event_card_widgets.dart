@@ -24,8 +24,8 @@ class EventCardWidget extends StatelessWidget {
           children: [
             Text(
               item.title!,
-              style:
-                  const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
             ),
             Row(
               children: [
@@ -34,7 +34,10 @@ class EventCardWidget extends StatelessWidget {
                   height: 100,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(6)),
-                    color: Colors.grey,
+                    image: DecorationImage(
+                      image:
+                          AssetImage("assets/images/event_image_default.png"),
+                    ),
                   ),
                 ),
                 const SizedBox(

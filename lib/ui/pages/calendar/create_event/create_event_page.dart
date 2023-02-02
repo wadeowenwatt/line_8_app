@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/router/route_config.dart';
@@ -20,8 +21,12 @@ class CreateEventPage extends StatelessWidget {
     return BlocProvider(
       create: (context) {
         final firestoreRepo =
-        RepositoryProvider.of<FirestoreRepository>(context);
-        return CreateEventCubit(firestoreRepo: firestoreRepo);
+            RepositoryProvider.of<FirestoreRepository>(context);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return CreateEventCubit(
+          firestoreRepo: firestoreRepo,
+          appCubit: appCubit,
+        );
       },
       child: const _CreateEventPage(),
     );
@@ -36,7 +41,6 @@ class _CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<_CreateEventPage> {
-
   late CreateEventCubit _cubit;
 
   @override

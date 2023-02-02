@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/blocs/app_cubit.dart';
 import 'package:flutter_base/common/app_images.dart';
-import 'package:flutter_base/models/entities/request/request_entity.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_base/ui/pages/member_manager/member_manager_cubit.dart';
 import 'package:flutter_base/ui/pages/member_manager/widgets/tab_noti_badge.dart';
@@ -43,44 +42,22 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late int _counterMember;
-  late int _counterEvent;
   late int _counterWeeklyReport;
+  late AppCubit _appCubit;
+  late final ValueNotifier<int> _counterEvent;
 
   final controller = TextEditingController();
-
-  List<Event> listEvent = [
-    Event(
-      id: 'cyclic_event',
-      title: "Tech-Talk",
-      timeStart: Timestamp.fromDate(DateTime.now()),
-      timeStop: Timestamp.fromDate(DateTime.now()),
-      details: "Tech-Talk hằng tuần",
-      requested: true,
-    ),
-    Event(
-      id: 'cyclic_event',
-      title: "Tech-Talk",
-      timeStart: Timestamp.fromDate(DateTime.now()),
-      timeStop: Timestamp.fromDate(DateTime.now()),
-      details: "Tech-Talk hằng tuần",
-      requested: true,
-    ),
-    Event(
-      id: 'cyclic_event',
-      title: "Tech-Talk",
-      timeStart: Timestamp.fromDate(DateTime.now()),
-      timeStop: Timestamp.fromDate(DateTime.now()),
-      details: "Tech-Talk hằng tuần",
-      requested: true,
-    ),
-  ];
+  late RefreshController refreshController;
 
   @override
   void initState() {
     _counterMember = 0;
-    _counterEvent = 3;
     _counterWeeklyReport = 0;
     _tabController = TabController(length: 3, vsync: this);
+    _appCubit = BlocProvider.of<AppCubit>(context);
+    _counterEvent = ValueNotifier<int>(_appCubit.state.listEventNotAccepted!.length);
+    refreshController =
+        RefreshController(initialRefresh: false);
     super.initState();
   }
 
@@ -100,13 +77,18 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                 size: 30,
               ),
             ),
-            TabNotiBadgeWidget(
-              labelTab: "Events",
-              counter: _counterEvent,
-              icon: const Icon(
-                Icons.receipt_long,
-                size: 30,
-              ),
+            ValueListenableBuilder(
+              valueListenable: _counterEvent,
+              builder:(context, value, child) {
+                return TabNotiBadgeWidget(
+                  labelTab: "Events",
+                  counter: value as int,
+                  icon: const Icon(
+                    Icons.receipt_long,
+                    size: 30,
+                  ),
+                );
+              },
             ),
             TabNotiBadgeWidget(
               labelTab: "Notification",
@@ -244,16 +226,24 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     );
   }
 
+  void _onRefresh() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+    _appCubit.fetchEventNotAccepted();
+    _appCubit.fetchEventAccepted();
+    _counterEvent.value = _appCubit.state.listEventNotAccepted!.length;
+    refreshController.refreshCompleted();
+  }
+
   Widget _buildEventManage() {
-    RefreshController refreshController =
-        RefreshController(initialRefresh: false);
-    return BlocBuilder<MemberManagerCubit, MemberManagerState>(
+    return BlocBuilder<AppCubit, AppState>(
+      bloc: _appCubit,
       builder: (context, state) {
         return SmartRefresher(
           controller: refreshController,
+          onRefresh: _onRefresh,
           child: ListView.builder(
             itemBuilder: (context, index) {
-              final item = listEvent[index];
+              final item = state.listEventNotAccepted![index];
               return InkWell(
                 onTap: () {
                   showDialog(
@@ -269,7 +259,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                // listUser.removeAt(index);
+                                _appCubit.acceptEvent(state.listEventNotAccepted![index].id);
+                                _onRefresh();
                                 Get.back();
                               });
                             },
@@ -279,6 +270,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                           ),
                           TextButton(
                             onPressed: () {
+                              _appCubit.rejectEvent(state.listEventNotAccepted![index].id);
+                              _onRefresh();
                               Get.back();
                             },
                             child: const Text(
@@ -296,7 +289,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                 ),
               );
             },
-            itemCount: listEvent.length,
+            itemCount: state.listEventNotAccepted!.length,
           ),
         );
       },

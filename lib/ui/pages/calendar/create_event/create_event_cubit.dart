@@ -6,14 +6,16 @@ import 'package:flutter_base/ui/commons/app_dialog.dart';
 import 'package:flutter_base/ui/commons/app_snackbar.dart';
 import 'package:get/get.dart';
 
+import '../../../../blocs/app_cubit.dart';
 import '../../../../router/route_config.dart';
 
 part 'create_event_state.dart';
 
 class CreateEventCubit extends Cubit<CreateEventState> {
   final FirestoreRepository firestoreRepo;
+  final AppCubit appCubit;
 
-  CreateEventCubit({required this.firestoreRepo})
+  CreateEventCubit({required this.firestoreRepo, required this.appCubit})
       : super(const CreateEventState());
 
   void changeTitle({required String title}) {
@@ -74,6 +76,7 @@ class CreateEventCubit extends Cubit<CreateEventState> {
         timeStop: timeStop!,
         details: details,
       );
+      appCubit.fetchEventNotAccepted();
       emit(state.copyWith(createEventStatus: LoadStatus.success));
       Get.back();
     } catch (error) {
