@@ -11,6 +11,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/app_colors.dart';
 import '../../../models/entities/event/event_entity.dart';
+import '../../../models/entities/user/my_user_entity.dart';
 import 'widgets/event_card_widgets.dart';
 
 class MemberManagerPage extends StatelessWidget {
@@ -46,6 +47,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
   late AppCubit _appCubit;
   late final ValueNotifier<int> _counterEvent;
 
+  late List<MyUserEntity> listMemberForSearching;
+
   final controller = TextEditingController();
   late RefreshController refreshController;
 
@@ -55,9 +58,12 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     _counterWeeklyReport = 0;
     _tabController = TabController(length: 3, vsync: this);
     _appCubit = BlocProvider.of<AppCubit>(context);
-    _counterEvent = ValueNotifier<int>(_appCubit.state.listEventNotAccepted!.length);
-    refreshController =
-        RefreshController(initialRefresh: false);
+    _counterEvent = ValueNotifier<int>(
+        _appCubit.state.listEventNotAccepted == null
+            ? 0
+            : _appCubit.state.listEventNotAccepted!.length);
+    refreshController = RefreshController(initialRefresh: false);
+    listMemberForSearching = _appCubit.state.listMember!;
     super.initState();
   }
 
@@ -79,7 +85,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
             ),
             ValueListenableBuilder(
               valueListenable: _counterEvent,
-              builder:(context, value, child) {
+              builder: (context, value, child) {
                 return TabNotiBadgeWidget(
                   labelTab: "Events",
                   counter: value as int,
@@ -133,14 +139,14 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
       builder: (context, state) {
         return Column(
           children: [
-            _searchBar(),
+            _searchBar(state),
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.builder(
                 itemBuilder: (context, index) {
-                  var item = state.listMember![index];
+                  var item = listMemberForSearching[index];
                   return Column(
                     children: [
                       ListTile(
@@ -194,8 +200,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                     ],
                   );
                 },
-                itemCount:
-                    state.listMember == null ? 0 : state.listMember?.length,
+                itemCount: listMemberForSearching.length,
               ),
             )
           ],
@@ -204,7 +209,7 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
     );
   }
 
-  Widget _searchBar() {
+  Widget _searchBar(AppState state) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
       child: TextField(
@@ -222,8 +227,22 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
             borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
           ),
         ),
+        onChanged: (query) => _searchMember(query, state),
       ),
     );
+  }
+
+  void _searchMember(String query, AppState state) {
+    final resultList = state.listMember!.where((member) {
+      final name = member.name?.toLowerCase() ?? "";
+      final lowCaseQuery = query.toLowerCase();
+
+      return name.contains(lowCaseQuery);
+    }).toList();
+
+    setState(() {
+      listMemberForSearching = resultList;
+    });
   }
 
   void _onRefresh() async {
@@ -259,7 +278,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                           TextButton(
                             onPressed: () {
                               setState(() {
-                                _appCubit.acceptEvent(state.listEventNotAccepted![index].id);
+                                _appCubit.acceptEvent(
+                                    state.listEventNotAccepted![index].id);
                                 _onRefresh();
                                 Get.back();
                               });
@@ -270,7 +290,8 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
                           ),
                           TextButton(
                             onPressed: () {
-                              _appCubit.rejectEvent(state.listEventNotAccepted![index].id);
+                              _appCubit.rejectEvent(
+                                  state.listEventNotAccepted![index].id);
                               _onRefresh();
                               Get.back();
                             },
