@@ -8,6 +8,8 @@ abstract class ChatRepository {
   Future<ChatMessageEntity> sendMessage(ChatMessageEntity message);
 
   Future<List<Room>> fetchListRoomHasMe(String uid);
+
+  Future<void> createRoomChat(String currentUid, String guestUid);
 }
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -54,5 +56,18 @@ class ChatRepositoryImpl extends ChatRepository {
       });
     } catch(error) {}
     return listRoomHasMe;
+  }
+
+  @override
+  Future<void> createRoomChat(String currentUid, String guestUid) async {
+    try {
+      String id = rooms.doc().id;
+      await rooms.doc(id).set({
+        'id': id,
+        'participants': [currentUid, guestUid],
+        'createAt': Timestamp.fromDate(DateTime.now()),
+        'updateAt': Timestamp.fromDate(DateTime.now()),
+      });
+    } catch (error) {}
   }
 }

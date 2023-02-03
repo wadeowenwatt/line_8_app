@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/ui/pages/my_rooms_chat/my_rooms_chat_cubit.dart';
@@ -63,6 +64,14 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
         elevation: 0,
         title: const Text("My Rooms Chat"),
         backgroundColor: AppColors.primaryLightColorLeft,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.toNamed(RouteConfig.memberListChat);
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: buildBody(),
     );
@@ -89,35 +98,49 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                 const SizedBox(
                   height: 10,
                 ),
+
                 Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      var room = _listRoomForSearching[index];
-                      String? guestUid;
-                      String? currentUid;
-                      for (var id in room.listUidParticipants!) {
-                        id != state.user!.uid ? guestUid = id : currentUid = id;
-                      }
-                      MyUserEntity? guestUser = _getGuest(state, guestUid);
-                      return Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 10),
-                        child: ItemRoom(
-                          getRoomInfo: () {
-                            _getRoomChat(
-                              room.id ?? "",
-                              currentUid: currentUid,
-                              guestUid: guestUid,
+                  child: state.listRoomHasMe!.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Empty :D",
+                            style: TextStyle(color: Colors.grey, fontSize: 20),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            var room = state.listRoomHasMe![index];
+
+                            String? guestUid;
+                            String? currentUid;
+                            for (var id in room.listUidParticipants) {
+                              id != state.user!.uid
+                                  ? guestUid = id
+                                  : currentUid = id;
+                            }
+
+                            MyUserEntity? guestUser =
+                                _getGuest(state, guestUid);
+
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 10),
+                              child: ItemRoom(
+                                getRoomInfo: () {
+                                  _getRoomChat(
+                                    room.id ?? "",
+                                    currentUid: currentUid,
+                                    guestUid: guestUid,
+                                  );
+                                },
+                                name: guestUser!.name,
+                                // newMessage: guestUser.newMessage,
+                                urlAvatar: guestUser.urlAvatar,
+                              ),
                             );
                           },
-                          name: guestUser!.name,
-                          // newMessage: guestUser.newMessage,
-                          urlAvatar: guestUser.urlAvatar,
+                          itemCount: state.listRoomHasMe!.length,
                         ),
-                      );
-                    },
-                    itemCount: _listRoomForSearching.length,
-                  ),
                 ),
               ],
             ),

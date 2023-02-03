@@ -74,6 +74,13 @@ class AppCubit extends Cubit<AppState> {
       emit(state.copyWith(listRoomHasMe: listRoomHasMe));
     } catch(error) {}
   }
+
+  void createRoomChat(String currentUid, String guestUid) async {
+    try {
+      await chatRepo.createRoomChat(currentUid, guestUid);
+      fetchListRoomHasMe(currentUid);
+    } catch(error) {}
+  }
   
   void changedStateFirstLogin(bool isFirstLogin) {
     emit(state.copyWith(firstLogin: isFirstLogin));

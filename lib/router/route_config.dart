@@ -1,5 +1,6 @@
 import 'package:flutter_base/ui/pages/chat/chat_page.dart';
 import 'package:flutter_base/ui/pages/member_skills/skill_members_page.dart';
+import 'package:flutter_base/ui/pages/my_rooms_chat/list_member/list_member_chat.dart';
 import 'package:flutter_base/ui/pages/my_rooms_chat/my_rooms_chat_page.dart';
 import 'package:flutter_base/ui/pages/sign_in/sign_in_page.dart';
 import 'package:flutter_base/ui/pages/team_fund/team_fund_page.dart';
@@ -19,6 +20,8 @@ import '../ui/pages/sign_up/sign_up_page.dart';
 import '../ui/pages/splash/splash_page.dart';
 
 class RouteConfig {
+
+
   RouteConfig._();
 
   ///main page
@@ -40,6 +43,7 @@ class RouteConfig {
   static const String teamFund = "/teamFund";
   static const String weeklyReport = "/weeklyReport";
   static const String myRoomsChat = "/myRoomsChat";
+  static const String memberListChat = "/memberListChat";
 
   ///Alias ​​mapping page
   static final List<GetPage> getPages = [
@@ -60,5 +64,6 @@ class RouteConfig {
     GetPage(name: teamFund, page: () => const TeamFundPage()),
     GetPage(name: weeklyReport, page: () => const WeeklyReportPage()),
     GetPage(name: myRoomsChat, page: () => const MyRoomsChatPage()),
+    GetPage(name: memberListChat, page: () => const ListMemberChatPage()),
   ];
 }
