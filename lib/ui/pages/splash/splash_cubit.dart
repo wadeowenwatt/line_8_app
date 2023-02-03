@@ -34,6 +34,7 @@ class SplashCubit extends Cubit<SplashState> {
         appCubit.fetchListUser();
         appCubit.fetchEventAccepted();
         appCubit.fetchEventNotAccepted();
+        appCubit.fetchListRoomHasMe(user.uid);
       } catch (error, s) {
         logger.log(error, stackTrace: s);
         //Check 401

@@ -34,7 +34,7 @@ List choices = [
   Choice(
       title: "Chat",
       pathImage: "assets/images/img_6.png",
-      pathScreen: RouteConfig.chat),
+      pathScreen: RouteConfig.myRoomsChat),
   Choice(
       title: "Request Seminal",
       pathImage: "assets/images/img_8.png",

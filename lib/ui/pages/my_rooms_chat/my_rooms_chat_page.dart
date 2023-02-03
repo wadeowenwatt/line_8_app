@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/blocs/app_cubit.dart';
-import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/models/entities/user/my_user_entity.dart';
-import 'package:flutter_base/repositories/firestore_repository.dart';
-import 'package:flutter_base/router/route_config.dart';
-import 'package:flutter_base/ui/pages/list_member/list_member_cubit.dart';
-import 'package:flutter_base/ui/pages/list_member/widgets/item_member.dart';
+import 'package:flutter_base/ui/pages/my_rooms_chat/my_rooms_chat_cubit.dart';
+import 'package:flutter_base/ui/pages/my_rooms_chat/widgets/item_room.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
-import 'member_profile/member_profile_cubit.dart';
+import '../../../models/entities/chat/room_entity.dart';
+import '../../../repositories/firestore_repository.dart';
+import '../../../router/route_config.dart';
 
-class ListMemberPage extends StatelessWidget {
-  const ListMemberPage({Key? key}) : super(key: key);
+class MyRoomsChatPage extends StatelessWidget {
+  const MyRoomsChatPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,33 +21,33 @@ class ListMemberPage extends StatelessWidget {
         final firestoreRepo =
             RepositoryProvider.of<FirestoreRepository>(context);
         final appCubit = RepositoryProvider.of<AppCubit>(context);
-        return ListMemberCubit(
-          firestoreRepository: firestoreRepo,
-          appCubit: appCubit,
-        );
+        return MyRoomsChatCubit(
+            // firestoreRepository: firestoreRepo,
+            // appCubit: appCubit,
+            );
       },
-      child: const _ListMemberPage(),
+      child: const _MyRoomsChatPage(),
     );
   }
 }
 
-class _ListMemberPage extends StatefulWidget {
-  const _ListMemberPage({Key? key}) : super(key: key);
+class _MyRoomsChatPage extends StatefulWidget {
+  const _MyRoomsChatPage({Key? key}) : super(key: key);
 
   @override
-  State<_ListMemberPage> createState() => _ListMemberPageState();
+  State<_MyRoomsChatPage> createState() => _MyRoomsChatPageState();
 }
 
-class _ListMemberPageState extends State<_ListMemberPage> {
+class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
   final controller = TextEditingController();
-  late List<MyUserEntity> _listMemberForSearching;
+  late List<Room> _listRoomForSearching;
 
   late AppCubit _appCubit;
 
   @override
   void initState() {
     _appCubit = BlocProvider.of<AppCubit>(context);
-    _listMemberForSearching = _appCubit.state.listMember ?? [];
+    _listRoomForSearching = _appCubit.state.listRoomHasMe ?? [];
     super.initState();
   }
 
@@ -62,7 +61,7 @@ class _ListMemberPageState extends State<_ListMemberPage> {
           height: 100,
         ),
         elevation: 0,
-        title: const Text("List Member"),
+        title: const Text("My Rooms Chat"),
         backgroundColor: AppColors.primaryLightColorLeft,
       ),
       body: buildBody(),
@@ -86,27 +85,38 @@ class _ListMemberPageState extends State<_ListMemberPage> {
             ),
             child: Column(
               children: [
-                _searchBar(state),
+                // _searchBar(state),
                 const SizedBox(
                   height: 10,
                 ),
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      var item = _listMemberForSearching[index];
+                      var room = _listRoomForSearching[index];
+                      String? guestUid;
+                      String? currentUid;
+                      for (var id in room.listUidParticipants!) {
+                        id != state.user!.uid ? guestUid = id : currentUid = id;
+                      }
+                      MyUserEntity? guestUser = _getGuest(state, guestUid);
                       return Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                        child: ItemMember(
-                          getMemberInfo: () {
-                            _getMemberInfo(item.uid);
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 10),
+                        child: ItemRoom(
+                          getRoomInfo: () {
+                            _getRoomChat(
+                              room.id ?? "",
+                              currentUid: currentUid,
+                              guestUid: guestUid,
+                            );
                           },
-                          name: item.name,
-                          position: item.position,
-                          urlAvatar: item.urlAvatar,
+                          name: guestUser!.name,
+                          // newMessage: guestUser.newMessage,
+                          urlAvatar: guestUser.urlAvatar,
                         ),
                       );
                     },
-                    itemCount: _listMemberForSearching.length,
+                    itemCount: _listRoomForSearching.length,
                   ),
                 ),
               ],
@@ -135,26 +145,34 @@ class _ListMemberPageState extends State<_ListMemberPage> {
             borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
           ),
         ),
-        onChanged: (query) => _searchMember(query, state),
+        // onChanged: (query) => _searchMember(query, state),
       ),
     );
   }
 
-  void _searchMember(String query, AppState state) {
-    final resultList = state.listMember!.where((member) {
-      final name = member.name?.toLowerCase() ?? "";
-      final lowCaseQuery = query.toLowerCase();
+  // void _searchMember(String query, AppState state) {
+  //   final resultList = state.listMember!.where((member) {
+  //     final name = member.name?.toLowerCase() ?? "";
+  //     final lowCaseQuery = query.toLowerCase();
+  //
+  //     return name.contains(lowCaseQuery);
+  //   }).toList();
+  //
+  //   setState(() {
+  //     _listMemberForSearching = resultList;
+  //   });
+  // }
 
-      return name.contains(lowCaseQuery);
-    }).toList();
-
-    setState(() {
-      _listMemberForSearching = resultList;
-    });
+  void _getRoomChat(String roomId, {String? currentUid, String? guestUid}) {
+    Get.toNamed(RouteConfig.chat, arguments: [roomId, currentUid, guestUid]);
   }
 
-  void _getMemberInfo(String uid) {
-    Get.toNamed(RouteConfig.memberProfile, arguments: uid);
+  MyUserEntity? _getGuest(AppState state, String? guestUid) {
+    for (var mem in state.listMember!) {
+      if (mem.uid == guestUid) {
+        return mem;
+      }
+    }
+    return null;
   }
-
 }

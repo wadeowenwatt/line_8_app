@@ -9,6 +9,7 @@ class AppState extends Equatable {
   final bool firstLogin;
   final List<Event>? listEventNotAccepted;
   final List<Event>? listEventAccepted;
+  final List<Room>? listRoomHasMe;
 
   const AppState({
     this.fetchProfileStatus = LoadStatus.initial,
@@ -19,6 +20,7 @@ class AppState extends Equatable {
     this.firstLogin = false,
     this.listEventNotAccepted,
     this.listEventAccepted,
+    this.listRoomHasMe,
   });
 
   AppState copyWith({
@@ -30,6 +32,7 @@ class AppState extends Equatable {
     bool? firstLogin,
     List<Event>? listEventNotAccepted,
     List<Event>? listEventAccepted,
+    List<Room>? listRoomHasMe,
   }) {
     return AppState(
       fetchProfileStatus: fetchProfileStatus ?? this.fetchProfileStatus,
@@ -40,6 +43,7 @@ class AppState extends Equatable {
       firstLogin: firstLogin ?? this.firstLogin,
       listEventNotAccepted: listEventNotAccepted ?? this.listEventNotAccepted,
       listEventAccepted: listEventAccepted ?? this.listEventAccepted,
+      listRoomHasMe: listRoomHasMe ?? this.listRoomHasMe,
     );
   }
 
@@ -64,5 +68,6 @@ class AppState extends Equatable {
         firstLogin,
         listEventNotAccepted,
         listEventAccepted,
+        listRoomHasMe,
       ];
 }

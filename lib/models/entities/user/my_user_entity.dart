@@ -10,6 +10,7 @@ class MyUserEntity {
   String? phoneNumber;
   String? email;
   String? department;
+  int? status;
 
   MyUserEntity({
     required this.uid,
@@ -21,6 +22,7 @@ class MyUserEntity {
     this.dateOfBirth,
     this.position = "Developer",
     this.department = "Line 8",
+    this.status = 1,
   });
 
   MyUserEntity copyWith({
@@ -33,6 +35,7 @@ class MyUserEntity {
     String? phoneNumber,
     String? email,
     String? department,
+    int? status,
   }) {
     return MyUserEntity(
       uid: uid ?? this.uid,
@@ -44,6 +47,7 @@ class MyUserEntity {
       position: position ?? this.position,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       department: department ?? this.department,
+      status: status ?? this.status,
     );
   }
 
@@ -58,6 +62,7 @@ class MyUserEntity {
       employeeNumber: json["employee_number"],
       position: json["position"],
       department: json["department"],
+      status: json["status"],
     );
   }
 }

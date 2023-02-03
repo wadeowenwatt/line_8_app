@@ -4,9 +4,11 @@ import 'package:flutter_base/models/entities/user/user_entity.dart';
 import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../models/entities/chat/room_entity.dart';
 import '../models/entities/event/event_entity.dart';
 import '../models/enums/load_status.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/chat_repository.dart';
 import '../repositories/user_repository.dart';
 import '../utils/logger.dart';
 
@@ -15,10 +17,12 @@ part 'app_state.dart';
 class AppCubit extends Cubit<AppState> {
   FirestoreRepository firestoreRepo;
   AuthRepository authRepo;
+  ChatRepository chatRepo;
 
   AppCubit({
     required this.firestoreRepo,
     required this.authRepo,
+    required this.chatRepo,
   }) : super(const AppState());
 
   void fetchProfile(String uid) async {
@@ -59,10 +63,16 @@ class AppCubit extends Cubit<AppState> {
     try {
       final List<MyUserEntity> listUser = await firestoreRepo.fetchListUserData();
       emit(state.copyWith(fetchListUserStatus: LoadStatus.success, listMember: listUser));
-      print(state.listMember?[0]);
     } catch(error) {
       emit(state.copyWith(fetchListUserStatus: LoadStatus.failure));
     }
+  }
+
+  void fetchListRoomHasMe(String uid) async {
+    try {
+      final List<Room> listRoomHasMe = await chatRepo.fetchListRoomHasMe(uid);
+      emit(state.copyWith(listRoomHasMe: listRoomHasMe));
+    } catch(error) {}
   }
   
   void changedStateFirstLogin(bool isFirstLogin) {
@@ -120,4 +130,6 @@ class AppCubit extends Cubit<AppState> {
       fetchEventAccepted();
     } catch(error) {}
   }
+
+
 }

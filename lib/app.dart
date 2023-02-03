@@ -76,9 +76,11 @@ class _MyAppState extends State<MyApp> {
             final userRepo = RepositoryProvider.of<UserRepository>(context);
             final firestoreRepo = RepositoryProvider.of<FirestoreRepository>(context);
             final authRepo = RepositoryProvider.of<AuthRepository>(context);
+            final chatRepo = RepositoryProvider.of<ChatRepository>(context);
             return AppCubit(
               firestoreRepo: firestoreRepo,
               authRepo: authRepo,
+              chatRepo: chatRepo,
             );
           }),
           BlocProvider<AppSettingCubit>(create: (context) {

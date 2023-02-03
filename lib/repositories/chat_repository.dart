@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_base/models/entities/chat/chat_message_entity.dart';
+import 'package:flutter_base/models/entities/chat/room_entity.dart';
 
 abstract class ChatRepository {
   Future<List<ChatMessageEntity>> getMessagesByRoomId(String roomId);
 
   Future<ChatMessageEntity> sendMessage(ChatMessageEntity message);
+
+  Future<List<Room>> fetchListRoomHasMe(String uid);
 }
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -33,5 +36,23 @@ class ChatRepositoryImpl extends ChatRepository {
   Future<ChatMessageEntity> sendMessage(ChatMessageEntity message) async {
     final messageId = (await messages.add(message.toJsonWithoutMessageId())).id;
     return message.copyWith(messageId: messageId);
+  }
+
+  @override
+  Future<List<Room>> fetchListRoomHasMe(String uid) async {
+    List<Room> listRoomHasMe = [];
+    try {
+      await rooms.get().then((QuerySnapshot querySnapShot) {
+        for (var doc in querySnapShot.docs) {
+          Room temp = Room.fromJson(doc.data() as Map<String, dynamic>);
+          for (var id in temp.listUidParticipants) {
+            if (id == uid) {
+              listRoomHasMe.add(temp);
+            }
+          }
+        }
+      });
+    } catch(error) {}
+    return listRoomHasMe;
   }
 }
