@@ -5,12 +5,19 @@ import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message_row.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 
+import '../../../../models/entities/user/my_user_entity.dart';
+
 class MessageList extends StatelessWidget {
-  const MessageList(
-      {super.key, required this.messages, required this.currentUser});
+  const MessageList({
+    super.key,
+    required this.messages,
+    required this.guest,
+    required this.currentUser,
+  });
 
   final List<ChatMessageEntity> messages;
-  final ChatUserEntity currentUser;
+  final MyUserEntity guest;
+  final MyUserEntity currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,7 @@ class MessageList extends StatelessWidget {
           isBeforeDateSeparator =
               _shouldShowDateSeparator(message, nextMessage);
         }
-        final isOwnMessage = message.authorId == currentUser.chatUserId;
+        final isOwnMessage = message.authorId == guest.uid;
 
         return Column(
           crossAxisAlignment:
@@ -75,7 +82,7 @@ class MessageList extends StatelessWidget {
               message: message,
               prevMessage: prevMessage,
               nextMessage: nextMessage,
-              currentUser: currentUser,
+              currentUser: guest,
             ),
           ],
         );

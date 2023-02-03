@@ -51,7 +51,7 @@ class RouteConfig {
     GetPage(name: main, page: () => const MainPage()),
     GetPage(name: signIn, page: () => const SignInPage()),
     GetPage(name: signUp, page: () => const SignUpPage()),
-    GetPage(name: chat, page: () => const ChatPage()),
+    GetPage(name: chat, page: () => ChatPage()),
     GetPage(name: wiki, page: () => const WikiPage()),
     GetPage(name: memberList, page: () => const ListMemberPage()),
     GetPage(name: feedback, page: () => const FeedbackPage()),

@@ -3,6 +3,8 @@ import 'package:flutter_base/models/entities/chat/chat_message_entity.dart';
 import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 import 'package:flutter_base/utils/app_date_utils.dart';
 
+import '../../../../models/entities/user/my_user_entity.dart';
+
 class MessageBubble extends StatelessWidget {
   const MessageBubble(
       {Key? key,
@@ -13,14 +15,14 @@ class MessageBubble extends StatelessWidget {
       this.nextMessage})
       : super(key: key);
   final Widget child;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
   final ChatMessageEntity message;
   final ChatMessageEntity? prevMessage;
   final ChatMessageEntity? nextMessage;
 
   @override
   Widget build(BuildContext context) {
-    final isOwnMessage = message.authorId == currentUser.chatUserId;
+    final isOwnMessage = message.authorId == currentUser.uid;
     final isGroup = message.authorId == nextMessage?.authorId;
     final size = MediaQuery.of(context).size;
     return Row(

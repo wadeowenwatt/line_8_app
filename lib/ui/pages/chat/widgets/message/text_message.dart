@@ -3,9 +3,11 @@ import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/models/entities/chat/chat_message_entity.dart';
 import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 
+import '../../../../../models/entities/user/my_user_entity.dart';
+
 class TextMessage extends StatelessWidget {
   final ChatMessageEntity message;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
 
   const TextMessage(
       {Key? key, required this.message, required this.currentUser})
@@ -13,7 +15,7 @@ class TextMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOwnMessage = message.authorId == currentUser.chatUserId;
+    final isOwnMessage = message.authorId == currentUser.uid;
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(

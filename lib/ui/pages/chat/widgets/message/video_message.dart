@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/models/entities/chat/chat_message_entity.dart';
 import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/ui/commons/app_dialog.dart';
 import 'package:flutter_base/ui/widgets/images/app_cache_image.dart';
 import 'package:flutter_base/utils/logger.dart';
@@ -11,7 +12,7 @@ import 'package:video_player/video_player.dart';
 
 class VideoMessage extends StatelessWidget {
   final ChatMessageEntity message;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
 
   const VideoMessage(
       {Key? key, required this.message, required this.currentUser})
@@ -19,7 +20,7 @@ class VideoMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOwnMessage = message.authorId == currentUser.chatUserId;
+    final isOwnMessage = message.authorId == currentUser.uid;
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(

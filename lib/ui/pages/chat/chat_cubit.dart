@@ -13,13 +13,13 @@ class ChatCubit extends Cubit<ChatState> {
 
   ChatCubit({required this.chatRepository}) : super(const ChatState());
 
-  Future<void> fetchInitData() async {
+  Future<void> fetchInitData(String roomId) async {
     emit(
       state.copyWith(fetchDataStatus: LoadStatus.loading),
     );
     try {
       final result =
-          await chatRepository.getMessagesByRoomId("LB92pLVDUomWoHsHxpCw");
+          await chatRepository.getMessagesByRoomId(roomId);
       emit(
         state.copyWith(fetchDataStatus: LoadStatus.success, messages: result),
       );
@@ -32,19 +32,19 @@ class ChatCubit extends Cubit<ChatState> {
 
     AppStream.messageChanged.stream.listen((event) async {
       final result =
-          await chatRepository.getMessagesByRoomId("LB92pLVDUomWoHsHxpCw");
+          await chatRepository.getMessagesByRoomId(roomId);
       emit(
         state.copyWith(fetchDataStatus: LoadStatus.success, messages: result),
       );
     });
   }
 
-  Future<void> onSend(ChatMessageEntity newMessage) async {
+  Future<void> onSend(ChatMessageEntity newMessage, String roomId) async {
     try {
-      newMessage.roomId = "LB92pLVDUomWoHsHxpCw";
+      newMessage.roomId = roomId;
       await chatRepository.sendMessage(newMessage);
       final result =
-          await chatRepository.getMessagesByRoomId("LB92pLVDUomWoHsHxpCw");
+          await chatRepository.getMessagesByRoomId(roomId);
       emit(
         state.copyWith(fetchDataStatus: LoadStatus.success, messages: result),
       );

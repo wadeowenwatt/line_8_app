@@ -129,8 +129,8 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                                 getRoomInfo: () {
                                   _getRoomChat(
                                     room.id ?? "",
-                                    currentUid: currentUid,
-                                    guestUid: guestUid,
+                                    currentUser: state.user,
+                                    guestUser: guestUser,
                                   );
                                 },
                                 name: guestUser!.name,
@@ -186,8 +186,8 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
   //   });
   // }
 
-  void _getRoomChat(String roomId, {String? currentUid, String? guestUid}) {
-    Get.toNamed(RouteConfig.chat, arguments: [roomId, currentUid, guestUid]);
+  void _getRoomChat(String roomId, {MyUserEntity? currentUser, MyUserEntity? guestUser}) {
+    Get.toNamed(RouteConfig.chat, arguments: [roomId, currentUser, guestUser]);
   }
 
   MyUserEntity? _getGuest(AppState state, String? guestUid) {

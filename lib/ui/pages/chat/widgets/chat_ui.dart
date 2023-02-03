@@ -8,15 +8,19 @@ import 'package:flutter_base/ui/pages/chat/widgets/chat_header.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/chat_input.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message_list.dart';
 
+import '../../../../models/entities/user/my_user_entity.dart';
+
 class ChatUI extends StatelessWidget {
   const ChatUI(
       {super.key,
       required this.onSend,
-      required this.currentUser,
-      required this.messages});
+      required this.userChatWith,
+      required this.messages,
+      required this.currentUser});
 
   final Function(ChatMessageEntity) onSend;
-  final ChatUserEntity currentUser;
+  final MyUserEntity userChatWith;
+  final MyUserEntity currentUser;
   final List<ChatMessageEntity> messages;
 
   @override
@@ -26,14 +30,18 @@ class ChatUI extends StatelessWidget {
       body: Column(
         children: [
           ChatHeader(
-            currentUser: currentUser,
+            guest: userChatWith,
           ),
           Expanded(
-            child: MessageList(currentUser: currentUser, messages: messages),
+            child: MessageList(
+              guest: userChatWith,
+              messages: messages,
+              currentUser: currentUser,
+            ),
           ),
           ChatInput(
             onSend: onSend,
-            currentUser: currentUser,
+            currentUser: userChatWith,
           ),
         ],
       ),

@@ -5,9 +5,11 @@ import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../../../models/entities/user/my_user_entity.dart';
+
 class FileMessage extends StatelessWidget {
   final ChatMessageEntity message;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
 
   const FileMessage(
       {Key? key, required this.message, required this.currentUser})
@@ -15,7 +17,7 @@ class FileMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isOwnMessage = message.authorId == currentUser.chatUserId;
+    final isOwnMessage = message.authorId == currentUser.uid;
     final size = MediaQuery.of(context).size;
     return InkWell(
       onTap: onOpenFile,

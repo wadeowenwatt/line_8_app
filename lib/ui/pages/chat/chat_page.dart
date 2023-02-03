@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
+import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/repositories/chat_repository.dart';
 import 'package:flutter_base/ui/pages/chat/chat_cubit.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/chat_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  ChatPage({super.key});
+
+  final String roomId = Get.arguments[0];
+  final MyUserEntity currentUser = Get.arguments[1];
+  final MyUserEntity guestUser = Get.arguments[2];
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +21,26 @@ class ChatPage extends StatelessWidget {
       create: (context) => ChatCubit(
         chatRepository: RepositoryProvider.of<ChatRepository>(context),
       ),
-      child: const ChatChildPage(),
+      child: ChatChildPage(
+        roomId: roomId,
+        currentUser: currentUser,
+        guestUser: guestUser,
+      ),
     );
   }
 }
 
 class ChatChildPage extends StatefulWidget {
-  const ChatChildPage({super.key});
+  const ChatChildPage({
+    super.key,
+    required this.roomId,
+    required this.currentUser,
+    required this.guestUser,
+  });
+
+  final String roomId;
+  final MyUserEntity currentUser;
+  final MyUserEntity guestUser;
 
   @override
   State<ChatChildPage> createState() => _ChatChildPageState();
@@ -33,7 +52,7 @@ class _ChatChildPageState extends State<ChatChildPage> {
   @override
   void initState() {
     _chatCubit = BlocProvider.of<ChatCubit>(context);
-    _chatCubit.fetchInitData();
+    _chatCubit.fetchInitData(widget.roomId);
     super.initState();
   }
 
@@ -46,11 +65,12 @@ class _ChatChildPageState extends State<ChatChildPage> {
           builder: (context, state) {
             return ChatUI(
               messages: List.from(state.messages.reversed),
-              onSend: _chatCubit.onSend,
-              currentUser: ChatUserEntity(
-                chatUserId: "123",
-                firstName: "ABC",
+              onSend: (newMessage) => _chatCubit.onSend(
+                newMessage,
+                widget.roomId,
               ),
+              userChatWith: widget.guestUser,
+              currentUser: widget.currentUser,
             );
           },
         ),

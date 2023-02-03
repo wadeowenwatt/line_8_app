@@ -6,9 +6,11 @@ import 'package:flutter_base/models/entities/chat/chat_user_entity.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../../../../models/entities/user/my_user_entity.dart';
+
 class AudioMessage extends StatefulWidget {
   final ChatMessageEntity message;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
 
   const AudioMessage({
     Key? key,
@@ -40,7 +42,7 @@ class _AudioMessageState extends State<AudioMessage> {
   @override
   Widget build(BuildContext context) {
     final isOwnMessage =
-        widget.message.authorId == widget.currentUser.chatUserId;
+        widget.message.authorId == widget.currentUser.uid;
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(

@@ -9,6 +9,8 @@ import 'package:flutter_base/ui/pages/chat/widgets/message/text_message.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message/video_message.dart';
 import 'package:flutter_base/ui/pages/chat/widgets/message_bubble.dart';
 
+import '../../../../models/entities/user/my_user_entity.dart';
+
 class MessageRow extends StatelessWidget {
   const MessageRow(
       {super.key,
@@ -17,7 +19,7 @@ class MessageRow extends StatelessWidget {
       this.nextMessage,
       required this.currentUser});
 
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
   final ChatMessageEntity message;
   final ChatMessageEntity? prevMessage;
   final ChatMessageEntity? nextMessage;
