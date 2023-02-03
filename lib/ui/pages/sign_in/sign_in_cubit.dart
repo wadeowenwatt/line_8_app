@@ -49,8 +49,7 @@ class SignInCubit extends Cubit<SignInState> {
           appCubit.fetchProfile(result.uid);
           appCubit.changedStateFirstLogin(true);
           appCubit.fetchListUser();
-          appCubit.fetchEventNotAccepted();
-          appCubit.fetchEventAccepted();
+
           Get.offNamed(RouteConfig.editProfile);
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
         } else {
@@ -59,6 +58,9 @@ class SignInCubit extends Cubit<SignInState> {
           emit(state.copyWith(signInWithGoogleStatus: LoadStatus.success));
           Get.offNamed(RouteConfig.main);
         }
+        appCubit.fetchEventNotAccepted();
+        appCubit.fetchEventAccepted();
+        appCubit.fetchListRoomHasMe(result.uid);
       } else {
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
       }
@@ -88,6 +90,7 @@ class SignInCubit extends Cubit<SignInState> {
         appCubit.fetchListUser();
         appCubit.fetchEventNotAccepted();
         appCubit.fetchEventAccepted();
+        appCubit.fetchListRoomHasMe(result.uid);
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

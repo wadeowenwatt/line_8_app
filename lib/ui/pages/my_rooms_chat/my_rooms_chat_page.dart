@@ -41,14 +41,15 @@ class _MyRoomsChatPage extends StatefulWidget {
 
 class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
   final controller = TextEditingController();
-  late List<Room> _listRoomForSearching;
+  late ValueNotifier<List<Room>> _listRoomForSearching ;
 
   late AppCubit _appCubit;
 
   @override
   void initState() {
     _appCubit = BlocProvider.of<AppCubit>(context);
-    _listRoomForSearching = _appCubit.state.listRoomHasMe ?? [];
+    _appCubit.fetchListRoomHasMe(_appCubit.state.user!.uid);
+    _listRoomForSearching = ValueNotifier(_appCubit.state.listRoomHasMe ?? []);
     super.initState();
   }
 
@@ -98,7 +99,6 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                 const SizedBox(
                   height: 10,
                 ),
-
                 Expanded(
                   child: state.listRoomHasMe!.isEmpty
                       ? const Center(
@@ -107,39 +107,44 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                             style: TextStyle(color: Colors.grey, fontSize: 20),
                           ),
                         )
-                      : ListView.builder(
-                          itemBuilder: (context, index) {
-                            var room = state.listRoomHasMe![index];
+                      : ValueListenableBuilder<List<Room>>(
+                          valueListenable: _listRoomForSearching,
+                          builder: (context, value, child) {
+                            return ListView.builder(
+                              itemBuilder: (context, index) {
+                                var room = value[index];
 
-                            String? guestUid;
-                            String? currentUid;
-                            for (var id in room.listUidParticipants) {
-                              id != state.user!.uid
-                                  ? guestUid = id
-                                  : currentUid = id;
-                            }
+                                String? guestUid;
+                                String? currentUid;
+                                for (var id in room.listUidParticipants) {
+                                  id != state.user!.uid
+                                      ? guestUid = id
+                                      : currentUid = id;
+                                }
 
-                            MyUserEntity? guestUser =
-                                _getGuest(state, guestUid);
+                                MyUserEntity? guestUser =
+                                    _getGuest(state, guestUid);
 
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 10),
-                              child: ItemRoom(
-                                getRoomInfo: () {
-                                  _getRoomChat(
-                                    room.id ?? "",
-                                    currentUser: state.user,
-                                    guestUser: guestUser,
-                                  );
-                                },
-                                name: guestUser!.name,
-                                // newMessage: guestUser.newMessage,
-                                urlAvatar: guestUser.urlAvatar,
-                              ),
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 10),
+                                  child: ItemRoom(
+                                    getRoomInfo: () {
+                                      _getRoomChat(
+                                        room.id ?? "",
+                                        currentUser: state.user,
+                                        guestUser: guestUser,
+                                      );
+                                    },
+                                    name: guestUser!.name,
+                                    // newMessage: guestUser.newMessage,
+                                    urlAvatar: guestUser.urlAvatar,
+                                  ),
+                                );
+                              },
+                              itemCount: value.length,
                             );
                           },
-                          itemCount: state.listRoomHasMe!.length,
                         ),
                 ),
               ],
@@ -186,7 +191,8 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
   //   });
   // }
 
-  void _getRoomChat(String roomId, {MyUserEntity? currentUser, MyUserEntity? guestUser}) {
+  void _getRoomChat(String roomId,
+      {MyUserEntity? currentUser, MyUserEntity? guestUser}) {
     Get.toNamed(RouteConfig.chat, arguments: [roomId, currentUser, guestUser]);
   }
 

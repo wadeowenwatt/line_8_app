@@ -18,27 +18,6 @@ int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
 
-// var eventOfDay = {
-//   DateTime.now(): [
-//     Event(
-//       id: "sd",
-//       title: "abc",
-//       timeStart: Timestamp.fromDate(DateTime.now()),
-//       timeStop: Timestamp.fromDate(DateTime.now()),
-//       details: "aaa",
-//       requested: true,
-//     ),
-//     Event(
-//       id: "sdasd",
-//       title: "abc",
-//       timeStart: Timestamp.fromDate(DateTime.now()),
-//       timeStop: Timestamp.fromDate(DateTime.now()),
-//       details: "aaa",
-//       requested: true,
-//     ),
-//   ]
-// };
-
 class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);
 
