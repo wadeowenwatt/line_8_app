@@ -161,7 +161,7 @@ class _ListMemberChatPageState extends State<_ListMemberChatPage> {
 
   void _createRoom(String currentUid, String guestUid) {
     _appCubit.createRoomChat(currentUid, guestUid);
-    Get.back();
+    // Get.back();
   }
 
 }

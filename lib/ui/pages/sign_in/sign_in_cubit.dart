@@ -60,7 +60,7 @@ class SignInCubit extends Cubit<SignInState> {
         }
         appCubit.fetchEventNotAccepted();
         appCubit.fetchEventAccepted();
-        appCubit.fetchListRoomHasMe(result.uid);
+        // appCubit.fetchListRoomHasMe(result.uid);
       } else {
         emit(state.copyWith(signInWithGoogleStatus: LoadStatus.failure));
       }

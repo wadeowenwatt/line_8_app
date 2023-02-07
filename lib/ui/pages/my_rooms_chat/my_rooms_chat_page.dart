@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/models/entities/user/my_user_entity.dart';
 import 'package:flutter_base/ui/pages/my_rooms_chat/my_rooms_chat_cubit.dart';
 import 'package:flutter_base/ui/pages/my_rooms_chat/widgets/item_room.dart';
+import 'package:flutter_base/utils/app_stream.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +42,7 @@ class _MyRoomsChatPage extends StatefulWidget {
 
 class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
   final controller = TextEditingController();
-  late ValueNotifier<List<Room>> _listRoomForSearching ;
+  late ValueNotifier<List<Room>> _listRoomForSearching;
 
   late AppCubit _appCubit;
 
@@ -107,44 +108,38 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                             style: TextStyle(color: Colors.grey, fontSize: 20),
                           ),
                         )
-                      : ValueListenableBuilder<List<Room>>(
-                          valueListenable: _listRoomForSearching,
-                          builder: (context, value, child) {
-                            return ListView.builder(
-                              itemBuilder: (context, index) {
-                                var room = value[index];
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            var room = state.listRoomHasMe![index];
 
-                                String? guestUid;
-                                String? currentUid;
-                                for (var id in room.listUidParticipants) {
-                                  id != state.user!.uid
-                                      ? guestUid = id
-                                      : currentUid = id;
-                                }
+                            String? guestUid;
+                            for (var id in room.listUidParticipants) {
+                              if (id != state.user!.uid) {
+                                guestUid = id;
+                              }
+                            }
 
-                                MyUserEntity? guestUser =
-                                    _getGuest(state, guestUid);
+                            MyUserEntity? guestUser =
+                                _getGuest(state, guestUid);
 
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20, top: 10),
-                                  child: ItemRoom(
-                                    getRoomInfo: () {
-                                      _getRoomChat(
-                                        room.id ?? "",
-                                        currentUser: state.user,
-                                        guestUser: guestUser,
-                                      );
-                                    },
-                                    name: guestUser!.name,
-                                    // newMessage: guestUser.newMessage,
-                                    urlAvatar: guestUser.urlAvatar,
-                                  ),
-                                );
-                              },
-                              itemCount: value.length,
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 10),
+                              child: ItemRoom(
+                                getRoomInfo: () {
+                                  _getRoomChat(
+                                    room.id ?? "",
+                                    currentUser: state.user,
+                                    guestUser: guestUser,
+                                  );
+                                },
+                                name: guestUser!.name,
+                                // newMessage: guestUser.newMessage,
+                                urlAvatar: guestUser.urlAvatar,
+                              ),
                             );
                           },
+                          itemCount: state.listRoomHasMe!.length,
                         ),
                 ),
               ],
@@ -154,42 +149,6 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
       },
     );
   }
-
-  Widget _searchBar(AppState state) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
-      child: TextField(
-        controller: controller,
-        style: const TextStyle(color: Colors.black),
-        decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
-          ),
-          hintText: "Search...",
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(color: AppColors.primaryLightColorLeft),
-          ),
-        ),
-        // onChanged: (query) => _searchMember(query, state),
-      ),
-    );
-  }
-
-  // void _searchMember(String query, AppState state) {
-  //   final resultList = state.listMember!.where((member) {
-  //     final name = member.name?.toLowerCase() ?? "";
-  //     final lowCaseQuery = query.toLowerCase();
-  //
-  //     return name.contains(lowCaseQuery);
-  //   }).toList();
-  //
-  //   setState(() {
-  //     _listMemberForSearching = resultList;
-  //   });
-  // }
 
   void _getRoomChat(String roomId,
       {MyUserEntity? currentUser, MyUserEntity? guestUser}) {

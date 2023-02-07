@@ -10,6 +10,7 @@ import '../models/enums/load_status.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/chat_repository.dart';
 import '../repositories/user_repository.dart';
+import '../utils/app_stream.dart';
 import '../utils/logger.dart';
 
 part 'app_state.dart';
@@ -72,6 +73,12 @@ class AppCubit extends Cubit<AppState> {
     try {
       final List<Room> listRoomHasMe = await chatRepo.fetchListRoomHasMe(uid);
       emit(state.copyWith(listRoomHasMe: listRoomHasMe));
+
+      AppStream.roomChanged.stream.listen((event) async {
+        final result = await chatRepo.fetchListRoomHasMe(uid);
+        emit(state.copyWith(listRoomHasMe: result));
+      });
+
     } catch(error) {}
   }
 
@@ -137,6 +144,5 @@ class AppCubit extends Cubit<AppState> {
       fetchEventAccepted();
     } catch(error) {}
   }
-
 
 }

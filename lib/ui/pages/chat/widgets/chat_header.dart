@@ -18,76 +18,73 @@ class ChatHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 72,
-      child: Container(
-        color: AppColors.primaryLightColorLeft,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SvgPicture.asset(
-                  AppImages.icArrowBack,
-                  width: 34,
-                  height: 34,
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(width: 4, color: AppColors.orangeAccent),
-              ),
-              child: AppCacheImage(
-                width: 40,
-                height: 40,
-                borderRadius: 40,
-                fit: BoxFit.fill,
-                url: guest.urlAvatar ?? "",
-              ),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    guest.name ?? "",
-                    style: const TextStyle(
-                      color: AppColors.orangeAccent,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      height: 27 / 18,
-                    ),
-                  ),
-                  Text(
-                    guest.phoneNumber ?? "",
-                    style: const TextStyle(
-                      color: AppColors.blackAccent,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      height: 18 / 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SvgPicture.asset(
-                AppImages.icCall,
-                width: 44,
-                height: 44,
+                AppImages.icArrowBack,
+                width: 34,
+                height: 34,
               ),
-            )
-          ],
-        ),
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(width: 4, color: AppColors.orangeAccent),
+            ),
+            child: AppCacheImage(
+              width: 40,
+              height: 40,
+              borderRadius: 40,
+              fit: BoxFit.fill,
+              url: guest.urlAvatar ?? "",
+            ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  guest.name ?? "",
+                  style: const TextStyle(
+                    color: AppColors.orangeAccent,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    height: 27 / 18,
+                  ),
+                ),
+                Text(
+                  guest.phoneNumber ?? "",
+                  style: const TextStyle(
+                    color: AppColors.blackAccent,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    height: 18 / 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SvgPicture.asset(
+              AppImages.icCall,
+              width: 44,
+              height: 44,
+            ),
+          )
+        ],
       ),
     );
   }
