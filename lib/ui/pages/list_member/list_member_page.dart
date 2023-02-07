@@ -48,6 +48,7 @@ class _ListMemberPageState extends State<_ListMemberPage> {
   @override
   void initState() {
     _appCubit = BlocProvider.of<AppCubit>(context);
+    _appCubit.fetchListUser();
     _listMemberForSearching = _appCubit.state.listMember ?? [];
     super.initState();
   }

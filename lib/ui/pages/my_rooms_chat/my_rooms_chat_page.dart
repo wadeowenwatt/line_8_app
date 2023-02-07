@@ -101,7 +101,7 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                   height: 10,
                 ),
                 Expanded(
-                  child: state.listRoomHasMe!.isEmpty
+                  child: (state.listRoomHasMe.isNull || state.listRoomHasMe!.isEmpty)
                       ? const Center(
                           child: Text(
                             "Empty :D",
