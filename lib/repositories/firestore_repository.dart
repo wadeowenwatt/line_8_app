@@ -37,6 +37,10 @@ abstract class FirestoreRepository {
 
   Future<void> rejectEventRequest(String docId);
 
+  Future<void> createReport(String uid, String field1, String field2, String field3);
+
+  Future<void> sendFeedback(String comment, double rate);
+
 }
 
 class FirestoreRepositoryImpl extends FirestoreRepository {
@@ -45,6 +49,12 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
 
   CollectionReference eventsCollection =
   FirebaseFirestore.instance.collection("event_requests");
+
+  CollectionReference reportsCollection =
+  FirebaseFirestore.instance.collection("weekly_report");
+
+  CollectionReference feedbacksCollection =
+  FirebaseFirestore.instance.collection("feedback");
 
   /// USER REPO
   @override
@@ -203,6 +213,26 @@ class FirestoreRepositoryImpl extends FirestoreRepository {
         .doc(docId)
         .delete()
         .catchError((error) => print("Failed to reject event: $error"));
+  }
+
+  @override
+  Future<void> createReport(String uid, String field1, String field2, String field3) async {
+    String id = reportsCollection.doc().id;
+    await reportsCollection.doc(id).set({
+      'uid': uid,
+      'have_done': field1,
+      'impact_work': field2,
+      'will_do': field3,
+    });
+  }
+
+  @override
+  Future<void> sendFeedback(String comment, double rate) async {
+    String id = eventsCollection.doc().id;
+    await feedbacksCollection.doc(id).set({
+      "rate" : rate,
+      "comment" : comment,
+    });
   }
 
 }

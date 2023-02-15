@@ -44,7 +44,7 @@ class _MemberSkillsPageState extends State<_MemberSkillsPage> {
         ),
       )
       ..loadRequest(Uri.parse(
-          'https://docs.google.com/spreadsheets/d/1V8mNA6vt6Yk8YcaGZ_G2MIKjW735n1X_JYCS9zEzZA8/edit?usp=sharing'));
+          'https://docs.google.com/spreadsheets/d/1dFAO2HYUC7BcEYpJHe9WKVD7DQLgsdHPXnhZ9yIBNkw/edit#gid=641547926'));
     super.initState();
   }
 

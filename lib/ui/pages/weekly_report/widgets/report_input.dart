@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
 
 class ReportInput extends StatelessWidget {
-  ReportInput(
-      {Key? key,
-      required this.label,
-      this.highlightText = "",
-      this.errorText = "",
-      this.validation = false})
-      : super(key: key);
+  ReportInput({
+    Key? key,
+    required this.label,
+    this.highlightText = "",
+    this.errorText = "",
+    this.validation = false,
+    this.onChanged,
+  }) : super(key: key);
 
   final String label;
   String highlightText;
   String errorText;
+  final ValueChanged<String>? onChanged;
   bool validation;
 
   @override
@@ -37,6 +39,7 @@ class ReportInput extends StatelessWidget {
           height: 15,
         ),
         TextFormField(
+          onChanged: onChanged,
           style: const TextStyle(color: Colors.black),
           validator: (value) {
             if (validation) {

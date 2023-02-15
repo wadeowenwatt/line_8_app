@@ -154,6 +154,7 @@ flutter:
     - assets/images/ic_logout.svg
     - assets/images/bg_user_placeholder.png
     - assets/images/event_image_default.png
+    - assets/images/qr_code.jpg
 
   fonts:
     - family: Arimo

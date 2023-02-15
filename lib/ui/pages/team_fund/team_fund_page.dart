@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/ui/commons/app_dialog.dart';
 import 'package:flutter_base/ui/pages/team_fund/widgets/currency_textfield.dart';
+import 'package:get/get.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../common/app_colors.dart';
 
@@ -58,7 +61,9 @@ class _TeamFundPageState extends State<_TeamFundPage> {
                       MediaQuery.of(context).padding.top,
                 ),
                 Padding(padding: const EdgeInsets.all(20), child: buildCard()),
-                Expanded(child: buildHistoryInfo()),
+                Expanded(
+                  child: _InfoFundWebview(),
+                ),
               ],
             ),
           ),
@@ -78,7 +83,7 @@ class _TeamFundPageState extends State<_TeamFundPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Tổng tiền trong quỹ",
+              "Quỹ team",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 18,
@@ -88,12 +93,30 @@ class _TeamFundPageState extends State<_TeamFundPage> {
             const SizedBox(
               height: 10,
             ),
-            const CurrencyTextField(moneyCounter: 100000000),
+            const CurrencyTextField(moneyCounter: 1000000),
             const SizedBox(
               height: 10,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return Dialog(
+                      child: Container(
+                        height: Get.width * 0.7 * (4 / 3.5),
+                        width: Get.width * 0.7,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/qr_code.jpg'),
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -113,7 +136,7 @@ class _TeamFundPageState extends State<_TeamFundPage> {
                     width: 10,
                   ),
                   Text(
-                    "Nạp tiền",
+                    "Đóng quỹ",
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
@@ -125,7 +148,47 @@ class _TeamFundPageState extends State<_TeamFundPage> {
     );
   }
 
-  Widget buildHistoryInfo() {
+}
+
+class _InfoFundWebview extends StatefulWidget {
+  const _InfoFundWebview({
+    super.key,
+  });
+
+  @override
+  State<_InfoFundWebview> createState() => _InfoFundWebviewState();
+}
+
+class _InfoFundWebviewState extends State<_InfoFundWebview> {
+
+  bool isLoading = true;
+  late WebViewController _controller;
+
+  @override
+  void initState() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+          },
+          onPageFinished: (url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse('https://docs.google.com/spreadsheets/d/1dFAO2HYUC7BcEYpJHe9WKVD7DQLgsdHPXnhZ9yIBNkw/edit#gid=641547926'));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
@@ -136,17 +199,12 @@ class _TeamFundPageState extends State<_TeamFundPage> {
           color: Colors.white),
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Lịch sử",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
+        child: Stack(
+          children: [
+            WebViewWidget(
+              controller: _controller,
             ),
-
+            Center(child: isLoading ? const CircularProgressIndicator() : const SizedBox()),
           ],
         ),
       ),

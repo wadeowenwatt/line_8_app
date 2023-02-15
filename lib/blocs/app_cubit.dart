@@ -48,6 +48,12 @@ class AppCubit extends Cubit<AppState> {
     } catch (error) {
 
     }
+
+    AppStream.eventRequestChanged.stream.listen((event) async {
+      final listEventNotAccepted = await firestoreRepo.fetchEventNotAccepted();
+      emit(state.copyWith(listEventNotAccepted: listEventNotAccepted));
+    });
+
   }
 
   void fetchEventAccepted() async {

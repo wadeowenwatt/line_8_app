@@ -127,7 +127,15 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
           children: [
             _buildMemberManage(),
             _buildEventManage(),
-            Container(),
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Center(
+                child: Text(
+                  "You don't have any notifications right now",
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -260,58 +268,68 @@ class _MemberManagerPageState extends State<_MemberManagerPage>
         return SmartRefresher(
           controller: refreshController,
           onRefresh: _onRefresh,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              final item = state.listEventNotAccepted![index];
-              return InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Approval"),
-                        content: const Text(
-                          "Request Approval",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _appCubit.acceptEvent(
-                                    state.listEventNotAccepted![index].id);
-                                _onRefresh();
-                                Get.back();
-                              });
-                            },
-                            child: const Text(
-                              "Accept",
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              _appCubit.rejectEvent(
-                                  state.listEventNotAccepted![index].id);
-                              _onRefresh();
-                              Get.back();
-                            },
-                            child: const Text(
-                              "Reject",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: EventCardWidget(
-                  item: item,
+          child: state.listEventNotAccepted!.isEmpty
+              ? const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(
+                    child: Text(
+                      "You don't have any event requests right now",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  itemBuilder: (context, index) {
+                    final item = state.listEventNotAccepted![index];
+                    return InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Approval"),
+                              content: const Text(
+                                "Request Approval",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _appCubit.acceptEvent(state
+                                          .listEventNotAccepted![index].id);
+                                      _onRefresh();
+                                      Get.back();
+                                    });
+                                  },
+                                  child: const Text(
+                                    "Accept",
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    _appCubit.rejectEvent(
+                                        state.listEventNotAccepted![index].id);
+                                    _onRefresh();
+                                    Get.back();
+                                  },
+                                  child: const Text(
+                                    "Reject",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: EventCardWidget(
+                        item: item,
+                      ),
+                    );
+                  },
+                  itemCount: state.listEventNotAccepted!.length,
                 ),
-              );
-            },
-            itemCount: state.listEventNotAccepted!.length,
-          ),
         );
       },
     );

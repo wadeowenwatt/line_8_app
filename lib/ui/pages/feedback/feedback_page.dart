@@ -1,10 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/ui/widgets/buttons/app_tint_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../../blocs/app_cubit.dart';
+import '../../../repositories/firestore_repository.dart';
+import 'feedback_cubit.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(create: (context) {
+      final firestoreRepo =
+      RepositoryProvider.of<FirestoreRepository>(context);
+      final appCubit = RepositoryProvider.of<AppCubit>(context);
+      return FeedbackCubit(
+        firestoreRepo: firestoreRepo,
+        appCubit: appCubit,
+      );
+    },
+      child: const _FeedbackPage(),);
+  }
+}
+
+
+class _FeedbackPage extends StatefulWidget {
+  const _FeedbackPage({Key? key}) : super(key: key);
+
+  @override
+  State<_FeedbackPage> createState() => _FeedbackPageState();
+}
+
+class _FeedbackPageState extends State<_FeedbackPage> {
+
+  late FeedbackCubit _cubit;
+
+  @override
+  void initState() {
+    _cubit = BlocProvider.of<FeedbackCubit>(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +115,9 @@ class FeedbackPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                onChanged: (text) {
+                  _cubit.changeComment(text);
+                },
                 minLines: 6,
                 keyboardType: TextInputType.multiline,
                 maxLines: 6,
@@ -103,7 +144,7 @@ class FeedbackPage extends StatelessWidget {
   }
 
   void _sendFeedback() {
-    /// Todo
+    _cubit.sendFeedback();
   }
 
   Widget buildRatingWidget() {
@@ -140,7 +181,7 @@ class FeedbackPage extends StatelessWidget {
           }
         },
         onRatingUpdate: (rating) {
-          print(rating);
+          _cubit.changeRate(rating);
         },
       ),
     );
