@@ -91,6 +91,7 @@ class SignInCubit extends Cubit<SignInState> {
         appCubit.fetchEventNotAccepted();
         appCubit.fetchEventAccepted();
         appCubit.fetchListRoomHasMe(result.uid);
+        await Future.delayed(const Duration(seconds: 3));
         emit(state.copyWith(signInWithEmailStatus: LoadStatus.success));
         Get.offNamed(RouteConfig.main);
       } else {

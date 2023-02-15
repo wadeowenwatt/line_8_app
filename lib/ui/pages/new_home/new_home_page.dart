@@ -12,45 +12,6 @@ import '../../../blocs/app_cubit.dart';
 import '../../../common/app_colors.dart';
 import '../main/main_cubit.dart';
 
-List choices = [
-  BigChoice(
-      pathImage: "assets/images/ic_fake_1.png",
-      bigText: "Members",
-      pathScreen: RouteConfig.memberList,
-  ),
-  BigChoice(
-      pathImage: "assets/images/ic_fake_2.png",
-      bigText: "Team Fund",
-      pathScreen: RouteConfig.teamFund),
-  Choice(
-      title: "Calendar",
-      pathImage: "assets/images/img_3.png",
-      pathScreen: RouteConfig.calendar),
-  Choice(
-    title: "Weekly Report",
-    pathImage: "assets/images/img_5.png",
-    pathScreen: RouteConfig.weeklyReport,
-  ),
-  Choice(
-      title: "Chat",
-      pathImage: "assets/images/img_6.png",
-      pathScreen: RouteConfig.myRoomsChat),
-  Choice(
-      title: "Request Seminal",
-      pathImage: "assets/images/img_8.png",
-      pathScreen: RouteConfig.createEvent),
-  Choice(
-      title: "Feedback",
-      pathImage: "assets/images/img_2.png",
-      pathScreen: RouteConfig.feedback),
-  Choice(
-    title: "Log out",
-    pathImage: "assets/images/ic_logout.png",
-    pathScreen: "",
-    isLogoutButton: true,
-  ),
-];
-
 class NewHomePage extends StatelessWidget {
   const NewHomePage({Key? key}) : super(key: key);
 
@@ -85,13 +46,64 @@ class _NewHomePageState extends State<_NewHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List choices = [
+      BigChoice(
+        pathImage: "assets/images/ic_fake_1.png",
+        bigText: "Members",
+        pathScreen: RouteConfig.memberList,
+      ),
+      BigChoice(
+          pathImage: "assets/images/ic_fake_2.png",
+          bigText: "Team Fund",
+          pathScreen: RouteConfig.teamFund),
+      Choice(
+          title: "Calendar",
+          pathImage: "assets/images/img_3.png",
+          pathScreen: RouteConfig.calendar),
+      Choice(
+        title: "Weekly Report",
+        pathImage: "assets/images/img_5.png",
+        pathScreen: RouteConfig.weeklyReport,
+      ),
+      Choice(
+          title: "Chat",
+          pathImage: "assets/images/img_6.png",
+          pathScreen: RouteConfig.myRoomsChat),
+      Choice(
+          title: "Request Seminal",
+          pathImage: "assets/images/img_8.png",
+          pathScreen: RouteConfig.createEvent),
+      if (_appCubit.state.user?.position == "Line Manager")
+      Choice(
+          title: "Manager",
+          pathImage: "assets/images/img_1.png",
+          pathScreen: RouteConfig.memberManager),
+      Choice(
+          title: "Feedback",
+          pathImage: "assets/images/img_2.png",
+          pathScreen: RouteConfig.feedback),
+      Choice(
+        title: "Log out",
+        pathImage: "assets/images/ic_logout.png",
+        pathScreen: "",
+        isLogoutButton: true,
+      ),
+    ];
+    if (_appCubit.state.user?.position == "Developer" &&
+        choices[6] ==
+            Choice(
+                title: "Manager",
+                pathImage: "assets/images/img_1.png",
+                pathScreen: RouteConfig.memberManager)) {
+      choices.removeAt(6);
+    }
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-              AppColors.primaryDarkColorLeft,
-              AppColors.primaryLightColorRight
-            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+          AppColors.primaryDarkColorLeft,
+          AppColors.primaryLightColorRight
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
         child: BlocBuilder<AppCubit, AppState>(
           bloc: _appCubit,
           builder: (context, state) {
@@ -122,8 +134,8 @@ class _NewHomePageState extends State<_NewHomePage> {
                                 choice1: choices[index],
                                 choice2: choices[index + 1],
                                 onClick1: () {
-                                  _onClick((choices[index] as BigChoice)
-                                      .pathScreen);
+                                  _onClick(
+                                      (choices[index] as BigChoice).pathScreen);
                                 },
                                 onClick2: () {
                                   _onClick((choices[index + 1] as BigChoice)
@@ -140,17 +152,17 @@ class _NewHomePageState extends State<_NewHomePage> {
                                 (choices[index * 2] as Choice).isLogoutButton
                                     ? _handleSignOut()
                                     : _onClick((choices[index * 2] as Choice)
-                                    .pathScreen);
+                                        .pathScreen);
                               },
                               onClick2: () {
                                 (index * 2 + 1) >= choices.length
                                     ? {}
                                     : (choices[index * 2 + 1] as Choice)
-                                    .isLogoutButton
-                                    ? _handleSignOut()
-                                    : _onClick(
-                                    (choices[index * 2 + 1] as Choice)
-                                        .pathScreen);
+                                            .isLogoutButton
+                                        ? _handleSignOut()
+                                        : _onClick(
+                                            (choices[index * 2 + 1] as Choice)
+                                                .pathScreen);
                               },
                             );
                           },

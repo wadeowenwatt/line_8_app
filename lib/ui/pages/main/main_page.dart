@@ -41,7 +41,7 @@ class _MainPageState extends State<_MainPage> {
 
   final tabs = [
     MainTab.home,
-    MainTab.discover,
+    // MainTab.discover,
     MainTab.tvShows,
     MainTab.watchlist,
     MainTab.profile,
@@ -56,7 +56,7 @@ class _MainPageState extends State<_MainPage> {
     //PageView page
     pageList = [
       const NewHomePage(),
-      const MemberManagerPage(),
+      // const MemberManagerPage(),
       const WikiPage(),
       const MemberSkillsPage(),
       const MyProfilePage(),

@@ -281,7 +281,6 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
               dropdownWidget1: DropdownWidget(
                 nameList: const [
                   "Developer",
-                  "Line Manager",
                 ],
                 currentValue: state.user?.position,
                 onChanged: (text) {

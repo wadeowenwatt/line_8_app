@@ -253,7 +253,6 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                               DropdownWidget(
                                 nameList: const [
                                   "Developer",
-                                  "Line Manager",
                                 ],
                                 onChanged: (String? text) {
                                   _cubit.changePosition(position: text);
