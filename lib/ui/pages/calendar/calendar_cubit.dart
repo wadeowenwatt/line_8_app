@@ -3,6 +3,8 @@ import 'dart:collection';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
+import 'package:flutter_base/ui/pages/calendar/calendar_page.dart';
+import 'package:flutter_base/utils/app_stream.dart';
 import 'package:meta/meta.dart';
 
 import '../../../models/entities/event/event_entity.dart';
@@ -20,14 +22,7 @@ class CalendarCubit extends Cubit<CalendarState> {
     await getEvent();
     if (state.listEventAccepted!.isNotEmpty) {
       for (var event in state.listEventAccepted!) {
-        events[event.timeStart?.toDate()]?.add(Event(
-          id: event.id,
-          title: event.title,
-          timeStart: event.timeStart,
-          timeStop: event.timeStop,
-          details: event.details,
-          requested: event.requested,
-        ));
+        events[event.timeStart!.toDate()]?.add(event);
       }
     }
     emit(state.copyWith(events: events, getEventStatus: LoadStatus.success));
@@ -37,12 +32,23 @@ class CalendarCubit extends Cubit<CalendarState> {
     emit(state.copyWith(getEventStatus: LoadStatus.loading));
     try {
       List<Event> listEventAccepted = [];
+
       /// Need change to accepted
       listEventAccepted = await firestoreRepo.fetchEventNotAccepted();
-      emit(state.copyWith(
-        listEventAccepted: listEventAccepted));
+      emit(state.copyWith(listEventAccepted: listEventAccepted));
     } catch (error) {
       emit(state.copyWith(getEventStatus: LoadStatus.failure));
     }
+
+    AppStream.eventChanged.stream.listen((event) async {
+      List<Event> listEventAccepted = [];
+      listEventAccepted = await firestoreRepo.fetchEventNotAccepted();
+
+      for (var event in state.listEventAccepted!) {
+        CalendarPage.events[event.timeStart!.toDate()]?.add(event);
+      }
+      emit(state.copyWith(listEventAccepted: listEventAccepted));
+    });
+
   }
 }

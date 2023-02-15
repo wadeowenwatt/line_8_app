@@ -7,6 +7,7 @@ class AppStream {
   static StreamController memberChanged = StreamController.broadcast();
   static StreamController roomChanged = StreamController.broadcast();
   static StreamController eventRequestChanged = StreamController.broadcast();
+  static StreamController eventChanged = StreamController.broadcast();
 
   static void setup() {
     FirebaseFirestore.instance.collection('members').snapshots().listen((event) {
@@ -26,6 +27,10 @@ class AppStream {
 
     FirebaseFirestore.instance.collection('event_requests').snapshots().listen((event) {
       eventRequestChanged.sink.add(true);
+    });
+    
+    FirebaseFirestore.instance.collection('event_requests').snapshots(includeMetadataChanges: true).listen((event) {
+      eventChanged.sink.add(true);
     });
   }
 }

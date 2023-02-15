@@ -21,6 +21,9 @@ int getHashCode(DateTime key) {
 class CalendarPage extends StatelessWidget {
   const CalendarPage({Key? key}) : super(key: key);
 
+  static var events = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay, hashCode: getHashCode);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -46,11 +49,7 @@ class _CalendarPageState extends State<_CalendarPage> {
   final CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-
   late CalendarCubit _cubit;
-
-  var events = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay, hashCode: getHashCode);
 
   // Init state, set selected day = focused day = Datetime.now()
   @override
@@ -59,7 +58,7 @@ class _CalendarPageState extends State<_CalendarPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
     _cubit = BlocProvider.of<CalendarCubit>(context);
-    _cubit.convertListEventToEventByDay(events);
+    _cubit.getEvent();
   }
 
   @override
@@ -235,7 +234,7 @@ class _CalendarPageState extends State<_CalendarPage> {
         ),
       ];
     }
-    return events[day] ?? [];
+    return CalendarPage.events[day] ?? [];
   }
 
   void _onDaySelected(DateTime focusedDay, DateTime selectedDay) {
