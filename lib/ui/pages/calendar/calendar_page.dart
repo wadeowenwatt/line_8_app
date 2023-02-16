@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../blocs/app_cubit.dart';
 import '../../../models/entities/event/event_entity.dart';
 
 int getHashCode(DateTime key) {
@@ -30,7 +31,8 @@ class CalendarPage extends StatelessWidget {
       create: (context) {
         FirestoreRepository firestoreRepo =
             RepositoryProvider.of<FirestoreRepository>(context);
-        return CalendarCubit(firestoreRepo: firestoreRepo);
+        final appCubit = RepositoryProvider.of<AppCubit>(context);
+        return CalendarCubit(firestoreRepo: firestoreRepo, appCubit: appCubit);
       },
       child: const _CalendarPage(),
     );
@@ -50,6 +52,7 @@ class _CalendarPageState extends State<_CalendarPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   late CalendarCubit _cubit;
+  late AppCubit _appCubit;
 
   // Init state, set selected day = focused day = Datetime.now()
   @override
@@ -58,6 +61,7 @@ class _CalendarPageState extends State<_CalendarPage> {
     _selectedDay = _focusedDay;
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
     _cubit = BlocProvider.of<CalendarCubit>(context);
+    _appCubit = BlocProvider.of<AppCubit>(context);
     _cubit.getEvent();
   }
 
@@ -157,7 +161,9 @@ class _CalendarPageState extends State<_CalendarPage> {
                                     child: Container(
                                       margin: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.3),
+                                        color: day.weekday == DateTime.thursday
+                                            ? Colors.red.withOpacity(0.3)
+                                            : Colors.green.withOpacity(0.3),
                                         shape: BoxShape.circle,
                                       ),
                                     ),
@@ -234,6 +240,7 @@ class _CalendarPageState extends State<_CalendarPage> {
         ),
       ];
     }
+    // _appCubit.addBirthday(day);
     return CalendarPage.events[day] ?? [];
   }
 
