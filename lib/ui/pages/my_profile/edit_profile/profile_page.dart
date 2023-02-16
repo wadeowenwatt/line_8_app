@@ -287,7 +287,7 @@ class _ProfileTabPageState extends State<_ProfileTabPage> {
                   _cubit.changePosition(position: text);
                 },
               ),
-              labelText2: "Department",
+              labelText2: "Line",
               dropdownWidget2: DropdownWidget(
                 nameList: const ["Line 8", "Line 1", "Line 2"],
                 currentValue: state.user?.department,

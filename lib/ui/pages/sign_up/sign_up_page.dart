@@ -270,7 +270,7 @@ class _SignUpChildPageState extends State<SignUpChildPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Department", style: AppTextStyle.blackS12),
+                              Text("Line", style: AppTextStyle.blackS12),
                               DropdownWidget(
                                 nameList: const ["Line 8", "Line 1", "Line 2"],
                                 onChanged: (text) {

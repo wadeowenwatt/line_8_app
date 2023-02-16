@@ -148,7 +148,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           const Divider(thickness: 1),
           LabelText(nameLabel: "Position", text: state.user?.position),
           const Divider(thickness: 1),
-          LabelText(nameLabel: "Department", text: state.user?.department),
+          LabelText(nameLabel: "Line", text: state.user?.department),
           const Divider(thickness: 1),
           LabelText(
               nameLabel: "Employee number", text: state.user?.employeeNumber),
