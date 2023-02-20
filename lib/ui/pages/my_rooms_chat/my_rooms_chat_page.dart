@@ -133,9 +133,9 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                                     guestUser: guestUser,
                                   );
                                 },
-                                name: guestUser!.name,
+                                name: guestUser?.name,
                                 // newMessage: guestUser.newMessage,
-                                urlAvatar: guestUser.urlAvatar,
+                                urlAvatar: guestUser?.urlAvatar,
                               ),
                             );
                           },

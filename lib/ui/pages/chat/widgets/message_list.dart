@@ -65,7 +65,7 @@ class MessageList extends StatelessWidget {
                             format: "MM/dd/yyyy"),
                         style: const TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                             color: AppColors.blackAccent),
                       ),
                     ),

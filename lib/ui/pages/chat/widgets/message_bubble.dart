@@ -31,7 +31,7 @@ class MessageBubble extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: EdgeInsets.only(top: isGroup ? 8 : 16, right: 8, left: 8),
+          padding: EdgeInsets.only(top: isGroup ? 5 : 10, right: 8, left: 8),
           child: Column(
             crossAxisAlignment: isOwnMessage
                 ? CrossAxisAlignment.end
@@ -42,7 +42,7 @@ class MessageBubble extends StatelessWidget {
                 child: child,
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 8, left: 8, top: 10),
+                padding: const EdgeInsets.only(right: 8, left: 8, top: 5),
                 child: Text(
                   AppDateUtils.toDateTimeString(message.createdAt.toDate(),
                       format: "hh:mm a"),

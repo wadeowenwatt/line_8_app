@@ -7,12 +7,14 @@ class ItemRoom extends StatelessWidget {
   const ItemRoom({
     Key? key,
     required this.getRoomInfo,
+    this.isSeen,
     this.name,
     this.newMessage,
     this.urlAvatar,
   }) : super(key: key);
 
   final VoidCallback getRoomInfo;
+  final bool? isSeen;
   final String? name;
   final String? newMessage;
   final String? urlAvatar;
@@ -20,7 +22,10 @@ class ItemRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: getRoomInfo,
+      onTap: () {
+        isSeen == true;
+        getRoomInfo();
+      },
       child: Card(
         color: AppColors.selectCardColor,
         child: Padding(
@@ -41,11 +46,21 @@ class ItemRoom extends StatelessWidget {
                 children: [
                   Text(
                     name ?? "",
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: (isSeen != null && isSeen!)
+                            ? FontWeight.normal
+                            : FontWeight.bold),
                   ),
                   Text(
                     newMessage ?? "",
-                    style: const TextStyle(color: Colors.grey),
+                    style: TextStyle(
+                        color: (isSeen != null && isSeen!)
+                            ? Colors.grey
+                            : Colors.black,
+                        fontWeight: (isSeen != null && isSeen!)
+                            ? FontWeight.normal
+                            : FontWeight.bold),
                   ),
                 ],
               )

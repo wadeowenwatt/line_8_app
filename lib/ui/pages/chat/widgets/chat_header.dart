@@ -18,6 +18,7 @@ class ChatHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 2,
+      color: AppColors.primaryDarkColorLeft,
       child: SizedBox(
         height: 72,
         child: Row(
@@ -39,7 +40,7 @@ class ChatHeader extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(width: 4, color: AppColors.orangeAccent),
+                border: Border.all(width: 2, color: Colors.white),
               ),
               child: AppCacheImage(
                 width: 40,
@@ -60,7 +61,7 @@ class ChatHeader extends StatelessWidget {
                   Text(
                     guest.name ?? "",
                     style: const TextStyle(
-                      color: AppColors.orangeAccent,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       height: 27 / 18,
@@ -78,14 +79,14 @@ class ChatHeader extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SvgPicture.asset(
-                AppImages.icCall,
-                width: 44,
-                height: 44,
-              ),
-            )
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20),
+            //   child: SvgPicture.asset(
+            //     AppImages.icCall,
+            //     width: 44,
+            //     height: 44,
+            //   ),
+            // )
           ],
         ),
       ),

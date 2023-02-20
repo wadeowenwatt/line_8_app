@@ -78,22 +78,22 @@ class ChatInput extends StatelessWidget {
                       style: BorderStyle.none,
                     ),
                   ),
-                  prefixIcon: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: SvgPicture.asset(
-                      AppImages.icSmile,
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
+                  // prefixIcon: Container(
+                  //   margin: const EdgeInsets.symmetric(horizontal: 8),
+                  //   child: SvgPicture.asset(
+                  //     AppImages.icSmile,
+                  //     width: 16,
+                  //     height: 16,
+                  //   ),
+                  // ),
                   suffixIcon: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     child: InkWell(
                       onTap: () => _onSendTextMessage(_controller.text),
                       child: SvgPicture.asset(
                         AppImages.icSend,
-                        width: 16,
-                        height: 16,
+                        width: 30,
+                        height: 30,
                       ),
                     ),
                   ),

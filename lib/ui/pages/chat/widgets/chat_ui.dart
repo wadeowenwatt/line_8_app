@@ -27,23 +27,38 @@ class ChatUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteAccent,
-      body: Column(
-        children: [
-          ChatHeader(
-            guest: userChatWith,
-          ),
-          Expanded(
-            child: MessageList(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background_chat.jpg"),
+            fit: BoxFit.cover,
+          )
+        ),
+        child: Column(
+          children: [
+            ChatHeader(
               guest: userChatWith,
-              messages: messages,
-              currentUser: currentUser,
             ),
-          ),
-          ChatInput(
-            onSend: onSend,
-            currentUser: userChatWith,
-          ),
-        ],
+            Expanded(
+              child: messages.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "Say hello to your friend 👋",
+                        style: TextStyle(color: Colors.blueGrey, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : MessageList(
+                      guest: userChatWith,
+                      messages: messages,
+                      currentUser: currentUser,
+                    ),
+            ),
+            ChatInput(
+              onSend: onSend,
+              currentUser: userChatWith,
+            ),
+          ],
+        ),
       ),
     );
   }

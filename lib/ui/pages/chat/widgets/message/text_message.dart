@@ -19,7 +19,7 @@ class TextMessage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
-        color: isOwnMessage ? AppColors.orangeAccent : AppColors.greyAccent,
+        color: isOwnMessage ? Colors.green.shade300 : Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: const Radius.circular(8),
           topRight: const Radius.circular(8),
@@ -30,11 +30,8 @@ class TextMessage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Text(
         message.text,
-        style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w300,
-            color:
-                isOwnMessage ? AppColors.whiteAccent : AppColors.blackAccent),
+        style: const TextStyle(
+            fontSize: 12, fontWeight: FontWeight.w300, color: Colors.black),
       ),
     );
   }
