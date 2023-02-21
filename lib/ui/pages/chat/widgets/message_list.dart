@@ -53,7 +53,7 @@ class MessageList extends StatelessWidget {
                   children: [
                     const Expanded(
                       child: Divider(
-                        color: AppColors.greyAccent,
+                        color: Colors.grey,
                         thickness: 2,
                       ),
                     ),
@@ -71,7 +71,7 @@ class MessageList extends StatelessWidget {
                     ),
                     const Expanded(
                       child: Divider(
-                        color: AppColors.greyAccent,
+                        color: Colors.grey,
                         thickness: 2,
                       ),
                     ),

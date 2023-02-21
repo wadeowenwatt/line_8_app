@@ -19,8 +19,15 @@ class ChatHeader extends StatelessWidget {
     return Material(
       elevation: 2,
       color: AppColors.primaryDarkColorLeft,
-      child: SizedBox(
+      child: Container(
         height: 72,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bg_appbar.png"),
+            fit: BoxFit.cover,
+          ),
+          color: Colors.transparent,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

@@ -4,10 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_base/models/enums/load_status.dart';
 import 'package:flutter_base/ui/pages/calendar/calendar_page.dart';
+import 'package:intl/intl.dart';
 
 import '../../../blocs/app_cubit.dart';
 import '../../../models/entities/event/event_entity.dart';
 import '../../../repositories/firestore_repository.dart';
+import '../../../utils/logger.dart';
 
 part 'calendar_state.dart';
 
@@ -36,13 +38,14 @@ class CalendarCubit extends Cubit<CalendarState> {
 
       Map<DateTime, List<Event>> all = {};
       for (var event in listEventAccepted) {
-        if (all[event.timeStart?.toDate() as DateTime] == null) {
-          all[event.timeStart?.toDate() as DateTime] = [];
-          all[event.timeStart?.toDate() as DateTime]?.add(event);
+        String? onlyDate = DateFormat("yyyy-MM-dd").format(event.timeStart?.toDate() as DateTime);
+        if (all[DateTime.parse(onlyDate)] == null) {
+          all[DateTime.parse(onlyDate)] = [];
+          all[DateTime.parse(onlyDate)]?.add(event);
         } else {
-          all[event.timeStart?.toDate() as DateTime]?.add(event);
+          all[DateTime.parse(onlyDate)]?.add(event);
         }
-        // logger.d(event.toString());
+        logger.d(all.toString());
       }
       CalendarPage.events.addAll(all);
       emit(state.copyWith(getEventStatus: LoadStatus.success));

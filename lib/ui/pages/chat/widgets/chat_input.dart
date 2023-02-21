@@ -31,7 +31,7 @@ class ChatInput extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(minHeight: 72, maxHeight: size.height * 0.12),
       decoration: const BoxDecoration(
-        color: Colors.transparent,
+        color: AppColors.primaryDarkColorLeft,
       ),
       padding: const EdgeInsets.only(
         left: 24,
