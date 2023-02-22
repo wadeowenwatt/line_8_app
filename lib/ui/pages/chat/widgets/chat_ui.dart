@@ -55,7 +55,7 @@ class ChatUI extends StatelessWidget {
             ),
             ChatInput(
               onSend: onSend,
-              currentUser: userChatWith,
+              currentUser: currentUser,
             ),
           ],
         ),

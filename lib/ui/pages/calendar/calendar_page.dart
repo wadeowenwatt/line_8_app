@@ -194,13 +194,30 @@ class _CalendarPageState extends State<_CalendarPage> {
                                       border: Border.all(color: Colors.red),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                    child: ListTile(
-                                      onTap: () => Get,
-                                      title: Text(
-                                        '${value[index].title} - ${value[index].timeStart?.toDate().toDateTimeString()}',
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 15,
+                                          height: 60,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: ListTile(
+                                            onTap: () => Get,
+                                            title: Text(
+                                              '${value[index].title} - ${value[index].timeStart?.toDate().toDateTimeString()}',
+                                              style: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   );
                                 },

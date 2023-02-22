@@ -16,6 +16,9 @@ abstract class ChatRepository {
   Future<List<Room>> fetchListRoomHasMe(String uid);
 
   Future<void> createRoomChat(String currentUid, String guestUid);
+
+  Future<void> updateNewMessage(String roomId, String newMessage, String uid);
+
 }
 
 class ChatRepositoryImpl extends ChatRepository {
@@ -99,6 +102,7 @@ class ChatRepositoryImpl extends ChatRepository {
             .id;
         await rooms.doc(id).set({
           'id': id,
+          'newMessage': "Say hello to your friend 👋",
           'participants': [currentUid, guestUid],
           'createAt': Timestamp.fromDate(DateTime.now()),
           'updateAt': Timestamp.fromDate(DateTime.now()),
@@ -106,6 +110,18 @@ class ChatRepositoryImpl extends ChatRepository {
         Get.offNamed(RouteConfig.chat, arguments: [id, currentUser, guestUser]);
       }
     } catch (error) {
+      logger.e(error);
+    }
+  }
+
+  @override
+  Future<void> updateNewMessage(String roomId, String newMessage, String uid) async {
+    try {
+      rooms.doc(roomId).update({
+        'newMessage': newMessage,
+        'authorNewMess': uid,
+      });
+    } catch(error) {
       logger.e(error);
     }
   }

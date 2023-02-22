@@ -38,7 +38,7 @@ class MessageList extends StatelessWidget {
           isBeforeDateSeparator =
               _shouldShowDateSeparator(message, nextMessage);
         }
-        final isOwnMessage = message.authorId == guest.uid;
+        final isOwnMessage = message.authorId == currentUser.uid;
 
         return Column(
           crossAxisAlignment:
@@ -82,7 +82,7 @@ class MessageList extends StatelessWidget {
               message: message,
               prevMessage: prevMessage,
               nextMessage: nextMessage,
-              currentUser: guest,
+              currentUser: currentUser,
             ),
           ],
         );

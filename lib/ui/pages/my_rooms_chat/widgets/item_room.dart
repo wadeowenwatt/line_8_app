@@ -32,11 +32,21 @@ class ItemRoom extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: urlAvatar == null
-                    ? const AssetImage(AppImages.bgUserPlaceholder)
-                    : NetworkImage(urlAvatar as String) as ImageProvider,
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.blue),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: urlAvatar == null
+                        ? const AssetImage(AppImages.bgUserPlaceholder)
+                        : NetworkImage(urlAvatar as String) as ImageProvider,
+                  ),
+                ),
               ),
               const SizedBox(
                 width: 30,
@@ -57,10 +67,10 @@ class ItemRoom extends StatelessWidget {
                     style: TextStyle(
                         color: (isSeen != null && isSeen!)
                             ? Colors.grey
-                            : Colors.black,
+                            : Colors.blue,
                         fontWeight: (isSeen != null && isSeen!)
                             ? FontWeight.normal
-                            : FontWeight.bold),
+                            : FontWeight.normal),
                   ),
                 ],
               )

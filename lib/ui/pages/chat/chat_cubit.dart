@@ -33,6 +33,7 @@ class ChatCubit extends Cubit<ChatState> {
     AppStream.messageChanged.stream.listen((event) async {
       final result =
           await chatRepository.getMessagesByRoomId(roomId);
+      await chatRepository.updateNewMessage(roomId, result.last.text, result.last.authorId);
       emit(
         state.copyWith(fetchDataStatus: LoadStatus.success, messages: result),
       );

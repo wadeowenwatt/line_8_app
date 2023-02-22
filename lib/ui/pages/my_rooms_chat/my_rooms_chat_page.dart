@@ -81,6 +81,7 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
 
   Widget buildBody() {
     return BlocBuilder<AppCubit, AppState>(
+      bloc: _appCubit,
       builder: (context, state) {
         return Container(
           decoration: const BoxDecoration(
@@ -101,7 +102,8 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                   height: 10,
                 ),
                 Expanded(
-                  child: (state.listRoomHasMe.isNull || state.listRoomHasMe!.isEmpty)
+                  child: (state.listRoomHasMe.isNull ||
+                          state.listRoomHasMe!.isEmpty)
                       ? const Center(
                           child: Text(
                             "Empty :D",
@@ -118,7 +120,6 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                                 guestUid = id;
                               }
                             }
-
                             MyUserEntity? guestUser =
                                 _getGuest(state, guestUid);
 
@@ -134,7 +135,12 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                                   );
                                 },
                                 name: guestUser?.name,
-                                // newMessage: guestUser.newMessage,
+                                newMessage: state.user?.uid ==
+                                        room.authorNewMess
+                                    ? (room.newMessage != null
+                                        ? "You: ${room.newMessage}"
+                                        : "Say hello to your friend 👋")
+                                    : "${guestUser?.name}: ${room.newMessage}",
                                 urlAvatar: guestUser?.urlAvatar,
                               ),
                             );
