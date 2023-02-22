@@ -55,7 +55,7 @@ class RowTwoBigCardSelection extends StatelessWidget {
                         style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 22),
+                            fontSize: 18),
                       ),
                     ],
                   ),
@@ -85,7 +85,7 @@ class RowTwoBigCardSelection extends StatelessWidget {
                         style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 22),
+                            fontSize: 18),
                       ),
                     ],
                   ),

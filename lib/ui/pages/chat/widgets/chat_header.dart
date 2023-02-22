@@ -20,7 +20,7 @@ class ChatHeader extends StatelessWidget {
       elevation: 2,
       color: AppColors.primaryDarkColorLeft,
       child: Container(
-        margin: EdgeInsets.only(top: Get.statusBarHeight - 10),
+        margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
         height: 72,
         decoration: const BoxDecoration(
           image: DecorationImage(
