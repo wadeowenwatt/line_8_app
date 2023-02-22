@@ -59,21 +59,19 @@ class _ChatChildPageState extends State<ChatChildPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder<ChatCubit, ChatState>(
-          bloc: _chatCubit,
-          builder: (context, state) {
-            return ChatUI(
-              messages: List.from(state.messages.reversed),
-              onSend: (newMessage) => _chatCubit.onSend(
-                newMessage,
-                widget.roomId,
-              ),
-              userChatWith: widget.guestUser,
-              currentUser: widget.currentUser,
-            );
-          },
-        ),
+      body: BlocBuilder<ChatCubit, ChatState>(
+        bloc: _chatCubit,
+        builder: (context, state) {
+          return ChatUI(
+            messages: List.from(state.messages.reversed),
+            onSend: (newMessage) => _chatCubit.onSend(
+              newMessage,
+              widget.roomId,
+            ),
+            userChatWith: widget.guestUser,
+            currentUser: widget.currentUser,
+          );
+        },
       ),
     );
   }

@@ -150,7 +150,7 @@ class _FeedbackPageState extends State<_FeedbackPage> {
   Widget buildRatingWidget() {
     return Center(
       child: RatingBar.builder(
-        itemPadding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+        itemPadding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
         itemBuilder: (context, index) {
           switch (index) {
             case 0:
