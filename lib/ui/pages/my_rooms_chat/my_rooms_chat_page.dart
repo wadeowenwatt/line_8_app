@@ -140,7 +140,7 @@ class _MyRoomsChatPageState extends State<_MyRoomsChatPage> {
                                     ? (room.newMessage != null
                                         ? "You: ${room.newMessage}"
                                         : "Say hello to your friend 👋")
-                                    : "${guestUser?.name}: ${room.newMessage}",
+                                    : "${room.newMessage}",
                                 urlAvatar: guestUser?.urlAvatar,
                               ),
                             );

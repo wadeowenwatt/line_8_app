@@ -31,6 +31,7 @@ class ItemRoom extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Container(
                 width: 50,
@@ -51,28 +52,32 @@ class ItemRoom extends StatelessWidget {
               const SizedBox(
                 width: 30,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name ?? "",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: (isSeen != null && isSeen!)
-                            ? FontWeight.normal
-                            : FontWeight.bold),
-                  ),
-                  Text(
-                    newMessage ?? "",
-                    style: TextStyle(
-                        color: (isSeen != null && isSeen!)
-                            ? Colors.grey
-                            : Colors.blue,
-                        fontWeight: (isSeen != null && isSeen!)
-                            ? FontWeight.normal
-                            : FontWeight.normal),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name ?? "",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: (isSeen != null && isSeen!)
+                              ? FontWeight.normal
+                              : FontWeight.bold),
+                    ),
+                    Text(
+                      newMessage ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: (isSeen != null && isSeen!)
+                              ? Colors.grey
+                              : Colors.blue,
+                          fontWeight: (isSeen != null && isSeen!)
+                              ? FontWeight.normal
+                              : FontWeight.normal),
+                    ),
+                  ],
+                ),
               )
             ],
           ),
