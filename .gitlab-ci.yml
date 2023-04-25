@@ -23,7 +23,7 @@ build_fad_android_staging:
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/firebase.json"
-    - echo "$FIREBASE_APP_ID"
+    - ENV=$CI_ENVIRONMENT_NAME && script-ci-to-env.sh
     - cd android && fastlane beta credentialsFilePath:"`pwd`/firebase.json" app_id:"$FIREBASE_APP_ID" versionName:"$CI_COMMIT_TAG" buildNumber:"$CI_PIPELINE_IID" groups:"nws-tester" releaseNotes:"$CI_COMMIT_TAG_MESSAGE"
   environment:
     name: staging
@@ -39,7 +39,7 @@ build_fad_android_prod:
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/firebase.json"
-    - echo "$FIREBASE_APP_ID"
+    - ENV=$CI_ENVIRONMENT_NAME && script-ci-to-env.sh
     - cd android && fastlane beta credentialsFilePath:"`pwd`/firebase.json" app_id:"$FIREBASE_APP_ID" versionName:"$CI_COMMIT_TAG" buildNumber:"$CI_PIPELINE_IID" groups:"nws-tester" releaseNotes:"$CI_COMMIT_TAG_MESSAGE"
   environment:
     name: production
@@ -55,7 +55,7 @@ build_fad_android_dev:
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - export GOOGLE_APPLICATION_CREDENTIALS="`pwd`/firebase.json"
-    - echo "$FIREBASE_APP_ID"
+    - ENV=$CI_ENVIRONMENT_NAME && script-ci-to-env.sh
     - cd android && fastlane beta credentialsFilePath:"`pwd`/firebase.json" app_id:"$FIREBASE_APP_ID" versionName:"$CI_COMMIT_TAG" buildNumber:"$CI_PIPELINE_IID" groups:"nws-tester" releaseNotes:"$CI_COMMIT_TAG_MESSAGE"
   environment:
     name: development
