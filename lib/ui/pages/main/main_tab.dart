@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum MainTab {
   home,
-  discover,
+  // discover,
   tvShows,
   watchlist,
   profile,
@@ -14,7 +14,7 @@ extension MainTabExtension on MainTab {
       case MainTab.home:
       // return HomeTabPage();
       // return Container(color: Colors.red,);
-      case MainTab.discover:
+      // case MainTab.discover:
       // return DiscoverTabPage();
       case MainTab.tvShows:
       // return TvShowTabPage();
@@ -31,9 +31,9 @@ extension MainTabExtension on MainTab {
       case MainTab.home:
         return const BottomNavigationBarItem(
             icon: Icon(Icons.home_rounded), label: 'Home');
-      case MainTab.discover:
-        return const BottomNavigationBarItem(
-            icon: Icon(Icons.explore_outlined), label: 'Discover');
+      // case MainTab.discover:
+      //   return const BottomNavigationBarItem(
+      //       icon: Icon(Icons.explore_outlined), label: 'Discover');
       case MainTab.tvShows:
         return const BottomNavigationBarItem(
             icon: Icon(Icons.tv_rounded), label: 'TV Shows');
@@ -50,8 +50,8 @@ extension MainTabExtension on MainTab {
     switch (this) {
       case MainTab.home:
         return 'Home';
-      case MainTab.discover:
-        return 'Notification';
+      // case MainTab.discover:
+      //   return 'Notification';
       case MainTab.tvShows:
         return 'TV Shows';
       case MainTab.watchlist:

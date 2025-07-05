@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base/blocs/app_cubit.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/common/app_images.dart';
 import 'package:flutter_base/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../repositories/firestore_repository.dart';
 import '../../../repositories/user_repository.dart';
 import 'splash_cubit.dart';
 
@@ -15,7 +18,7 @@ class SplashPage extends StatelessWidget {
       create: (context) {
         return SplashCubit(
           authRepo: RepositoryProvider.of<AuthRepository>(context),
-          userRepo: RepositoryProvider.of<UserRepository>(context),
+          appCubit: RepositoryProvider.of<AppCubit>(context),
         );
       },
       child: const SplashChildPage(),
@@ -42,11 +45,19 @@ class _SplashChildPageState extends State<SplashChildPage> {
     return Scaffold(
       body: Stack(
         children: [
+          Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(colors: [
+                  AppColors.primaryDarkColorLeft,
+                  AppColors.primaryLightColorRight
+                ], begin: Alignment.topLeft, end: Alignment.bottomRight)
+            ),
+          ),
           Center(
             child: SizedBox(
               height: 200,
               width: 200,
-              child: Image.asset(AppImages.icLogoTransparent),
+              child: Image.asset(AppImages.icLogoTransparentNoBackGround),
             ),
           ),
         ],

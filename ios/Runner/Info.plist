@@ -45,5 +45,21 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    			<string>com.googleusercontent.apps.160322392119-on3s9mevbjbfj82aaiasodc3eb6cv8m9</string>
+    		</array>
+    	</dict>
+    </array>
+    <key>NSCameraUsageDescription</key>
+    <key>NSPhotoLibraryUsageDescription</key>
 </dict>
 </plist>

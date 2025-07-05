@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_base/common/app_colors.dart';
 import 'package:flutter_base/configs/app_configs.dart';
 import 'package:flutter_base/repositories/chat_repository.dart';
+import 'package:flutter_base/repositories/firestorage_repository.dart';
+import 'package:flutter_base/repositories/firestore_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -60,15 +63,24 @@ class _MyAppState extends State<MyApp> {
         RepositoryProvider<ChatRepository>(create: (context) {
           return ChatRepositoryImpl();
         }),
+        RepositoryProvider<FirestoreRepository>(create: (context) {
+          return FirestoreRepositoryImpl();
+        }),
+        RepositoryProvider<FireStorageRepository>(create: (context) {
+          return FireStorageRepositoryImpl();
+        })
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AppCubit>(create: (context) {
             final userRepo = RepositoryProvider.of<UserRepository>(context);
+            final firestoreRepo = RepositoryProvider.of<FirestoreRepository>(context);
             final authRepo = RepositoryProvider.of<AuthRepository>(context);
+            final chatRepo = RepositoryProvider.of<ChatRepository>(context);
             return AppCubit(
-              userRepo: userRepo,
+              firestoreRepo: firestoreRepo,
               authRepo: authRepo,
+              chatRepo: chatRepo,
             );
           }),
           BlocProvider<AppSettingCubit>(create: (context) {
@@ -83,16 +95,16 @@ class _MyAppState extends State<MyApp> {
               },
               child: GetMaterialApp(
                 title: AppConfigs.appName,
-                theme: AppThemes(
-                  isDarkMode: false,
-                  primaryColor: state.primaryColor,
-                ).theme,
-                darkTheme: AppThemes(
-                  isDarkMode: true,
-                  primaryColor: state.primaryColor,
-                ).theme,
+                theme: const AppTheme(
+                  brightness: Brightness.light,
+                  primaryColor: AppColors.primaryLightColor,
+                ).themeData(),
+                // darkTheme: AppThemes(
+                //   isDarkMode: true,
+                //   primaryColor: state.primaryColor,
+                // ).theme,
                 themeMode: state.themeMode,
-                initialRoute: RouteConfig.chat,
+                initialRoute: RouteConfig.splash,
                 getPages: RouteConfig.getPages,
                 localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,

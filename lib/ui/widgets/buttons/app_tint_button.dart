@@ -7,6 +7,7 @@ class AppTintButton extends AppButton {
   const AppTintButton({
     Key? key,
     @required String? title,
+
     bool isLoading = false,
     VoidCallback? onPressed,
   }) : super(

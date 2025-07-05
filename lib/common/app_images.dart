@@ -4,6 +4,7 @@ class AppImages {
   static const icLogo = 'assets/images/ic_logo.png';
   static const icLogoTransparent = 'assets/images/ic_logo_transparent.png';
   static const icAvatar = 'assets/images/ic_avatar.png';
+  static const icLogoTransparentNoBackGround = 'assets/images/ic_logo_transparent_no_background.png';
 
   ///Sign-In
   static const icEyeClose = 'assets/images/ic_eye_close.png';
@@ -16,4 +17,10 @@ class AppImages {
   static const String icArrowBack = "assets/images/ic_arrow_back.svg";
   static const String icPlay = "assets/images/ic_play.svg";
   static const String icPause = "assets/images/ic_pause.svg";
+  static const imageDecorate = 'assets/images/img_decorate.png';
+
+  /// Profile
+  static const icLock = 'assets/images/ic_lock.svg';
+  static const bgUserPlaceholder = 'assets/images/bg_user_placeholder.png';
+
 }

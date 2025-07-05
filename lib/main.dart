@@ -14,13 +14,13 @@ void main() async {
   AppConfigs.env = Environment.prod;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      name: AppConfigs.appName,
       options: DefaultFirebaseOptions.currentPlatform);
   AppStream.setup();
   final storage = await HydratedStorage.build(
-      storageDirectory: kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getTemporaryDirectory());
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
   HydratedBlocOverrides.runZoned(
     () => runApp(const MyApp()),
     storage: storage,

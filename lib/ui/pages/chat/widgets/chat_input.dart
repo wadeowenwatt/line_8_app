@@ -15,9 +15,11 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../../../models/entities/user/my_user_entity.dart';
+
 class ChatInput extends StatelessWidget {
   final Function(ChatMessageEntity) onSend;
-  final ChatUserEntity currentUser;
+  final MyUserEntity currentUser;
 
   ChatInput({super.key, required this.onSend, required this.currentUser});
 
@@ -29,7 +31,7 @@ class ChatInput extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(minHeight: 72, maxHeight: size.height * 0.12),
       decoration: const BoxDecoration(
-        color: Colors.transparent,
+        color: AppColors.primaryDarkColorLeft,
       ),
       padding: const EdgeInsets.only(
         left: 24,
@@ -76,20 +78,23 @@ class ChatInput extends StatelessWidget {
                       style: BorderStyle.none,
                     ),
                   ),
-                  prefixIcon: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: SvgPicture.asset(
-                      AppImages.icSmile,
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
+                  // prefixIcon: Container(
+                  //   margin: const EdgeInsets.symmetric(horizontal: 8),
+                  //   child: SvgPicture.asset(
+                  //     AppImages.icSmile,
+                  //     width: 16,
+                  //     height: 16,
+                  //   ),
+                  // ),
                   suffixIcon: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: SvgPicture.asset(
-                      AppImages.icSend,
-                      width: 16,
-                      height: 16,
+                    child: InkWell(
+                      onTap: () => _onSendTextMessage(_controller.text),
+                      child: SvgPicture.asset(
+                        AppImages.icSend,
+                        width: 30,
+                        height: 30,
+                      ),
                     ),
                   ),
                   contentPadding: const EdgeInsets.only(
@@ -112,7 +117,7 @@ class ChatInput extends StatelessWidget {
   void _onSendTextMessage(String text) {
     if (text.isNotEmpty) {
       final ChatMessageEntity message = ChatMessageEntity(
-        authorId: currentUser.chatUserId,
+        authorId: currentUser.uid,
         text: text,
         type: MessageType.text,
       );
@@ -133,7 +138,7 @@ class ChatInput extends StatelessWidget {
         await fileRef.putFile(file);
         final url = await fileRef.getDownloadURL();
         final ChatMessageEntity audioMessage = ChatMessageEntity(
-          authorId: currentUser.chatUserId,
+          authorId: currentUser.uid,
           type: MessageType.audio,
           meta: {
             "url": url,
@@ -162,7 +167,7 @@ class ChatInput extends StatelessWidget {
         await fileRef.putFile(file);
         final url = await fileRef.getDownloadURL();
         final ChatMessageEntity imageMessage = ChatMessageEntity(
-          authorId: currentUser.chatUserId,
+          authorId: currentUser.uid,
           type: MessageType.image,
           meta: {
             "url": url,
@@ -205,7 +210,7 @@ class ChatInput extends StatelessWidget {
         thumbnailRef.putFile(thumbnailFile);
         final thumbnailUrl = await thumbnailRef.getDownloadURL();
         final ChatMessageEntity videoMessage = ChatMessageEntity(
-          authorId: currentUser.chatUserId,
+          authorId: currentUser.uid,
           type: MessageType.video,
           meta: {"url": url, "thumbnailUrl": thumbnailUrl},
         );
@@ -232,7 +237,7 @@ class ChatInput extends StatelessWidget {
         await fileRef.putFile(file);
         final url = await fileRef.getDownloadURL();
         final ChatMessageEntity fileMessage = ChatMessageEntity(
-          authorId: currentUser.chatUserId,
+          authorId: currentUser.uid,
           type: MessageType.file,
           meta: {"url": url, "fileName": result.files.single.name},
         );
